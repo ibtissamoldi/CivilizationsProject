@@ -1,5 +1,59 @@
 package M3.units.attack;
 
-public class Swordsman {
-    
+import M3.units.AttackUnit;
+
+public class Swordsman extends AttackUnit {
+    public Swordsman(int armor, int baseDamage) {
+		super(armor, baseDamage);
+	}
+
+    /*2nd constructor..
+    public Swordsman() {
+
+    } */
+
+	public int attack() {
+		return 0;
+	}
+
+	public void takeDamage(int receivedDamage) {
+		
+	}
+
+	public int getActualArmor() {
+		return 0;
+	}
+
+	public int getFoodCost() {
+		return 0;
+	}
+
+	public int getWoodCost() {
+		return 0;
+	}
+
+	public int getIronCost() {
+		return 0;
+	}
+
+	public int getManaCost() {
+		return 0;
+	}
+
+	public int getChanceGeneratinWaste() {
+		return 0;
+	}
+
+	public int getChanceAttackAgain() {
+		return 0;
+	}
+
+	public void resetArmor() {
+		
+	}
+
+	public void getExperience() {
+		
+	}
+	
 }
