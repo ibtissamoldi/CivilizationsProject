@@ -3,57 +3,39 @@ package M3.units.attack;
 import M3.units.AttackUnit;
 
 public class Swordsman extends AttackUnit {
-    public Swordsman(int armor, int baseDamage) {
-		super(armor, baseDamage);
+    public Swordsman(int technologyDefense, int technologyAttack) {
+		super(ARMOR_SWORDSMAN + (technologyDefense * PLUS_ARMOR_SWORDSMAN_BY_TECHNOLOGY * ARMOR_SWORDSMAN / 100),
+            BASE_DAMAGE_SWORDSMAN + (technologyAttack * PLUS_ATTACK_SWORDSMAN_BY_TECHNOLOGY * BASE_DAMAGE_SWORDSMAN / 100)
+        );
 	}
 
-    /*2nd constructor..
+    /*2nd constructor..*/
     public Swordsman() {
-
-    } */
-
-	public int attack() {
-		return 0;
-	}
-
-	public void takeDamage(int receivedDamage) {
-		
-	}
-
-	public int getActualArmor() {
-		return 0;
-	}
+		super(ARMOR_SWORDSMAN, BASE_DAMAGE_SWORDSMAN);
+    } 
 
 	public int getFoodCost() {
-		return 0;
+		return FOOD_COST_SWORDSMAN;
 	}
 
 	public int getWoodCost() {
-		return 0;
+		return WOOD_COST_SWORDSMAN;
 	}
 
 	public int getIronCost() {
-		return 0;
+		return IRON_COST_SWORDSMAN;
 	}
 
 	public int getManaCost() {
-		return 0;
+		return MANA_COST_SWORDSMAN;
 	}
 
 	public int getChanceGeneratinWaste() {
-		return 0;
+		return CHANCE_GENERATNG_WASTE_SWORDSMAN;
 	}
 
 	public int getChanceAttackAgain() {
-		return 0;
-	}
-
-	public void resetArmor() {
-		
-	}
-
-	public void getExperience() {
-		
+		return CHANCE_ATTACK_AGAIN_SWORDSMAN;
 	}
 	
 }

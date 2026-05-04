@@ -18,6 +18,8 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
         this.sanctified   = false;
     }
 
+    //getters and setters
+
     public int getArmor() {
         return armor;
     }
@@ -34,10 +36,6 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
         return baseDamage;
     }
 
-    public void setBaseDamage(int baseDamage) {
-        this.baseDamage = baseDamage;
-    }
-
     public void setExperience(int experience) {
         this.experience = experience;
     }
@@ -50,7 +48,42 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
         this.sanctified = sanctified;
     }
 
-    
+    //common methods in all units
+
+    public int getExperience() {
+        return experience;
+    }
+
+     public int attack() {
+        int damage = baseDamage;
+        damage += (damage * experience * PLUS_ATTACK_UNIT_PER_EXPERIENCE_POINT) / 100;
+
+        if (sanctified) {
+            damage += (damage * PLUS_ATTACK_UNIT_SANCTIFIED) / 100;
+        }
+
+        return damage;
+    }
+
+    public void takeDamage(int receivedDamage) {
+        armor -= receivedDamage;
+    }
+
+    public int getActualArmor() {
+        return armor;
+    }
+
+    public void resetArmor() {
+        int newArmor = initialArmor;
+
+    	newArmor += (newArmor * experience * PLUS_ARMOR_UNIT_PER_EXPERIENCE_POINT) / 100;
+
+		if (sanctified) {
+			newArmor += (newArmor * PLUS_ARMOR_UNIT_SANCTIFIED) / 100;
+		}
+
+    	armor = newArmor;
+    }
 
 
     

@@ -7,37 +7,47 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
 	private int initialArmor;
 	private int baseDamage;
 	private int experience;
-    public SpecialUnit(int armor,int baseDamage) {
+
+    public SpecialUnit(int baseDamage) {
         this.armor = 0;
         this.initialArmor = 0;
         this.baseDamage = baseDamage;
         this.experience = 0;
     }
+
+    //getters and setters
     public int getArmor() {
         return armor;
     }
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
-    public int getInitialArmor() {
-        return initialArmor;
-    }
-    public void setInitialArmor(int initialArmor) {
-        this.initialArmor = initialArmor;
-    }
     public int getBaseDamage() {
         return baseDamage;
-    }
-    public void setBaseDamage(int baseDamage) {
-        this.baseDamage = baseDamage;
     }
     public void setExperience(int experience) {
         this.experience = experience;
     }
 
-    
+    //common methods
+    public int getExperience() {
+        return experience;
+    }
 
-    
+    public int attack() {
+        int damage = baseDamage;
 
-    
+        damage += (damage * experience * PLUS_ATTACK_UNIT_PER_EXPERIENCE_POINT) / 100;
+
+        return damage;
+    }
+
+    public void takeDamage(int receivedDamage) {
+        armor -= receivedDamage;
+    }
+
+    public int getActualArmor() {
+        return armor;
+    }
+
+    public void resetArmor() {
+        armor = 0;
+    }
 }

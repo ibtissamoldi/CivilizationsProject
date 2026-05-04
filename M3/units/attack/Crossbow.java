@@ -5,59 +5,42 @@ import M3.units.AttackUnit;
 
 public class Crossbow extends AttackUnit{
 
-    public Crossbow(int armor, int baseDamage) {
-        super(armor, baseDamage);
+    public Crossbow(int technologyDefense, int technologyAttack) {
+        super(
+            ARMOR_CROSSBOW + (technologyDefense * PLUS_ARMOR_CROSSBOW_BY_TECHNOLOGY * ARMOR_CROSSBOW / 100),
+            BASE_DAMAGE_CROSSBOW + (technologyAttack * PLUS_ATTACK_CROSSBOW_BY_TECHNOLOGY * BASE_DAMAGE_CROSSBOW / 100)
+        );
+
     }
 
-    /*2nd constructor..
+    /*2nd constructor..*/
     public Crossbow() {
+        super(ARMOR_CROSSBOW, BASE_DAMAGE_CROSSBOW);
+    } 
 
-    } */
-
-    public int attack() {
-        return 0;
-    }
-
-    public int getActualArmor() {
-        return 0;
-    }
-
-    public int getChanceAttackAgain() {
-        return 0;
-    }
-
-    public int getChanceGeneratinWaste() {
-        return 0;
-    }
-
-    public void getExperience() {
-        
-    }
-
+    
     public int getFoodCost() {
-        return 0;
+        return FOOD_COST_CROSSBOW;
     }
 
     public int getIronCost() {
-        return 0;
-    }
-
-    public int getManaCost() {
-        return 0;
+        return IRON_COST_CROSSBOW;
     }
 
     public int getWoodCost() {
-        return 0;
+        return WOOD_COST_CROSSBOW;
     }
 
-    public void resetArmor() {
-        
+    public int getManaCost() {
+        return MANA_COST_CROSSBOW;
     }
 
-    public void takeDamage(int receivedDamage) {
-        
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_CROSSBOW;
     }
-    
-    
+
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_CROSSBOW;
+    }
     
 }

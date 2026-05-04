@@ -21,5 +21,6 @@ public class Civilization {
 
 	private int battles;
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
+
 	
 }

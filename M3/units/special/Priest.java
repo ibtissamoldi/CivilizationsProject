@@ -4,52 +4,38 @@ import M3.units.SpecialUnit;
 
 public class Priest extends SpecialUnit {
 
-    public Priest(int armor, int baseDamage) {
-        super(0, 0);
+    public Priest() {
+        super(0);
     }
 
-    public int attack() {
-        return 0;
-    }
+   
 
-    public int getActualArmor() {
-        return 0;
-    }
-
-    public int getChanceAttackAgain() {
-        return 0;
-    }
-
-    public int getChanceGeneratinWaste() {
-        return 0;
-    }
-
-    public void getExperience() {
-        
-    }
+   
 
     public int getFoodCost() {
-        return 0;
-    }
-
-    public int getIronCost() {
-        return 0;
-    }
-
-    public int getManaCost() {
-        return 0;
+        return FOOD_COST_PRIEST;
     }
 
     public int getWoodCost() {
-        return 0;
+        return WOOD_COST_PRIEST;
     }
 
-    public void resetArmor() {
-        
+    public int getIronCost() {
+        return IRON_COST_PRIEST;
     }
 
-    public void takeDamage(int receivedDamage) {
-        
+    public int getManaCost() {
+        return MANA_COST_PRIEST;
     }
+
+    
+
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_PRIEST;
+    }
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_PRIEST;
+    }
+
     
 }

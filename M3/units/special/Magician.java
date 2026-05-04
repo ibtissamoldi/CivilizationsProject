@@ -4,52 +4,37 @@ import M3.units.SpecialUnit;
 
 public class Magician extends SpecialUnit{
 
-    public Magician(int armor, int baseDamage) {
-        super(0, baseDamage);
-    }
+    public Magician(int technologyAttack) {
+                super(BASE_DAMAGE_MAGICIAN +
+                     (technologyAttack * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_MAGICIAN / 100)
+        );
 
-    public int attack() {
-        return 0;
-    }
-
-    public int getActualArmor() {
-        return 0;
-    }
-
-    public int getChanceAttackAgain() {
-        return 0;
-    }
-
-    public int getChanceGeneratinWaste() {
-        return 0;
-    }
-
-    public void getExperience() {
-        
     }
 
     public int getFoodCost() {
-        return 0;
-    }
-
-    public int getIronCost() {
-        return 0;
-    }
-
-    public int getManaCost() {
-        return 0;
+        return FOOD_COST_MAGICIAN;
     }
 
     public int getWoodCost() {
-        return 0;
+        return WOOD_COST_MAGICIAN;
     }
 
-    public void resetArmor() {
-        
+
+    public int getIronCost() {
+        return IRON_COST_MAGICIAN;
     }
 
-    public void takeDamage(int receivedDamage) {
-        
+    public int getManaCost() {
+        return MANA_COST_MAGICIAN;
+    }
+
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_MAGICIAN;
+    }
+
+
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_MAGICIAN;
     }
     
     

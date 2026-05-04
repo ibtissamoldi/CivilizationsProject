@@ -4,52 +4,37 @@ import M3.units.DefenseUnit;
 
 public class Catapult extends DefenseUnit{
 
-    public Catapult(int armor, int baseDamage) {
-        super(armor, baseDamage);
+    public Catapult(int technologyDefense, int technologyAttack) {
+                super(ARMOR_CATAPULT + (technologyDefense * PLUS_ARMOR_CATAPULT_BY_TECHNOLOGY * ARMOR_CATAPULT / 100),
+                BASE_DAMAGE_CATAPULT + (technologyAttack * PLUS_ATTACK_CATAPULT_BY_TECHNOLOGY * BASE_DAMAGE_CATAPULT / 100)
+        );
+
     }
 
-    public int attack() {
-        return 0;
-    }
-
-    public int getActualArmor() {
-        return 0;
-    }
-
-    public int getChanceAttackAgain() {
-        return 0;
-    }
-
-    public int getChanceGeneratinWaste() {
-        return 0;
-    }
-
-    public void getExperience() {
-        
-    }
 
     public int getFoodCost() {
-        return 0;
-    }
-
-    public int getIronCost() {
-        return 0;
-    }
-
-    public int getManaCost() {
-        return 0;
+        return FOOD_COST_CATAPULT;
     }
 
     public int getWoodCost() {
-        return 0;
+        return WOOD_COST_CATAPULT;
     }
 
-    public void resetArmor() {
-        
+    public int getIronCost() {
+        return IRON_COST_CATAPULT;
     }
 
-    public void takeDamage(int receivedDamage) {
-        
+    public int getManaCost() {
+        return MANA_COST_CATAPULT;
+    }
+
+
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_CATAPULT;
+    }
+
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_CATAPULT;
     }
     
 }

@@ -4,59 +4,39 @@ import M3.units.AttackUnit;
 
 public class Spearman extends AttackUnit {
 
-    public Spearman(int armor, int baseDamage) {
-        super(armor, baseDamage);
+    public Spearman(int technologyDefense, int technologyAttack) {
+        super(ARMOR_SPEARMAN + (technologyDefense * PLUS_ARMOR_SPEARMAN_BY_TECHNOLOGY * ARMOR_SPEARMAN / 100),
+            BASE_DAMAGE_SPEARMAN + (technologyAttack * PLUS_ATTACK_SPEARMAN_BY_TECHNOLOGY * BASE_DAMAGE_SPEARMAN / 100)
+        );
     }
 
-     /*2nd constructor..
+     /*2nd constructor..*/
     public Spearman() {
-
-    } */
-
-    public int attack() {
-        return 0;
-    }
-
-    public int getActualArmor() {
-        return 0;
-    }
-
-    public int getChanceAttackAgain() {
-        return 0;
-    }
-
-    public int getChanceGeneratinWaste() {
-        return 0;
-    }
-
-    public void getExperience() {
-        
-    }
+        super(ARMOR_SPEARMAN, BASE_DAMAGE_SPEARMAN);
+    } 
 
     public int getFoodCost() {
-        return 0;
-    }
-
-    public int getIronCost() {
-        return 0;
-    }
-
-    public int getManaCost() {
-        return 0;
+        return FOOD_COST_SPEARMAN;
     }
 
     public int getWoodCost() {
-        return 0;
+        return WOOD_COST_SPEARMAN;
     }
 
-    public void resetArmor() {
-        
+    public int getIronCost() {
+        return IRON_COST_SPEARMAN;
     }
 
-    public void takeDamage(int receivedDamage) {
-        
+    public int getManaCost() {
+        return MANA_COST_SPEARMAN;
     }
-    
-    
+
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_SPEARMAN;
+    }
+
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_SPEARMAN;
+    }
     
 }
