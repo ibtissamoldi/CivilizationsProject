@@ -1,6 +1,6 @@
-package M3.units;
+package units;
 
-import M3.interfaces.*;
+import interfaces.*;
 
 public abstract class SpecialUnit implements MilitaryUnit, Variables{
     private int armor;

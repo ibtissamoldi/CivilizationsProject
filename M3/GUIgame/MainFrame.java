@@ -1,4 +1,4 @@
-package M3.GUIgame;
+package GUIgame;
 
 
 import java.awt.Color;
