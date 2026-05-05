@@ -4,6 +4,10 @@ package M3.GUIgame;
 import javax.swing.*;
 
 public class MainFrame extends JFrame{
+    PanelPrincipal panel_principal;
+    public static void main(String[] args) {
+        new MainFrame();
+    }
 
     public MainFrame() {
         setTitle("Civilizations");
@@ -12,8 +16,18 @@ public class MainFrame extends JFrame{
 
 
 
+
+
         setVisible(true);
     }
     
 
 }
+
+
+class PanelPrincipal extends JPanel {
+
+
+}
+
+
