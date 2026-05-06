@@ -68,14 +68,6 @@ public class Civilization {
 		this.mana = mana;
 	}
 
-	public int getFarm() {
-		return farm;
-	}
-
-	public void setFarm(int farm) {
-		this.farm = farm;
-	}
-
 	public ArrayList<MilitaryUnit>[] getArmy() {
 		return this.army;
 	}
