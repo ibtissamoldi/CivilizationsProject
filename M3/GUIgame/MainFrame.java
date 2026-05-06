@@ -7,7 +7,7 @@ public class MainFrame extends JFrame{
 
     public MainFrame() {
         setTitle("Civilizations");
-        setSize(1000, 650);
+        setBounds(300,300,300,300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
