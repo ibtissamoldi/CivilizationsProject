@@ -1,6 +1,6 @@
-package M3.units.attack;
+package units.attack;
 
-import M3.units.AttackUnit;
+import units.AttackUnit;
 
 public class Spearman extends AttackUnit {
 

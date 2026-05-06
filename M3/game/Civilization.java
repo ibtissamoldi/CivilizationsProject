@@ -1,10 +1,13 @@
-package M3.game;
+package game;
+
 
 import java.util.ArrayList;
 
-import M3.interfaces.MilitaryUnit;
 
-public class Civilization {
+import interfaces.MilitaryUnit;
+import interfaces.Variables;
+
+public class Civilization implements Variables{
     private int technologyDefense;
 	private int technologyAtack;
 	
