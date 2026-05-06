@@ -1,8 +1,10 @@
 package game;
 
+
 import java.util.ArrayList;
 
-import M3.interfaces.MilitaryUnit;
+
+import interfaces.MilitaryUnit;
 import interfaces.Variables;
 
 public class Civilization implements Variables{
