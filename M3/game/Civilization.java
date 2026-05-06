@@ -1,5 +1,6 @@
 package M3.game;
 
+import M3.exceptions.*;
 import M3.interfaces.MilitaryUnit;
 import M3.units.attack.Cannon;
 import M3.units.attack.Crossbow;
@@ -67,17 +68,22 @@ public class Civilization {
 		this.technologyAtack += 1;
 	}
 
-	public void newSwordsman(int n) {
-		if (this.army[0] == null) {
+	public void newSwordsman(int n) throws BuildingException{
+		if (checkCosts(new Swordsman(), n)){
+			if (this.army[0] == null) {
 			army[0] = new ArrayList<MilitaryUnit>();
 			for (int i = 0; i < n; i++) {
 				this.army[0].add(new Swordsman());
 			}
-		} else {
-			for (int i = 0; i < n; i++) {
-				this.army[0].add(new Swordsman());
+			} else {
+				for (int i = 0; i < n; i++) {
+					this.army[0].add(new Swordsman());
+				}
 			}
+		} else {
+			throw new BuildingException("Hola");
 		}
+		
 	}
 
 	public void newSpearman(int n) {
@@ -166,6 +172,14 @@ public class Civilization {
 			}
 		} else {
 			this.army[8].add(new Priest());
+		}
+	}
+
+	public boolean checkCosts(MilitaryUnit m, int n) {
+		if (m.getFoodCost() * n <= this.food) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
