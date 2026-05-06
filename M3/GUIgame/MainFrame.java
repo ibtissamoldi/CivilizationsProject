@@ -25,6 +25,8 @@ public class MainFrame extends JFrame{
 	private JPanel topbar_panel;
 	private JPanel menu_panel;
 	private JPanel center_switch_panel;
+	private JTabbedPane tab_army_panel;
+	
 	private BufferedImage icon_image;
 	
 	private ContentPanel building_panel;
@@ -32,6 +34,8 @@ public class MainFrame extends JFrame{
 	private ContentPanel civilization_panel;
 	private ContentPanel stats_panel;
 	private ContentPanel battle_panel;
+	
+	private JToolBar atck_buttonbar;
 	
 	private JLabel label_food;
 	private JLabel label_wood;
@@ -145,9 +149,7 @@ public class MainFrame extends JFrame{
 		btn_Army.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent e) {
-						SwitchPanel(army_panel);
-						army_panel.setBackground(Color.red);
-						
+						SwitchPanel(army_panel);						
 					}
 				});
 		
@@ -178,7 +180,26 @@ public class MainFrame extends JFrame{
 				
 			}
 		});
-        
+		tab_army_panel = new JTabbedPane();
+		
+		JPanel tab_defense_panel = new JPanel(new BorderLayout());
+		JPanel tab_attack_panel = new JPanel(new BorderLayout());
+		JPanel tab_special_panel = new JPanel(new BorderLayout());
+		
+		tab_army_panel.add("Attack Units",tab_attack_panel);
+		tab_army_panel.add("Defense Units",tab_defense_panel);
+		tab_army_panel.add("Special Units",tab_special_panel);
+		tab_army_panel.setBackground(Color.black);
+		
+		army_panel.setLayout(new BorderLayout());
+		army_panel.add(tab_army_panel,BorderLayout.CENTER);
+		
+		
+		
+		
+		
+		
+		
 		
 		
         setIconImage(icon_image);
