@@ -1,9 +1,7 @@
-/.classpath
-/.project
-/GUIgame/
 /Main.class
+/.gitignore
+/GUIgame/
 /exceptions/
 /game/
 /interfaces/
-/swords.png
 /units/

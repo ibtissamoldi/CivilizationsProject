@@ -1,17 +1,19 @@
 package game;
 
 
-import M3.exceptions.*;
-import M3.interfaces.MilitaryUnit;
-import M3.units.attack.Cannon;
-import M3.units.attack.Crossbow;
-import M3.units.attack.Spearman;
-import M3.units.attack.Swordsman;
-import M3.units.defense.ArrowTower;
-import M3.units.defense.Catapult;
-import M3.units.defense.RocketLauncherTower;
-import M3.units.special.Magician;
-import M3.units.special.Priest;
+import exceptions.*;
+import interfaces.MilitaryUnit;
+import units.attack.Cannon;
+import units.attack.Crossbow;
+import units.attack.Spearman;
+import units.attack.Swordsman;
+import units.defense.ArrowTower;
+import units.defense.Catapult;
+import units.defense.RocketLauncherTower;
+import units.special.Magician;
+import units.special.Priest;
+import exceptions.ResourceException;
+
 import java.util.ArrayList;
 
 import interfaces.MilitaryUnit;
