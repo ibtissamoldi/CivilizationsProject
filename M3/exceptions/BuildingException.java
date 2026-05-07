@@ -1,4 +1,4 @@
-package M3.exceptions;
+package exceptions;
 
 public class BuildingException extends Exception{
     public BuildingException(String message) {

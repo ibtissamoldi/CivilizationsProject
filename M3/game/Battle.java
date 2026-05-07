@@ -1,4 +1,4 @@
-package M3.game;
+package game;
 
 public class Battle {
     

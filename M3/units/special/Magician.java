@@ -1,6 +1,6 @@
-package M3.units.special;
+package units.special;
 
-import M3.units.SpecialUnit;
+import units.SpecialUnit;
 
 public class Magician extends SpecialUnit{
 

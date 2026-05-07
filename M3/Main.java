@@ -1,7 +1,7 @@
-package M3;
 
-import M3.exceptions.ResourceException;
-import M3.game.Civilization;
+
+import exceptions.ResourceException;
+import game.Civilization;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,14 +21,14 @@ public class Main {
 		}
         
         try {
-			civil.newSpearman(1254);;
+			civil.newSpearman(1254);
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
 		}
         
         try {
-			civil.newCrossbow(1254);;
-		} catch (ResourceException e) {
+			civil.newCrossbow(1254);
+			} catch (ResourceException e) {
 			System.out.println(e.getMessage());
 		}
         
