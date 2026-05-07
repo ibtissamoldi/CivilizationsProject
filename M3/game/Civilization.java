@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Civilization implements Variables{
     private int technologyDefense;
-	private int technologyAtack;
+	private int technologyAttack;
 	
 	private int wood;
 	private int iron;
@@ -34,7 +34,32 @@ public class Civilization implements Variables{
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
 
 	public Civilization() {
-		
+		this.wood = CIVILIZATION_WOOD_GENERATED;
+		this.iron = CIVILIZATION_IRON_GENERATED;
+		this.food = CIVILIZATION_FOOD_GENERATED;
+		this.mana = 0;
+		this.magicTower = 0;
+		this.church = 0;
+		this.farm = 0;
+		this.smithy = 0;
+		this.carpentry = 0;
+		this.battles = 0;
+	}
+	
+	public int getTechnologyDefense() {
+		return technologyDefense;
+	}
+
+	public void setTechnologyDefense(int technologyDefense) {
+		this.technologyDefense = technologyDefense;
+	}
+
+	public int getTechnologyAttack() {
+		return technologyAttack;
+	}
+
+	public void setTechnologyAttack(int technologyAttack) {
+		this.technologyAttack = technologyAttack;
 	}
 
 	public int getWood() {
@@ -69,13 +94,8 @@ public class Civilization implements Variables{
 		this.mana = mana;
 	}
 
-	public ArrayList<MilitaryUnit>[] getArmy() {
-		return this.army;
-	}
-
 	public int getMagicTower() {
 		return magicTower;
-		
 	}
 
 	public void setMagicTower(int magicTower) {
@@ -90,9 +110,38 @@ public class Civilization implements Variables{
 		this.church = church;
 	}
 
+	public int getFarm() {
+		return farm;
+	}
+
+	public void setFarm(int farm) {
+		this.farm = farm;
+	}
+
+	public int getSmithy() {
+		return smithy;
+	}
+
+	public void setSmithy(int smithy) {
+		this.smithy = smithy;
+	}
+
+	public int getCarpentry() {
+		return carpentry;
+	}
+
+	public void setCarpentry(int carpentry) {
+		this.carpentry = carpentry;
+	}
+
+	public ArrayList<MilitaryUnit>[] getArmy() {
+		return this.army;
+	}
+
 	public void newChurch() throws ResourceException {
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;
+			takeMaterialBuildingCost(WOOD_COST_CHURCH, IRON_COST_CHURCH, FOOD_COST_CHURCH);
 		} else {
 			throw new ResourceException("Not enough material to create a church");
 		}
@@ -101,6 +150,7 @@ public class Civilization implements Variables{
 	public void newMagicTower() throws ResourceException {
 		if (this.wood >= WOOD_COST_MAGICTOWER && this.iron >= IRON_COST_MAGICTOWER && this.food >= FOOD_COST_MAGICTOWER) {
 			this.magicTower += 1;
+			takeMaterialBuildingCost(WOOD_COST_MAGICTOWER, IRON_COST_MAGICTOWER, FOOD_COST_MAGICTOWER);
 		} else {
 			throw new ResourceException("Not enough material to create a magic tower");
 		}
@@ -109,6 +159,7 @@ public class Civilization implements Variables{
 	public void newFarm() throws ResourceException {
 		if (this.wood >= WOOD_COST_FARM && this.iron >= IRON_COST_FARM && this.food >= FOOD_COST_FARM) {
 			this.farm += 1;
+			takeMaterialBuildingCost(WOOD_COST_FARM, IRON_COST_FARM, FOOD_COST_FARM);
 		} else {
 			throw new ResourceException("Not enough material to create a farm");
 		}
@@ -117,6 +168,7 @@ public class Civilization implements Variables{
 	public void newCarpentry() throws ResourceException {
 		if (this.wood >= WOOD_COST_CARPENTRY && this.iron >= IRON_COST_CARPENTRY && this.food >= FOOD_COST_CARPENTRY) {
 			this.carpentry += 1;
+			takeMaterialBuildingCost(WOOD_COST_CARPENTRY, IRON_COST_CARPENTRY, FOOD_COST_CARPENTRY);
 		} else {
 			throw new ResourceException("Not enough material to create a carpentry");
 		}
@@ -125,18 +177,42 @@ public class Civilization implements Variables{
 	public void newSmithy() throws ResourceException {
 		if (this.wood >= WOOD_COST_SMITHY && this.iron >= IRON_COST_SMITHY && this.food >= FOOD_COST_SMITHY) {
 			this.smithy += 1;
+			takeMaterialBuildingCost(WOOD_COST_SMITHY, IRON_COST_SMITHY, FOOD_COST_SMITHY);
 		} else {
 			throw new ResourceException("Not enough material to create a smithy");
 		}
 	}
 	
 	public void upgradeTechnologyDefense() throws ResourceException {
-		
-		this.technologyDefense += 1;
+		int wood_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
+				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST / 100));
+		int iron_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
+				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST / 100));
+		if (this.iron >= iron_cost && this.wood >= wood_cost) {
+			this.technologyDefense += 1;
+			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+		} else {
+			throw new ResourceException("Not enough material to upgrade technology defense");
+		}
 	}
 
 	public void upgradeTechnologyAttack() throws ResourceException {
-		this.technologyAtack += 1;
+		int wood_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
+				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST / 100));
+		int iron_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
+				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST / 100));
+		if (this.iron >= iron_cost && this.wood >= wood_cost) {
+			this.technologyAttack += 1;
+			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+		} else {
+			throw new ResourceException("Not enough material to upgrade technology attack");
+		}
+	}
+	
+	private void takeMaterialBuildingCost(int wood, int iron, int food) {
+		this.wood -= wood;
+		this.iron -= iron;
+		this.food -= food;
 	}
 
 	public void newSwordsman(int n) throws ResourceException {
@@ -298,11 +374,11 @@ public class Civilization implements Variables{
 	public void newArrowTower(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new ArrowTower(this.technologyDefense, this.technologyAtack), unidades)) {
+			if (checkCostsUnits(new ArrowTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[4] == null) {
 					army[4] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < n; i++) {
-						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAtack));
+						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " arrow towers successfully created");
@@ -315,7 +391,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < n; i++) {
-						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAtack));
+						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " arrow towers successfully created");
@@ -337,11 +413,11 @@ public class Civilization implements Variables{
 	public void newCatapult(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Catapult(this.technologyDefense, this.technologyAtack), unidades)) {
+			if (checkCostsUnits(new Catapult(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[5] == null) {
 					army[5] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < n; i++) {
-						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAtack));
+						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " catapults successfully created");
@@ -354,7 +430,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < n; i++) {
-						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAtack));
+						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " catapults successfully created");
@@ -376,11 +452,11 @@ public class Civilization implements Variables{
 	public void newRocketLauncher(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new RocketLauncherTower(this.technologyDefense, this.technologyAtack), unidades)) {
+			if (checkCostsUnits(new RocketLauncherTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[6] == null) {
 					army[6] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < n; i++) {
-						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAtack));
+						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " rocket launcher towers successfully created");
@@ -393,7 +469,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < n; i++) {
-						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAtack));
+						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " rocket launcher towers successfully created");
@@ -415,11 +491,11 @@ public class Civilization implements Variables{
 	public void newMagician(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Magician(this.technologyAtack), unidades)) {
+			if (checkCostsUnits(new Magician(this.technologyAttack), unidades)) {
 				if (this.army[7] == null) {
 					army[7] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < n; i++) {
-						this.army[7].add(new Magician(this.technologyAtack));
+						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " magicians successfully created");
@@ -432,7 +508,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < n; i++) {
-						this.army[7].add(new Magician(this.technologyAtack));
+						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " magicians successfully created");
