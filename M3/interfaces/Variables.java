@@ -1,4 +1,4 @@
-package interfaces;
+package M3.interfaces;
 
 public interface Variables {
     // resources available to create the first enemy fleet
