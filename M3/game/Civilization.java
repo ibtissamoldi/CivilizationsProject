@@ -1,4 +1,4 @@
-package game;
+package M3.game;
 
 
 import exceptions.*;
@@ -16,8 +16,8 @@ import exceptions.ResourceException;
 
 import java.util.ArrayList;
 
-import interfaces.MilitaryUnit;
-import interfaces.Variables;
+import M3.interfaces.MilitaryUnit;
+import M3.interfaces.Variables;
 
 public class Civilization implements Variables{
     private int technologyDefense;

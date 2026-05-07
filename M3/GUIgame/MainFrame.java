@@ -1,11 +1,11 @@
-package GUIgame;
+package M3.GUIgame;
 
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -15,215 +15,292 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import M3.game.Civilization;
+
 public class MainFrame extends JFrame{
 	
 	public static void main(String[] args) {
 	    new MainFrame();
 	}
 	
-	private JPanel main_panel;
-	private JPanel topbar_panel;
-	private JPanel menu_panel;
+	private JPanel main_panel;	
+
+	private TopBarPanel topbar_panel;
+	private SideMenuPanel menu_panel;
+	
 	private JPanel center_switch_panel;
-	private JTabbedPane tab_army_panel;
 	
-	private BufferedImage icon_image;
+	private ArmyPanel army_panel;
+    private BuildingsPanel building_panel;
+    private CivilizationPanel civilization_panel;
+    private StatsPanel stats_panel;
+    private BattlePanel battle_panel;
 	
-	private ContentPanel building_panel;
-	private ContentPanel army_panel;
-	private ContentPanel civilization_panel;
-	private ContentPanel stats_panel;
-	private ContentPanel battle_panel;
 	
-	private JToolBar atck_buttonbar;
-	
-	private JLabel label_food;
-	private JLabel label_wood;
-	private JLabel label_iron;
-	private JLabel label_mana;
+	private Civilization civ;
 	
 
     public MainFrame() {
+    	
         setTitle("Civilizations Game");
         setBounds(250,100,1000,650);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        try {
-        	icon_image = ImageIO.read(new File("./swords.png"));
-		} 
-        catch (IOException e) {
-			System.out.println("We have some problems trying to add the icon image");
-		}
+        loadIcon();
         
-        main_panel = new JPanel();
-        main_panel.setLayout(new BorderLayout());
-        main_panel.setBackground(Color.BLACK);
+        civ = new Civilization();
         
+        civ.setFood(8000);
+        civ.setWood(3000);
+        civ.setIron(50);
+        civ.setMana(0);
         
-        topbar_panel = new JPanel();
-        //topbar_panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        topbar_panel.setBackground(Color.black);
-        topbar_panel.setBorder(BorderFactory.createLineBorder(new Color(96,96,96), 3));
+        main_panel = new JPanel(new BorderLayout());
+        main_panel.setBackground(GameColors.BACKGROUND);
         
         
-        label_food= new JLabel("Food: 0");
-        label_wood= new JLabel("Wood: 0");
-        label_iron= new JLabel("Iron: 0");
-        label_mana= new JLabel("Mana: 0");
-        
-        label_food.setForeground(Color.white);
-        label_wood.setForeground(Color.white);
-        label_iron.setForeground(Color.white);
-        label_mana.setForeground(Color.white);
-        
-        topbar_panel.add(label_food);
-        topbar_panel.add(label_wood);
-        topbar_panel.add(label_iron);
-        topbar_panel.add(label_mana);
-        
-        	
-        
+        topbar_panel = new TopBarPanel();
         main_panel.add(topbar_panel, BorderLayout.NORTH);
-        add(main_panel);
-
-        
-        
-        menu_panel = new JPanel();
-        menu_panel.setLayout(new GridLayout(5,1,5,5));
-        menu_panel.setBackground(new Color(96,96,96));
-        menu_panel.setBorder(BorderFactory.createLineBorder(new Color(96,96,96), 3));
-        
-        
-        JButton btn_civilization = new JButton("Civilization");
-        JButton btn_Army = new JButton("Army");
-        JButton btn_Buildings = new JButton("Buildings");
-        JButton btn_Stats = new JButton("Stats");
-        JButton btn_Battles = new JButton("Battles");
-        
-        JButton[] buttons = {btn_Army, btn_Buildings, btn_civilization, btn_Stats, btn_Battles};
-        
-        for (JButton btn : buttons) {
-            btn.setBackground(Color.BLACK);
-            btn.setForeground(Color.WHITE);
-            btn.setFocusPainted(false);
-            btn.setBorderPainted(false);
-            btn.setOpaque(true);
-        }
-        
-        menu_panel.add(btn_civilization);
-        menu_panel.add(btn_Army);
-        menu_panel.add(btn_Buildings);
-        menu_panel.add(btn_Stats);
-        menu_panel.add(btn_Battles);
         
         
         
+        menu_panel = new SideMenuPanel();
         main_panel.add(menu_panel,BorderLayout.WEST);
         
         
         
         
-        center_switch_panel = new JPanel();
-        center_switch_panel.setBackground(Color.white);
-        center_switch_panel.setLayout(new BorderLayout());
+        center_switch_panel = new JPanel(new BorderLayout());
+        center_switch_panel.setBackground(GameColors.PANEL);
         main_panel.add(center_switch_panel,BorderLayout.CENTER);
         
         
        
-        building_panel = new ContentPanel();
-        army_panel = new ContentPanel();
-        civilization_panel = new ContentPanel();
-        stats_panel = new ContentPanel();
-        battle_panel = new ContentPanel();
+        army_panel = new ArmyPanel(civ);
+        building_panel = new BuildingsPanel();
+        civilization_panel = new CivilizationPanel();
+        stats_panel = new StatsPanel();
+        battle_panel = new BattlePanel();
         
         
-        btn_Buildings.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				SwitchPanel(building_panel);
-				building_panel.setBackground(Color.green);
-				
-			}
-		});
-		        
-		btn_Army.addActionListener(new ActionListener() {
-					
-					public void actionPerformed(ActionEvent e) {
-						SwitchPanel(army_panel);						
-					}
-				});
 		
-		btn_civilization.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				SwitchPanel(civilization_panel);
-				civilization_panel.setBackground(Color.blue);
-				
-			}
-		});
-		
-
-		btn_Stats.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				SwitchPanel(stats_panel);
-				stats_panel.setBackground(Color.yellow);
-				
-			}
-		});
-		
-		btn_Battles.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				SwitchPanel(battle_panel);
-				battle_panel.setBackground(Color.pink);
-				
-			}
-		});
-		tab_army_panel = new JTabbedPane();
-		
-		JPanel tab_defense_panel = new JPanel(new BorderLayout());
-		JPanel tab_attack_panel = new JPanel(new BorderLayout());
-		JPanel tab_special_panel = new JPanel(new BorderLayout());
-		
-		tab_army_panel.add("Attack Units",tab_attack_panel);
-		tab_army_panel.add("Defense Units",tab_defense_panel);
-		tab_army_panel.add("Special Units",tab_special_panel);
-		tab_army_panel.setBackground(Color.black);
-		
-		army_panel.setLayout(new BorderLayout());
-		army_panel.add(tab_army_panel,BorderLayout.CENTER);
+        initializeButtonActions();
+        SwitchPanel(civilization_panel);
 		
 		
 		
 		
 		
 		
-		
-		
-		
-        setIconImage(icon_image);
+		add(main_panel);
         setVisible(true);
     }
     
     private void SwitchPanel(JPanel panel) {
         center_switch_panel.removeAll();
-        center_switch_panel.add(panel);
+        center_switch_panel.add(panel,BorderLayout.CENTER);
         center_switch_panel.revalidate();
         center_switch_panel.repaint();
     }
+    
+    
+    private void initializeButtonActions() {
+
+        menu_panel.btn_Army.addActionListener(new ActionListener() {
+        		public void actionPerformed(ActionEvent e) {
+        			SwitchPanel(army_panel);
+        		}
+        		});
+        		
+        menu_panel.btn_Buildings.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			SwitchPanel(building_panel);
+    		}
+    		});
+        
+        menu_panel.btn_civilization.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			SwitchPanel(civilization_panel);
+    		}
+    		});
+        
+        menu_panel.btn_Stats.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			SwitchPanel(stats_panel);
+    		}
+    		});
+        
+        menu_panel.btn_Battles.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			SwitchPanel(battle_panel);
+    		}
+    		});
+    }
+
+    
+    private void loadIcon() {
+    	BufferedImage icon_image;
+
+        try {
+
+            icon_image =
+                    ImageIO.read(new File("./M3/swords_icon.png"));
+
+            setIconImage(icon_image);
+
+        } catch (IOException e) {
+
+            System.out.println("Error loading icon.");
+        }
+    }
+    
+    
+    
 
 }
 
 
 
 
+class TopBarPanel extends JPanel {
+	
+	private JLabel label_food;
+    private JLabel label_wood;
+    private JLabel label_iron;
+    private JLabel label_mana;
+    
+	public TopBarPanel() {
+		setBackground(GameColors.PANEL);
+		setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 3));
+		
+		label_food = new JLabel("Food: 0");
+        label_wood = new JLabel("Wood: 0");
+        label_iron = new JLabel("Iron: 0");
+        label_mana = new JLabel("Mana: 0");
+        
+        label_food.setForeground(new Color(120, 200, 120));
+        label_wood.setForeground(new Color(160, 110, 70));
+        label_iron.setForeground(new Color(180, 180, 190));
+        label_mana.setForeground(GameColors.STEEL_BLUE);
+        
+        
+        add(label_food);
+        add(label_wood);
+        add(label_iron);
+        add(label_mana);
+	}
+	
+}
 
-class ContentPanel extends JPanel {
-	private JLabel label;
-    public ContentPanel() {
-        //setBackground(Color.green);
-        label = new JLabel("ContentPanel");
-        add(label);
+class SideMenuPanel extends JPanel {
+	
+	JButton btn_civilization;
+    JButton btn_Army;
+    JButton btn_Buildings;
+    JButton btn_Stats;
+    JButton btn_Battles;
+    
+    public SideMenuPanel() {
+    	setLayout(new GridLayout(5,1,5,5));
+        setBackground(GameColors.PANEL);
+        setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
+        
+        btn_civilization = createMenuButton("Civilization");
+        btn_civilization.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+                        BorderFactory.createEmptyBorder(5, 15, 5, 15)
+                )
+        );
+        
+        
+        btn_Army = createMenuButton("Army");
+        btn_Buildings = createMenuButton("Buildings");
+        btn_Stats = createMenuButton("Stats");
+        btn_Battles = createMenuButton("Battles");
+        
+        
+        add(btn_civilization);
+        add(btn_Army);
+        add(btn_Buildings);
+        add(btn_Stats);
+        add(btn_Battles);
+    }
+    
+    
+    private JButton createMenuButton(String text) {
+
+        JButton btn = new JButton(text);
+
+        btn.setBackground(GameColors.BUTTON);
+        btn.setForeground(GameColors.TEXT);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
+        btn.setOpaque(true);
+        btn.setFont(new Font("Serif", Font.BOLD, 16));
+        btn.setMargin(new Insets(20, 20, 20, 20));
+
+        return btn;
+    }
+}
+
+
+
+
+
+
+
+
+
+class ArmyPanel extends JPanel {
+	private JTabbedPane tab_army_panel;
+    public ArmyPanel(Civilization civ) {
+    	setLayout(new BorderLayout());
+        setBackground(GameColors.PANEL);
+        
+		tab_army_panel = new JTabbedPane();
+
+		tab_army_panel.setBackground(GameColors.PANEL);
+		tab_army_panel.setForeground(GameColors.GOLD);
+		
+		tab_army_panel.add("Attack Units", new AttackTabPanel(civ));
+		tab_army_panel.add("Defense Units", new DefenseTabPanel(civ));
+		tab_army_panel.add("Special Units", new SpecialTabPanel(civ));
+
+        add(tab_army_panel, BorderLayout.CENTER);
+    }
+}
+
+class BuildingsPanel  extends JPanel {
+	public BuildingsPanel() {
+
+        setBackground(GameColors.PANEL);
+    }
+}
+
+
+
+class CivilizationPanel  extends JPanel {
+	public CivilizationPanel() {
+
+        setBackground(GameColors.PANEL);
+    }
+}
+
+
+
+class StatsPanel  extends JPanel {
+	public StatsPanel() {
+
+        setBackground(GameColors.PANEL);
+    }
+}
+
+
+
+class BattlePanel  extends JPanel {
+	public BattlePanel() {
+
+        setBackground(GameColors.PANEL);
     }
 }
