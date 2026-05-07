@@ -1,6 +1,7 @@
-package M3.GUIgame;
+package GUIgame;
 
 import java.awt.BorderLayout;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,8 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import M3.exceptions.ResourceException;
-import M3.game.Civilization;
+import exceptions.ResourceException;
+import game.Civilization;
 
 public class UnitPanel extends JPanel{
 	

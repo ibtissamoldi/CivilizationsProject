@@ -1,4 +1,4 @@
-package M3.GUIgame;
+package GUIgame;
 
 
 import java.awt.BorderLayout;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import M3.game.Civilization;
+import game.Civilization;
 
 public class MainFrame extends JFrame{
 	
@@ -55,25 +55,7 @@ public class MainFrame extends JFrame{
         civ.setIron(50);
         civ.setMana(0);
         
-        main_panel = new JPanel(new BorderLayout());
-        main_panel.setBackground(GameColors.BACKGROUND);
-        
-        
-        topbar_panel = new TopBarPanel();
-        main_panel.add(topbar_panel, BorderLayout.NORTH);
-        
-        
-        
-        menu_panel = new SideMenuPanel();
-        main_panel.add(menu_panel,BorderLayout.WEST);
-        
-        
-        
-        
-        center_switch_panel = new JPanel(new BorderLayout());
-        center_switch_panel.setBackground(GameColors.PANEL);
-        main_panel.add(center_switch_panel,BorderLayout.CENTER);
-        
+        createPanels();
         
        
         army_panel = new ArmyPanel(civ);
@@ -88,12 +70,27 @@ public class MainFrame extends JFrame{
         SwitchPanel(civilization_panel);
 		
 		
-		
-		
-		
-		
-		add(main_panel);
         setVisible(true);
+    }
+    private void createPanels() {
+    	main_panel = new JPanel(new BorderLayout());
+        main_panel.setBackground(GameColors.BACKGROUND);
+        
+        
+        topbar_panel = new TopBarPanel();
+        main_panel.add(topbar_panel, BorderLayout.NORTH);
+        
+        menu_panel = new SideMenuPanel();
+        main_panel.add(menu_panel,BorderLayout.WEST);
+        
+
+        center_switch_panel = new JPanel(new BorderLayout());
+        center_switch_panel.setBackground(GameColors.PANEL);
+        main_panel.add(center_switch_panel,BorderLayout.CENTER);
+        
+        add(main_panel);
+        
+   	
     }
     
     private void SwitchPanel(JPanel panel) {
@@ -144,7 +141,7 @@ public class MainFrame extends JFrame{
         try {
 
             icon_image =
-                    ImageIO.read(new File("./M3/swords_icon.png"));
+                    ImageIO.read(new File("./swords_icon.png"));
 
             setIconImage(icon_image);
 
@@ -265,7 +262,7 @@ class ArmyPanel extends JPanel {
 		
 		tab_army_panel.add("Attack Units", new AttackTabPanel(civ));
 		tab_army_panel.add("Defense Units", new DefenseTabPanel(civ));
-		tab_army_panel.add("Special Units", new SpecialTabPanel(civ));
+		tab_army_panel.add("Special Units", new SpecialTabPanel());
 
         add(tab_army_panel, BorderLayout.CENTER);
     }
