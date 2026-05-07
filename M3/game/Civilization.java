@@ -2,6 +2,7 @@ package M3.game;
 
 import M3.exceptions.*;
 import M3.interfaces.MilitaryUnit;
+import M3.interfaces.Variables;
 import M3.units.attack.Cannon;
 import M3.units.attack.Crossbow;
 import M3.units.attack.Spearman;
@@ -13,7 +14,7 @@ import M3.units.special.Magician;
 import M3.units.special.Priest;
 import java.util.ArrayList;
 
-public class Civilization {
+public class Civilization implements Variables{
     private int technologyDefense;
 	private int technologyAtack;
 	
@@ -33,7 +34,7 @@ public class Civilization {
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
 
 	public Civilization() {
-
+		
 	}
 
 	public int getWood() {
@@ -74,6 +75,7 @@ public class Civilization {
 
 	public int getMagicTower() {
 		return magicTower;
+		
 	}
 
 	public void setMagicTower(int magicTower) {
@@ -88,31 +90,52 @@ public class Civilization {
 		this.church = church;
 	}
 
-	public void newChurch() {
-		this.church += 1;
+	public void newChurch() throws ResourceException {
+		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
+			this.church += 1;
+		} else {
+			throw new ResourceException("Not enough material to create a church");
+		}
 	}
 
-	public void newMagicTower() {
-		this.magicTower += 1;
+	public void newMagicTower() throws ResourceException {
+		if (this.wood >= WOOD_COST_MAGICTOWER && this.iron >= IRON_COST_MAGICTOWER && this.food >= FOOD_COST_MAGICTOWER) {
+			this.magicTower += 1;
+		} else {
+			throw new ResourceException("Not enough material to create a magic tower");
+		}
 	}
 
-	public void newFarm() {
-		this.farm += 1;
+	public void newFarm() throws ResourceException {
+		if (this.wood >= WOOD_COST_FARM && this.iron >= IRON_COST_FARM && this.food >= FOOD_COST_FARM) {
+			this.farm += 1;
+		} else {
+			throw new ResourceException("Not enough material to create a farm");
+		}
 	}
 
-	public void newCarpentry() {
-		this.carpentry += 1;
+	public void newCarpentry() throws ResourceException {
+		if (this.wood >= WOOD_COST_CARPENTRY && this.iron >= IRON_COST_CARPENTRY && this.food >= FOOD_COST_CARPENTRY) {
+			this.carpentry += 1;
+		} else {
+			throw new ResourceException("Not enough material to create a carpentry");
+		}
 	}
 
-	public void newSmithy() {
-		this.smithy += 1;
+	public void newSmithy() throws ResourceException {
+		if (this.wood >= WOOD_COST_SMITHY && this.iron >= IRON_COST_SMITHY && this.food >= FOOD_COST_SMITHY) {
+			this.smithy += 1;
+		} else {
+			throw new ResourceException("Not enough material to create a smithy");
+		}
 	}
-
-	public void upgradeTechnologyDefense() {
+	
+	public void upgradeTechnologyDefense() throws ResourceException {
+		
 		this.technologyDefense += 1;
 	}
 
-	public void upgradeTechnologyAttack() {
+	public void upgradeTechnologyAttack() throws ResourceException {
 		this.technologyAtack += 1;
 	}
 
@@ -474,6 +497,7 @@ public class Civilization {
 					m.getManaCost() * n <= this.mana &&
 					m.getWoodCost() * n <= this.wood &&
 					n <= this.magicTower) {
+				takeMaterialsForMilitaryUnit(m, n);
 				return true;
 			} else {
 				return false;
@@ -484,6 +508,7 @@ public class Civilization {
 					m.getManaCost() * n <= this.mana &&
 					m.getWoodCost() * n <= this.wood &&
 					n <= this.church) {
+				takeMaterialsForMilitaryUnit(m, n);
 				return true;
 			} else {
 				return false;
@@ -493,6 +518,7 @@ public class Civilization {
 					m.getIronCost() * n <= this.iron &&
 					m.getManaCost() * n <= this.mana &&
 					m.getWoodCost() * n <= this.wood) {
+				takeMaterialsForMilitaryUnit(m, n);
 				return true;
 			} else {
 				return false;
@@ -500,7 +526,16 @@ public class Civilization {
 		}
 		
 	}
-
+	
+	private void takeMaterialsForMilitaryUnit(MilitaryUnit m, int n) {
+		// wood iron food mana
+		this.mana =  this.mana - m.getManaCost() * n;
+		this.wood = this.wood - m.getWoodCost() * n;
+		this.food = this.food - m.getFoodCost() * n;
+		this.iron = this.iron - m.getIronCost() * n;
+		
+	}
+	
 	public void printStats() {
 		
 	}
