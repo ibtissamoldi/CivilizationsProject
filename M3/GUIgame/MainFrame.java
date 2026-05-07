@@ -3,6 +3,7 @@ package GUIgame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -27,6 +28,8 @@ public class MainFrame extends JFrame{
 
 	private TopBarPanel topbar_panel;
 	private SideMenuPanel menu_panel;
+	
+	private  DialogPanel dialog_panel;
 	
 	private JPanel center_switch_panel;
 	
@@ -87,6 +90,9 @@ public class MainFrame extends JFrame{
         center_switch_panel = new JPanel(new BorderLayout());
         center_switch_panel.setBackground(GameColors.PANEL);
         main_panel.add(center_switch_panel,BorderLayout.CENTER);
+        
+        dialog_panel = new DialogPanel();
+        main_panel.add(dialog_panel,BorderLayout.SOUTH);
         
         add(main_panel);
         
@@ -241,6 +247,16 @@ class SideMenuPanel extends JPanel {
     }
 }
 
+
+class DialogPanel extends JPanel {
+
+    public DialogPanel() {
+        setLayout(new BorderLayout());
+        setBackground(Color.DARK_GRAY);
+        setPreferredSize(new Dimension(0, 80));
+        setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+    }
+}
 
 
 
