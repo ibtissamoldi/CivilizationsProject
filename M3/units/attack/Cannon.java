@@ -12,6 +12,7 @@ public class Cannon extends AttackUnit{
         );
 
     }
+    
 
     /*2nd constructor.. */
     public Cannon() {

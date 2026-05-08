@@ -5,10 +5,8 @@ import units.SpecialUnit;
 public class Magician extends SpecialUnit{
 
     public Magician(int technologyAttack) {
-                super(BASE_DAMAGE_MAGICIAN +
-                     (technologyAttack * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_MAGICIAN / 100)
-        );
-
+    	super(BASE_DAMAGE_MAGICIAN + (technologyAttack * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_MAGICIAN / 100));
+    	
     }
 
     public int getFoodCost() {
