@@ -160,7 +160,7 @@ public class MainFrame extends JFrame{
         try {
 
             icon_image =
-                    ImageIO.read(new File("./M3/swords_icon.png"));
+                    ImageIO.read(new File("./M3/images/swords_icon.png"));
 
             setIconImage(icon_image);
 

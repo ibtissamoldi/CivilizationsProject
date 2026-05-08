@@ -177,7 +177,7 @@ public class BuildingPanel extends JPanel {
 	private String getImagePath() {
         switch (building_type) {
             case "Farm":
-                return "./farm.png";
+                return "./M3/images/farm.png";
 
             case "Carpentry":
                 return "./images/carpentry.png";
