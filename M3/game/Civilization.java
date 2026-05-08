@@ -1,4 +1,18 @@
-package M3.game;
+package game;
+
+
+import exceptions.*;
+import interfaces.MilitaryUnit;
+import units.attack.Cannon;
+import units.attack.Crossbow;
+import units.attack.Spearman;
+import units.attack.Swordsman;
+import units.defense.ArrowTower;
+import units.defense.Catapult;
+import units.defense.RocketLauncherTower;
+import units.special.Magician;
+import units.special.Priest;
+import exceptions.ResourceException;
 
 import M3.exceptions.*;
 import M3.interfaces.MilitaryUnit;

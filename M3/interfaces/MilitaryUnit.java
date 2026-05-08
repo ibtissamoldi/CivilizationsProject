@@ -1,4 +1,4 @@
-package M3.interfaces;
+package interfaces;
 
 public interface MilitaryUnit {
 

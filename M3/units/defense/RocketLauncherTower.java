@@ -1,6 +1,6 @@
-package M3.units.defense;
+package units.defense;
 
-import M3.units.DefenseUnit;
+import units.DefenseUnit;
 
 public class RocketLauncherTower extends DefenseUnit{
 
