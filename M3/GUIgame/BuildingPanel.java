@@ -2,6 +2,7 @@ package M3.GUIgame;
 
 
 import java.awt.BorderLayout;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,8 +17,9 @@ import javax.swing.JPanel;
 
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
+import M3.interfaces.Variables;
 
-public class BuildingPanel extends JPanel {
+public class BuildingPanel extends JPanel implements Variables{
 	
 	private JLabel lbl_image;
 	
@@ -37,14 +39,8 @@ public class BuildingPanel extends JPanel {
     	setLayout(new BorderLayout(15, 10));
     	
 
-	    setBorder(BorderFactory.createTitledBorder(
-	            BorderFactory.createLineBorder(GameColors.BORDER, 2),
-	            building_type,
-	            0,
-	            0,
-	            new Font("Serif", Font.BOLD, 16),
-	            GameColors.GOLD
-	        ));    
+	    setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),
+	    		building_type,0,0,new Font("Serif", Font.BOLD, 16),GameColors.GOLD));    
         setBackground(GameColors.PANEL);
     	
         
