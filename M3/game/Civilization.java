@@ -2,6 +2,7 @@ package M3.game;
 
 
 import M3.interfaces.MilitaryUnit;
+import M3.interfaces.Variables;
 import M3.units.attack.Cannon;
 import M3.units.attack.Crossbow;
 import M3.units.attack.Spearman;

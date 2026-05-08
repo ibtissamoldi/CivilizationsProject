@@ -6,7 +6,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,6 +94,7 @@ public class MainFrame extends JFrame{
         main_panel.add(menu_panel,BorderLayout.WEST);
         
 
+        //center_switch_panel = new BackgroundPanel("./M3/bg.png");
         center_switch_panel = new JPanel(new BorderLayout());
         center_switch_panel.setBackground(GameColors.PANEL);
         main_panel.add(center_switch_panel,BorderLayout.CENTER);
@@ -317,10 +320,35 @@ class GameLog {
 }
 
 
+class BackgroundPanel extends JPanel{
+	BufferedImage bg_image;
+	
+	 public BackgroundPanel(String path) {
+		 try {
+
+			 bg_image =ImageIO.read(new File(path));//*"./M3/bg.png"*/
+
+	     } catch (IOException e) {
+
+	         System.out.println("Error loading background image.");
+	     }
+	 }
+
+	 protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(bg_image.getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH),0,0,this);
+	 }
+
+}
 
 
 
-
+class CivilizationPanel  extends BackgroundPanel{
+	public CivilizationPanel() {
+		super("./M3/bg.png");
+		setLayout(new BorderLayout());
+    }
+}
 
 class ArmyPanel extends JPanel {
 	private JTabbedPane tab_army_panel;
@@ -361,13 +389,6 @@ class TechnologyPanel  extends JPanel {
 }
 
 
-
-class CivilizationPanel  extends JPanel {
-	public CivilizationPanel() {
-
-        setBackground(GameColors.PANEL);
-    }
-}
 
 
 

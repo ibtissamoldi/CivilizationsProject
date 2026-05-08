@@ -1,6 +1,7 @@
-package GUIgame;
+package M3.GUIgame;
 
 import java.awt.BorderLayout;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,10 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import exceptions.ResourceException;
-import game.Civilization;
+import M3.exceptions.ResourceException;
+import M3.game.Civilization;
+import M3.interfaces.Variables;
 
-public class BuildingPanel extends JPanel {
+public class BuildingPanel extends JPanel implements Variables{
 	
 	private JLabel lbl_image;
 	
@@ -36,14 +38,8 @@ public class BuildingPanel extends JPanel {
     	setLayout(new BorderLayout(15, 10));
     	
 
-	    setBorder(BorderFactory.createTitledBorder(
-	            BorderFactory.createLineBorder(GameColors.BORDER, 2),
-	            building_type,
-	            0,
-	            0,
-	            new Font("Serif", Font.BOLD, 16),
-	            GameColors.GOLD
-	        ));    
+	    setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),
+	    		building_type,0,0,new Font("Serif", Font.BOLD, 16),GameColors.GOLD));    
         setBackground(GameColors.PANEL);
     	
         
@@ -144,7 +140,7 @@ public class BuildingPanel extends JPanel {
 		
 	
 
-	private void buildBuilding() {
+	private void buildBuilding() throws ResourceException {
 		
 	            switch (building_type) {
 	            
@@ -176,7 +172,7 @@ public class BuildingPanel extends JPanel {
 	private String getImagePath() {
         switch (building_type) {
             case "Farm":
-                return "./farm.png";
+                return "./M3/farm.png";
 
             case "Carpentry":
                 return "./images/carpentry.png";
