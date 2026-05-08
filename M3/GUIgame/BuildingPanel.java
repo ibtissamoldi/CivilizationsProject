@@ -1,4 +1,5 @@
-package GUIgame;
+package M3.GUIgame;
+
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -13,8 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import exceptions.ResourceException;
-import game.Civilization;
+import M3.exceptions.ResourceException;
+import M3.game.Civilization;
 
 public class BuildingPanel extends JPanel {
 	
@@ -144,7 +145,7 @@ public class BuildingPanel extends JPanel {
 		
 	
 
-	private void buildBuilding() {
+	private void buildBuilding() throws ResourceException {
 		
 	            switch (building_type) {
 	            
