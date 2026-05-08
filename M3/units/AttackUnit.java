@@ -1,6 +1,6 @@
-package units;
+package M3.units;
 
-import interfaces.*;
+import M3.interfaces.*;
 
 public abstract class AttackUnit implements MilitaryUnit, Variables{
     private int armor;

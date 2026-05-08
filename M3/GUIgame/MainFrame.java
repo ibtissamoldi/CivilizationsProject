@@ -1,7 +1,8 @@
-package GUIgame;
+package M3.GUIgame;
 
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import game.Civilization;
+import M3.game.Civilization;
 
 public class MainFrame extends JFrame{
 	
@@ -29,17 +30,17 @@ public class MainFrame extends JFrame{
 	private TopBarPanel topbar_panel;
 	private SideMenuPanel menu_panel;
 	
-	private  DialogPanel dialog_panel;
-	
 	private JPanel center_switch_panel;
 	
 	private ArmyPanel army_panel;
     private BuildingsPanel building_panel;
     private CivilizationPanel civilization_panel;
+    private TechnologyPanel technology_panel;
     private StatsPanel stats_panel;
     private BattlePanel battle_panel;
 	
-	
+    private DialogPanel dialog_panel;
+    
 	private Civilization civ;
 	
 
@@ -53,9 +54,9 @@ public class MainFrame extends JFrame{
         
         civ = new Civilization();
         
-        civ.setFood(8000);
-        civ.setWood(3000);
-        civ.setIron(50);
+        civ.setFood(10000);
+        civ.setWood(13000);
+        civ.setIron(100);
         civ.setMana(0);
         
         createPanels();
@@ -64,6 +65,7 @@ public class MainFrame extends JFrame{
         army_panel = new ArmyPanel(civ);
         building_panel = new BuildingsPanel(civ);
         civilization_panel = new CivilizationPanel();
+        technology_panel = new TechnologyPanel();
         stats_panel = new StatsPanel();
         battle_panel = new BattlePanel();
         
@@ -71,8 +73,11 @@ public class MainFrame extends JFrame{
 		
         initializeButtonActions();
         SwitchPanel(civilization_panel);
+        
+        //dialog_panel.AddMessage("Welcome to Our Civilization!");
+
 		
-		
+        add(main_panel);
         setVisible(true);
     }
     private void createPanels() {
@@ -93,6 +98,8 @@ public class MainFrame extends JFrame{
         
         dialog_panel = new DialogPanel();
         main_panel.add(dialog_panel,BorderLayout.SOUTH);
+        
+        GameLog.log = dialog_panel;
         
         add(main_panel);
         
@@ -121,6 +128,12 @@ public class MainFrame extends JFrame{
     		}
     		});
         
+        menu_panel.btn_technology.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                    SwitchPanel(technology_panel);
+            }
+            });
+        
         menu_panel.btn_civilization.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
     			SwitchPanel(civilization_panel);
@@ -147,7 +160,7 @@ public class MainFrame extends JFrame{
         try {
 
             icon_image =
-                    ImageIO.read(new File("./swords_icon.png"));
+                    ImageIO.read(new File("./M3/swords_icon.png"));
 
             setIconImage(icon_image);
 
@@ -200,11 +213,12 @@ class SideMenuPanel extends JPanel {
 	JButton btn_civilization;
     JButton btn_Army;
     JButton btn_Buildings;
+    JButton btn_technology;
     JButton btn_Stats;
     JButton btn_Battles;
     
     public SideMenuPanel() {
-    	setLayout(new GridLayout(5,1,5,5));
+    	setLayout(new GridLayout(6,1,5,5));
         setBackground(GameColors.PANEL);
         setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         
@@ -219,12 +233,14 @@ class SideMenuPanel extends JPanel {
         
         btn_Army = createMenuButton("Army");
         btn_Buildings = createMenuButton("Buildings");
+        btn_technology = createMenuButton("Technology");
         btn_Stats = createMenuButton("Stats");
         btn_Battles = createMenuButton("Battles");
         
         
         add(btn_civilization);
         add(btn_Army);
+        add(btn_technology);
         add(btn_Buildings);
         add(btn_Stats);
         add(btn_Battles);
@@ -250,14 +266,55 @@ class SideMenuPanel extends JPanel {
 
 class DialogPanel extends JPanel {
 
+    private JTextArea info_textarea;
+    private JScrollPane scroll;
     public DialogPanel() {
-        setLayout(new BorderLayout());
-        setBackground(Color.DARK_GRAY);
-        setPreferredSize(new Dimension(0, 80));
-        setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+	    setLayout(new BorderLayout());
+	    setPreferredSize(new Dimension(0, 120));
+	    setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 4));
+	
+	
+	    info_textarea = new JTextArea(10,50);
+	    info_textarea.setBackground(GameColors.STEEL_BLUE);
+	    info_textarea.setFont(new Font("Monospaced", Font.BOLD, 14));
+	
+	    scroll = new JScrollPane(info_textarea);
+	
+	    add(scroll,BorderLayout.CENTER);
+    }
+
+	public void AddMessage(String message/*,Color whichColor*/) {
+	    //dialog_info.setForeground(whichColor);
+		info_textarea.append(message + "\n");
+	}
+	
+    public void clear() {
+    	info_textarea.setText("");
+        
     }
 }
 
+
+
+class GameLog {
+    public static DialogPanel log;
+
+    public static void info(String msg) {
+        log.AddMessage("[INFO] " + msg);
+    }
+
+    public static void error(String msg) {
+        log.AddMessage("[ERROR] " + msg);
+    }
+
+    public static void warning(String msg) {
+        log.AddMessage("[WARNING] " + msg);
+    }
+
+    public static void battle(String msg) {
+        log.AddMessage("[BATTLE] " + msg);
+    }
+}
 
 
 
@@ -278,7 +335,7 @@ class ArmyPanel extends JPanel {
 		
 		tab_army_panel.add("Attack Units", new AttackTabPanel(civ));
 		tab_army_panel.add("Defense Units", new DefenseTabPanel(civ));
-		tab_army_panel.add("Special Units", new SpecialTabPanel());
+		tab_army_panel.add("Special Units", new SpecialTabPanel(civ));
 
         add(tab_army_panel, BorderLayout.CENTER);
     }
@@ -293,6 +350,13 @@ class BuildingsPanel extends JPanel {
         GeneralBuildingPanel generalBuildingPanel = new GeneralBuildingPanel(civ);
 
         add(generalBuildingPanel, BorderLayout.CENTER);
+    }
+}
+
+class TechnologyPanel  extends JPanel {
+	public TechnologyPanel() {
+
+        setBackground(GameColors.PANEL);
     }
 }
 

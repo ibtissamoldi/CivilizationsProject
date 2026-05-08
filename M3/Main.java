@@ -1,7 +1,10 @@
+package M3;
 
 
-import exceptions.ResourceException;
-import game.Civilization;
+
+import M3.exceptions.ResourceException;
+import M3.game.Civilization;
+
 
 public class Main {
     public static void main(String[] args) {
