@@ -1,6 +1,6 @@
-package units.special;
+package M3.units.special;
 
-import units.SpecialUnit;
+import M3.units.SpecialUnit;
 
 public class Priest extends SpecialUnit {
 

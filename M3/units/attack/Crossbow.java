@@ -1,6 +1,6 @@
-package units.attack;
+package M3.units.attack;
 
-import units.AttackUnit;
+import M3.units.AttackUnit;
 
 public class Crossbow extends AttackUnit{
 
