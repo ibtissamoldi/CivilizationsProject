@@ -88,6 +88,7 @@ public class UnitPanel extends JPanel{
         
         add(bottom_panel,BorderLayout.SOUTH);
         
+        
         btn_recruit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RecruitUnit();
@@ -95,7 +96,8 @@ public class UnitPanel extends JPanel{
         });        
     }
     
-    private void RecruitUnit() {
+
+	private void RecruitUnit() {
     	int quantity =  Integer.parseInt(field_quantity.getText());
     	
     	try {

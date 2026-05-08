@@ -62,7 +62,7 @@ public class MainFrame extends JFrame{
         
        
         army_panel = new ArmyPanel(civ);
-        building_panel = new BuildingsPanel();
+        building_panel = new BuildingsPanel(civ);
         civilization_panel = new CivilizationPanel();
         stats_panel = new StatsPanel();
         battle_panel = new BattlePanel();
@@ -284,10 +284,15 @@ class ArmyPanel extends JPanel {
     }
 }
 
-class BuildingsPanel  extends JPanel {
-	public BuildingsPanel() {
+class BuildingsPanel extends JPanel {
 
+    public BuildingsPanel(Civilization civ) {
+        setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
+
+        GeneralBuildingPanel generalBuildingPanel = new GeneralBuildingPanel(civ);
+
+        add(generalBuildingPanel, BorderLayout.CENTER);
     }
 }
 
