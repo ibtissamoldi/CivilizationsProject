@@ -5,13 +5,13 @@ import java.awt.BorderLayout;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -53,7 +53,7 @@ public class UnitPanel extends JPanel{
     	this.civ = civ;
         this.unit_type = unit_type;
         
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(10,10));
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),unit_type,0,0,new Font("Serif", Font.BOLD, 16),
         		GameColors.GOLD
         	));        
@@ -94,7 +94,7 @@ public class UnitPanel extends JPanel{
         
     	
         
-        JPanel center_panel = new JPanel(new GridLayout(7,1,5,5));
+        JPanel center_panel = new JPanel(new GridLayout(7,1,1,1));
         center_panel.setBackground(GameColors.PANEL);
 
         lbl_owned = new JLabel("Owned: "+ GetUnitCount());
@@ -110,6 +110,7 @@ public class UnitPanel extends JPanel{
 
         for (JLabel label : labels) {
                 label.setForeground(GameColors.TEXT);
+                label.setFont(new Font("Serif", Font.PLAIN, 14));
                 center_panel.add(label);
                 }
         UpdateInfo();
@@ -122,7 +123,7 @@ public class UnitPanel extends JPanel{
         field_quantity.setBackground(GameColors.INPUT_BG);
         field_quantity.setForeground(GameColors.TEXT);
         field_quantity.setBorder(
-        	    BorderFactory.createLineBorder(GameColors.BORDER)
+        	    BorderFactory.createEmptyBorder(5,8,5,8)
         	);
         
         
@@ -131,9 +132,12 @@ public class UnitPanel extends JPanel{
         btn_recruit.setForeground(GameColors.TEXT);
         btn_recruit.setFocusPainted(false);
         btn_recruit.setBorder(
-        	    BorderFactory.createLineBorder(GameColors.BORDER, 2)
+        	    BorderFactory.createCompoundBorder(
+        	        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+        	        BorderFactory.createEmptyBorder(2, 15, 2, 15)
+        	    )
         	);
-        btn_recruit.setFont(new Font("Serif", Font.BOLD, 14));
+        btn_recruit.setFont(new Font("Serif", Font.BOLD, 12));
         btn_recruit.setOpaque(true);
         
         bottom_panel.add(field_quantity);
@@ -284,7 +288,7 @@ public class UnitPanel extends JPanel{
 class AttackTabPanel extends JPanel {
 	
 	public AttackTabPanel(Civilization civ) {
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(10,10));
         setBackground(GameColors.BACKGROUND);
         
         JPanel grid = new JPanel(new GridLayout(2,2,20,20));
@@ -313,7 +317,7 @@ class DefenseTabPanel extends JPanel {
 		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
-        JPanel grid = new JPanel(new GridLayout(1,3,20,20));
+        JPanel grid = new JPanel(new GridLayout(3,1,20,20));
         grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         grid.setBackground(GameColors.BACKGROUND);
         

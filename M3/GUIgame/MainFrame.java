@@ -1,20 +1,26 @@
 package M3.GUIgame;
 
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.TimerTask;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -49,7 +55,7 @@ public class MainFrame extends JFrame{
     public MainFrame() {
     	
         setTitle("Civilizations Game");
-        setBounds(250,100,1000,650);
+        setBounds(250,100,1000,650);;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         loadIcon();
@@ -84,17 +90,15 @@ public class MainFrame extends JFrame{
     }
     private void createPanels() {
     	main_panel = new JPanel(new BorderLayout());
-        main_panel.setBackground(GameColors.BACKGROUND);
+        main_panel.setBackground(new Color(30, 36, 40));
         
-        
-        topbar_panel = new TopBarPanel();
+        topbar_panel = new TopBarPanel(civ);
         main_panel.add(topbar_panel, BorderLayout.NORTH);
         
         menu_panel = new SideMenuPanel();
         main_panel.add(menu_panel,BorderLayout.WEST);
         
 
-        //center_switch_panel = new BackgroundPanel("./M3/bg.png");
         center_switch_panel = new JPanel(new BorderLayout());
         center_switch_panel.setBackground(GameColors.PANEL);
         main_panel.add(center_switch_panel,BorderLayout.CENTER);
@@ -118,6 +122,7 @@ public class MainFrame extends JFrame{
     
     
     private void initializeButtonActions() {
+    	
 
         menu_panel.btn_Army.addActionListener(new ActionListener() {
         		public void actionPerformed(ActionEvent e) {
@@ -172,42 +177,182 @@ public class MainFrame extends JFrame{
             System.out.println("Error loading icon.");
         }
     }
-    
-    
-    
+       
 
 }
 
 
-
-
 class TopBarPanel extends JPanel {
+	
+	private Civilization civ;
 	
 	private JLabel label_food;
     private JLabel label_wood;
     private JLabel label_iron;
     private JLabel label_mana;
+        
+    private JLabel lbl_timer;
+    private JLabel lbl_threat;
     
-	public TopBarPanel() {
-		setBackground(GameColors.PANEL);
-		setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 3));
+    private Timer timer;
+    private TimerTask task;
+
+    private int time_left = 180;
+    
+	public TopBarPanel(Civilization civ) {
 		
-		label_food = new JLabel("Food: 0");
-        label_wood = new JLabel("Wood: 0");
-        label_iron = new JLabel("Iron: 0");
-        label_mana = new JLabel("Mana: 0");
+		this.civ = civ;
+		
+		setBackground(GameColors.PANEL);
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 0, 3, 0, GameColors.BORDER),
+                        BorderFactory.createEmptyBorder(8, 15, 8, 15)));
+		setPreferredSize(new Dimension(0, 70));
+		
+		JPanel resources_panel = new JPanel();
+		resources_panel.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 8));
+		resources_panel.setOpaque(false);
+		resources_panel.setBorder(
+			    BorderFactory.createCompoundBorder(
+			        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+			        BorderFactory.createEmptyBorder(5,10,5,10)
+			    )
+			);
+		
+		label_food = CreateResourcesBox("./M3/food.png", civ.getFood());
+        label_wood = CreateResourcesBox("./M3/wood.png", civ.getWood());
+        label_iron = CreateResourcesBox("./M3/iron.png", civ.getIron());
+        label_mana = CreateResourcesBox("./M3/mana.png", civ.getMana());
         
-        label_food.setForeground(new Color(120, 200, 120));
-        label_wood.setForeground(new Color(160, 110, 70));
-        label_iron.setForeground(new Color(180, 180, 190));
-        label_mana.setForeground(GameColors.STEEL_BLUE);
+        
+        resources_panel.add(label_food);
+        resources_panel.add(label_wood);
+        resources_panel.add(label_iron);
+        resources_panel.add(label_mana);
         
         
-        add(label_food);
-        add(label_wood);
-        add(label_iron);
-        add(label_mana);
+        JPanel timer_panel = new JPanel(new BorderLayout());
+        timer_panel.setBackground(GameColors.PANEL_LIGHT);
+        timer_panel.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(GameColors.BORDER, 2),
+                BorderFactory.createEmptyBorder(5, 20, 5, 20)
+            )
+        );
+        timer_panel.setOpaque(true);
+        
+        JLabel label_timer = new JLabel("Next Attack: ");
+        label_timer.setForeground(GameColors.TEXT);
+        label_timer.setFont(new Font("Serif", Font.BOLD, 16));
+        label_timer.setHorizontalAlignment(JLabel.CENTER);
+        
+        timer_panel.add(label_timer,BorderLayout.NORTH);
+        
+        lbl_timer  = new JLabel("03:00");
+        lbl_timer.setForeground(GameColors.TEXT);
+        lbl_timer.setFont(new Font("Arial", Font.BOLD, 18));
+        lbl_timer.setHorizontalAlignment(JLabel.CENTER);
+        
+        timer_panel.add(lbl_timer,BorderLayout.CENTER);
+        
+        JPanel threat_panel = new JPanel(new BorderLayout());
+        threat_panel.setOpaque(false);
+        threat_panel.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+                        BorderFactory.createEmptyBorder(5,10,5,10)));
+
+        JLabel threat_title = new JLabel("⚠ THREAT");
+        threat_title.setForeground(GameColors.ERROR);
+        threat_title.setFont(new Font("Serif", Font.BOLD, 16));
+
+        lbl_threat = new JLabel("No enemies detected");
+        lbl_threat.setForeground(GameColors.TEXT);
+
+        threat_panel.add(threat_title, BorderLayout.NORTH);
+        threat_panel.add(lbl_threat, BorderLayout.CENTER);
+        
+        resources_panel.setPreferredSize(new Dimension(350, 30));
+        timer_panel.setPreferredSize(new Dimension(200, 30));
+        threat_panel.setPreferredSize(new Dimension(170, 30));
+        
+        
+        add(resources_panel,BorderLayout.WEST);
+        add(timer_panel,BorderLayout.CENTER);
+        add(threat_panel,BorderLayout.EAST);
+        
+        UpdateResources();
+        
+        StartTimer();
 	}
+	
+	private JLabel CreateResourcesBox(String imagepath, int value) {
+		BufferedImage image = null;
+		
+		try {
+			image = ImageIO.read(new File(imagepath));
+		} catch (IOException e) {
+		    System.out.println("Error loading resources images");
+		}
+		
+		Image scaled = image.getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		ImageIcon resource_icon = new ImageIcon(scaled);
+		
+        String v = String.valueOf(value);
+
+        JLabel label = new JLabel(v, resource_icon, JLabel.CENTER);
+        label.setHorizontalTextPosition(JLabel.RIGHT);
+        label.setForeground(GameColors.GOLD);
+        label.setFont(new Font("Serif", Font.BOLD, 14));
+        label.setIconTextGap(5);
+        label.setBorder(
+        	    BorderFactory.createEmptyBorder(0, 5, 0, 5)
+        	);
+
+        return label;
+    }
+	
+	private void StartTimer() {
+
+	    timer = new Timer();
+
+	    task = new TimerTask() {
+
+	        public void run() {
+
+	            time_left--;
+
+	            UpdateTimer(time_left);
+
+	            if(time_left <= 0) {
+
+	                lbl_threat.setText("⚔ ENEMIES ATTACKING!");
+
+	                timer.cancel();
+	            }
+	        }
+	    };
+
+	    timer.scheduleAtFixedRate(task, 0, 1000);
+	}
+	
+	
+	public void UpdateResources() {
+		label_food.setText(String.valueOf(civ.getFood()));
+		label_wood.setText(String.valueOf(civ.getWood()));
+		label_iron.setText(String.valueOf(civ.getIron()));
+		label_mana.setText(String.valueOf(civ.getMana()));
+    }
+
+	
+	public void UpdateTimer(int seconds) {
+		
+        int minutes = seconds / 60;
+        int secs = seconds % 60;
+
+        lbl_timer.setText(String.format("%02d:%02d", minutes, secs));
+    }
 	
 }
 
@@ -222,7 +367,7 @@ class SideMenuPanel extends JPanel {
     
     public SideMenuPanel() {
     	setLayout(new GridLayout(6,1,5,5));
-        setBackground(GameColors.PANEL);
+    	setBackground(new Color(40, 46, 50));
         setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         
         btn_civilization = createMenuButton("Civilization");
@@ -257,10 +402,25 @@ class SideMenuPanel extends JPanel {
         btn.setBackground(GameColors.BUTTON);
         btn.setForeground(GameColors.TEXT);
         btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
-        btn.setOpaque(true);
+        btn.setPreferredSize(new Dimension(140, 40));
+        btn.setBorder(
+                BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(GameColors.BORDER, 2),
+                    BorderFactory.createEmptyBorder(12, 20, 12, 20)
+                )
+            );
         btn.setFont(new Font("Serif", Font.BOLD, 16));
-        btn.setMargin(new Insets(20, 20, 20, 20));
+        
+        
+        btn.addMouseListener(new MouseAdapter() {
+        	public void mouseEntered(MouseEvent e) {
+        		btn.setBackground(GameColors.BUTTON_HOVER);
+        		}
+        	public void mouseExited(MouseEvent e) {
+        		btn.setBackground(GameColors.BUTTON);
+        		}
+        	});
+        		
 
         return btn;
     }
@@ -274,20 +434,24 @@ class DialogPanel extends JPanel {
     public DialogPanel() {
 	    setLayout(new BorderLayout());
 	    setPreferredSize(new Dimension(0, 120));
-	    setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 4));
+	    setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
 	
 	
-	    info_textarea = new JTextArea(10,50);
-	    info_textarea.setBackground(GameColors.STEEL_BLUE);
+	    info_textarea = new JTextArea("⚔ Game log...",10,50);
+	    info_textarea.setEditable(false);
+	    info_textarea.setBackground(new Color(30, 36, 40));
+	    info_textarea.setForeground(GameColors.TEXT_DARK);
+	    info_textarea.setCaretColor(GameColors.TEXT);
 	    info_textarea.setFont(new Font("Monospaced", Font.BOLD, 14));
+	    info_textarea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	
 	    scroll = new JScrollPane(info_textarea);
 	
 	    add(scroll,BorderLayout.CENTER);
     }
 
-	public void AddMessage(String message/*,Color whichColor*/) {
-	    //dialog_info.setForeground(whichColor);
+	public void AddMessage(String message) {
+		//info_textarea.setForeground(whichColor);
 		info_textarea.append(message + "\n");
 	}
 	
@@ -315,7 +479,7 @@ class GameLog {
     }
 
     public static void battle(String msg) {
-        log.AddMessage("[BATTLE] " + msg);
+        log.AddMessage("⚔ [BATTLE] " + msg);
     }
 }
 
@@ -327,6 +491,7 @@ class BackgroundPanel extends JPanel{
 		 try {
 
 			 bg_image =ImageIO.read(new File(path));//*"./M3/bg.png"*/
+			 
 
 	     } catch (IOException e) {
 
@@ -336,12 +501,16 @@ class BackgroundPanel extends JPanel{
 
 	 protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(bg_image.getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH),0,0,this);
-	 }
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(bg_image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), 0, 0, this);
+		g2d.setColor(GameColors.BORDER);
+		int thickness = 6;
+		g2d.setStroke(new BasicStroke(thickness));
+	    g2d.drawRect(thickness / 2, thickness / 2, getWidth() - thickness, getHeight() - thickness);
+		
+		}
 
 }
-
-
 
 class CivilizationPanel  extends BackgroundPanel{
 	public CivilizationPanel() {
