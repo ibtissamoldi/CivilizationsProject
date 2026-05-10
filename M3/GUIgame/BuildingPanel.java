@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
@@ -22,6 +23,8 @@ import M3.interfaces.Variables;
 public class BuildingPanel extends JPanel implements Variables{
 	
 	private JLabel lbl_image;
+	
+	private JTextField field_quantity;
 	
 	private JLabel lbl_count,lbl_effect,lbl_cost;
 
@@ -52,12 +55,11 @@ public class BuildingPanel extends JPanel implements Variables{
     
     lbl_image = new JLabel(image);
    
-    lbl_image.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
 
     add(lbl_image, BorderLayout.WEST);
 
 
-     // Panel derecho: contiene texto y botón
+     // Panel derecho: contiene texto, botón Y textfield
      JPanel right_panel = new JPanel(new BorderLayout());
      right_panel.setBackground(GameColors.PANEL);
 
@@ -66,7 +68,7 @@ public class BuildingPanel extends JPanel implements Variables{
      JPanel center_panel = new JPanel(new GridLayout(3, 1));
      center_panel.setBackground(GameColors.PANEL);
 
-     lbl_count = new JLabel("Count: 0");
+     lbl_count = new JLabel();
      lbl_effect = new JLabel();
      lbl_cost = new JLabel();
 
@@ -79,9 +81,17 @@ public class BuildingPanel extends JPanel implements Variables{
      center_panel.add(lbl_cost);
 
 
-     // Panel inferior con botón
+     // Panel inferior con botón y textfield
+     
      JPanel bottom_panel = new JPanel();
      bottom_panel.setBackground(GameColors.PANEL);
+     
+     field_quantity = new JTextField("1", 5);
+     field_quantity.setBackground(GameColors.INPUT_BG);
+     field_quantity.setForeground(GameColors.TEXT);
+     field_quantity.setBorder(BorderFactory.createLineBorder(GameColors.BORDER));
+     
+     
 
      btn_build = new JButton("Build");
      btn_build.setBackground(GameColors.BUTTON);
@@ -91,7 +101,9 @@ public class BuildingPanel extends JPanel implements Variables{
      btn_build.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
      btn_build.setFont(new Font("Serif", Font.BOLD, 14));
 
+     bottom_panel.add(field_quantity);
      bottom_panel.add(btn_build);
+     
 
 
      // Añadimos texto y botón al panel derecho
@@ -101,9 +113,15 @@ public class BuildingPanel extends JPanel implements Variables{
 
      // Añadimos el panel derecho al centro del BuildingPanel
      add(right_panel, BorderLayout.CENTER);
-     loadBuildingData();
     
-    	
+     // conectamos el boton de construir 
+     btn_build.addActionListener(new ActionListener() {
+    	    public void actionPerformed(ActionEvent e) {
+    	        buildBuilding();
+    	    }
+    	});
+    // cargamos informacion de las tarjetas
+     loadBuildingData();
     }
 
     private void loadBuildingData() {
@@ -111,28 +129,33 @@ public class BuildingPanel extends JPanel implements Variables{
 	switch (building_type) {
 	
 	case "Farm":
-		lbl_effect.setText("Effect: + Iron generation");
-		lbl_cost.setText("Cost: Food 5000 Wood 10000 Iron 12000 Mana 0");
+		lbl_count.setText("Count: " + civ.getFarm());
+		lbl_effect.setText("Effect: Increases food generation by 10%");
+		lbl_cost.setText("Cost: Food " +FOOD_COST_FARM +" Wood " + WOOD_COST_FARM +" Iron " + IRON_COST_FARM);
         break;
         
 	 case "Smithy":
-         lbl_effect.setText("Effect: + Iron generation");
-         lbl_cost.setText("Cost: Food 5000 Wood 10000 Iron 12000 Mana 0");
+		 lbl_count.setText("Count: " + civ.getSmithy());
+         lbl_effect.setText("Effect: Increases iron generation by 10%");
+         lbl_cost.setText("Cost: Food " +FOOD_COST_SMITHY +" Wood " + WOOD_COST_SMITHY +" Iron " + IRON_COST_SMITHY);
          break;
 
      case "Magic Tower":
-         lbl_effect.setText("Effect: Generates Mana / unlocks Magicians");
-         lbl_cost.setText("Cost: Food 5000 Wood 10000 Iron 12000 Mana 0");
+    	 lbl_count.setText("Count: " + civ.getMagicTower());
+         lbl_effect.setText("Effect: Unlocks mana generation, magicians, churches and priests");
+         lbl_cost.setText("Cost: Food " +FOOD_COST_MAGICTOWER +" Wood " + WOOD_COST_MAGICTOWER +" Iron " + IRON_COST_MAGICTOWER);
          break;
 
      case "Church":
+    	 lbl_count.setText("Count: " + civ.getChurch());
          lbl_effect.setText("Effect: Unlocks Priests");
-         lbl_cost.setText("Cost: Food 5000 Wood 10000 Iron 12000 Mana 0");
+         lbl_cost.setText("Cost: Food " +FOOD_COST_CHURCH +" Wood " + WOOD_COST_CHURCH +" Iron " + IRON_COST_CHURCH);
          break;
          
      case "Carpentry":
-    	lbl_effect.setText("Effect: + Iron generation");
- 		lbl_cost.setText("Cost: Food 5000 Wood 10000 Iron 12000 Mana 0");
+    	 lbl_count.setText("Count: " + civ.getCarpentry());
+    	lbl_effect.setText("Increases wood generation by 10%");
+    	lbl_cost.setText("Cost: Food " +FOOD_COST_CARPENTRY +" Wood " + WOOD_COST_CARPENTRY +" Iron " + IRON_COST_CARPENTRY);
          break;
 	}
     			
@@ -141,32 +164,71 @@ public class BuildingPanel extends JPanel implements Variables{
 		
 	
 
-	private void buildBuilding() throws ResourceException {
-		
-	            switch (building_type) {
-	            
-	                case "Farm":
-	                    civ.newFarm();
-	                    break;
+    private void buildBuilding() {
 
-	                case "Carpentry":
-	                    civ.newCarpentry();
-	                    break;
+        GameLog.log.clear();
 
-	                case "Smithy":
-	                    civ.newSmithy();
-	                    break;
+        int quantity;
 
-	                case "Magic Tower":
-	                    civ.newMagicTower();
-	                    break;
+        try {
+            quantity = Integer.parseInt(field_quantity.getText());
+        } catch (NumberFormatException e) {
+            GameLog.error("Invalid quantity!");
+            return;
+        }
 
-	                case "Church":
-	                    civ.newChurch();
-	                    break;
-	            }
+        if (quantity <= 0) {
+            GameLog.error("Quantity must be positive!");
+            return;
+        }
 
-} 
+        int built = 0;
+
+        try {
+            for (int i = 0; i < quantity; i++) {
+
+                switch (building_type) {
+
+                    case "Farm":
+                        civ.newFarm();
+                        break;
+
+                    case "Carpentry":
+                        civ.newCarpentry();
+                        break;
+
+                    case "Smithy":
+                        civ.newSmithy();
+                        break;
+
+                    case "Magic Tower":
+                        civ.newMagicTower();
+                        break;
+
+                    case "Church":
+                        civ.newChurch();
+                        break;
+                }
+
+                built++;
+            }
+
+            GameLog.info(built + " " + building_type + " built!");
+            
+
+        } catch (ResourceException e) {
+        	int notBuilt=quantity-built;
+
+            if (built > 0) {
+                GameLog.info(built + " " + building_type + " built!");
+                GameLog.error(notBuilt+" Could not build more " + building_type + " due to insufficient resources!");
+            } else {
+                GameLog.error(notBuilt +" Could not build " + building_type + " due to insufficient resources!");
+            }
+        }
+
+        loadBuildingData();  
+    }
 		
 	
 
@@ -176,19 +238,19 @@ public class BuildingPanel extends JPanel implements Variables{
                 return "./M3/images/farm.png";
 
             case "Carpentry":
-                return "./images/carpentry.png";
+                return "./M3/images/carpentry.png";
 
             case "Smithy":
-                return "./images/smithy.png";
+                return "./M3/images/smithy.png";
 
             case "Magic Tower":
-                return "./images/magic_tower.png";
+                return "./M3/images/magic_tower.png";
 
             case "Church":
-                return "./images/church.png";
+                return "./M3/images/church.png";
 
             default:
-                return "./images/default.png";
+                return "";
         }
     }
 
