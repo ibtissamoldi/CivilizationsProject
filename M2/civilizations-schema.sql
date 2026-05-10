@@ -1,10 +1,8 @@
 -- DROP DATABASE IF EXISTS civilizations;
--- SCHEMA EN MYSQL, igual falta adaptar a oracle
 -- CREATE DATABASE civilizations;
- -- falta mirar el auto-increment en las  primary key
  
 CREATE TABLE civilization_stats (
-    civilization_id INT PRIMARY KEY AUTO_INCREMENT,
+    civilization_id INT primary key AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
 
     wood_amount INT NOT NULL DEFAULT 0,
@@ -46,7 +44,7 @@ CREATE TABLE defense_units_stats (
     armor INT not null DEFAULT 0,
     base_damage INT not null DEFAULT 0,
     experience INT not null DEFAULT 0,
-    sanctified BOOLEAN not null FALSE,
+    sanctified BOOLEAN not null DEFAULT FALSE,
 
     PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
