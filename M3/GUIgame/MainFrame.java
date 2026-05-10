@@ -367,17 +367,31 @@ class SideMenuPanel extends JPanel {
     
     public SideMenuPanel() {
     	setLayout(new GridLayout(6,1,5,5));
-    	setBackground(new Color(40, 46, 50));
+    	setBackground(new Color(235,243,231));
         setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         
-        btn_civilization = createMenuButton("Civilization");
-        btn_civilization.setBorder(
+        //btn_civilization = createMenuButton("Civilization");
+        
+        BufferedImage image = null;
+		
+		try {
+			image = ImageIO.read(new File("./M3/logo_.png"));
+		} catch (IOException e) {
+		    System.out.println("Error loading logo");
+		}
+		
+		Image scaled = image.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+		ImageIcon logo = new ImageIcon(scaled);
+		btn_civilization = new JButton(logo);
+		
+        /*btn_civilization.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(GameColors.BORDER, 2),
-                        BorderFactory.createEmptyBorder(5, 15, 5, 15)
-                )
-        );
-        
+                        BorderFactory.createEmptyBorder(5, 15, 5, 15)));*/
+        btn_civilization.setFocusPainted(false);
+        btn_civilization.setBorderPainted(false);
+        btn_civilization.setBackground(new Color(235,243,231));
+        btn_civilization.setPreferredSize(new Dimension(140, 40));
         
         btn_Army = createMenuButton("Army");
         btn_Buildings = createMenuButton("Buildings");
@@ -397,6 +411,7 @@ class SideMenuPanel extends JPanel {
     
     private JButton createMenuButton(String text) {
 
+    	
         JButton btn = new JButton(text);
 
         btn.setBackground(GameColors.BUTTON);

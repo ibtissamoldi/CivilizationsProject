@@ -4,75 +4,78 @@
  -- falta mirar el auto-increment en las  primary key
  
 CREATE TABLE civilization_stats (
-    civilization_id INT PRIMARY KEY NOT NULL,
-    name VARCHAR(100),
+    civilization_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
 
-    wood_amount INT,
-    iron_amount INT,
-    food_amount INT,
-    mana_amount INT,
+    wood_amount INT NOT NULL DEFAULT 0,
+    iron_amount INT NOT NULL DEFAULT 0,
+    food_amount INT NOT NULL DEFAULT 0,
+    mana_amount INT NOT NULL DEFAULT 0,
 
-    magicTower_counter INT,
-    church_counter INT,
-    farm_counter INT,
-    smithy_counter INT,
-    carpentry_counter INT,
+    magicTower_counter INT NOT NULL DEFAULT 0,
+    church_counter INT NOT NULL DEFAULT 0,
+    farm_counter INT NOT NULL DEFAULT 0,
+    smithy_counter INT NOT NULL DEFAULT 0,
+    carpentry_counter INT NOT NULL DEFAULT 0,
 
-    technology_defense_level INT,
-    technology_attack_level INT,
+    technology_defense_level INT NOT NULL DEFAULT 0,
+    technology_attack_level INT NOT NULL DEFAULT 0,
 
-    battles_counter INT
+    battles_counter INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE attack_units_stats (
+    unit_id INT NOT NULL AUTO_INCREMENT,
     civilization_id INT NOT NULL,
-    unit_id INT,
 
     type ENUM('Swordsman', 'Spearman', 'Crossbow', 'Cannon') NOT NULL,
-    armor INT,
-    base_damage INT,
-    experience INT,
-    sanctified BOOLEAN,
+    armor INT NOT NULL DEFAULT 0,
+    base_damage INT NOT NULL DEFAULT 0,
+    experience INT NOT NULL DEFAULT 0,
+    sanctified BOOLEAN NOT NULL DEFAULT FALSE,
 
-    PRIMARY KEY (civilization_id, unit_id),
+    PRIMARY KEY (unit_id),
+    FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
+);
+
+CREATE TABLE defense_units_stats (
+    unit_id INT NOT NULL AUTO_INCREMENT,
+    civilization_id INT not null,
+
+    type ENUM('ArrowTower', 'Catapult', 'RocketLauncherTower') NOT NULL,
+    armor INT not null DEFAULT 0,
+    base_damage INT not null DEFAULT 0,
+    experience INT not null DEFAULT 0,
+    sanctified BOOLEAN not null FALSE,
+
+    PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
 );
 
 
 CREATE TABLE special_units_stats (
+    unit_id INT not null AUTO_INCREMENT,
     civilization_id INT NOT NULL,
-    unit_id INT,
 
     type ENUM('Magician', 'Priest') NOT NULL,
-    armor INT,
-    base_damage INT,
-    experience INT,
-    
+    armor INT not null DEFAULT 0,
+    base_damage INT not null DEFAULT 0,
+    experience INT not null DEFAULT 0,
 
-    PRIMARY KEY (civilization_id, unit_id),
+    PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
 );
 
-CREATE TABLE defense_units_stats (
-    civilization_id INT NOT NULL,
-    unit_id INT,
 
-    type ENUM('ArrowTower', 'Catapult', 'RocketLauncherTower') NOT NULL,
-    armor INT,
-    base_damage INT,
-    experience INT,
-    sanctified BOOLEAN,
-
-    PRIMARY KEY (civilization_id, unit_id),
-    FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
-);
 
 CREATE TABLE battle_stats (
     civilization_id INT not null,
     num_battle INT not null,
 
-    wood_acquired INT,
-    iron_acquired INT,
+    wood_acquired INT NOT NULL DEFAULT 0,
+    iron_acquired INT NOT NULL DEFAULT 0,
+
+    winner VARCHAR(20) NOT NULL DEFAULT 'Enemy',
 
     PRIMARY KEY (civilization_id, num_battle),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
@@ -117,12 +120,12 @@ CREATE TABLE civilization_defense_stats (
 );
 
 CREATE TABLE civilization_special_stats (
-  civilization_id INT not null,
+    civilization_id INT not null,
     num_battle INT not null,
-    type VARCHAR(50),
+    type VARCHAR(50) not null,
 
-    initial INT,
-    drops INT,
+    initial INT NOT NULL DEFAULT 0,
+    drops INT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
@@ -132,10 +135,10 @@ CREATE TABLE civilization_special_stats (
 CREATE TABLE enemy_attack_stats (
     civilization_id INT not null,
     num_battle INT not null,
-    type VARCHAR(50),
+    type VARCHAR(50) not null,
 
-    initial INT,
-    drops INT,
+    initial INT NOT NULL DEFAULT 0,
+    drops INT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
