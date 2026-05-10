@@ -221,7 +221,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Swordsman(), unidades)) {
 				if (this.army[0] == null) {
 					army[0] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[0].add(new Swordsman());
 					}
 					if (unidades > 1) {
@@ -234,7 +234,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[0].add(new Swordsman());
 					}
 					if (unidades > 1) {
@@ -260,7 +260,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Spearman(), unidades)) {
 				if (this.army[1] == null) {
 					army[1] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[1].add(new Spearman());
 					}
 					if (unidades > 1) {
@@ -273,7 +273,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[1].add(new Spearman());
 					}
 					if (unidades > 1) {
@@ -299,7 +299,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Crossbow(), unidades)) {
 				if (this.army[2] == null) {
 					army[2] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[2].add(new Crossbow());
 					}
 					if (unidades > 1) {
@@ -312,7 +312,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[2].add(new Crossbow());
 					}
 					if (unidades > 1) {
@@ -338,7 +338,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Cannon(), unidades)) {
 				if (this.army[3] == null) {
 					army[3] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[3].add(new Cannon());
 					}
 					if (unidades > 1) {
@@ -351,7 +351,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[3].add(new Cannon());
 					}
 					if (unidades > 1) {
@@ -377,7 +377,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new ArrowTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[4] == null) {
 					army[4] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -390,7 +390,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -416,7 +416,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Catapult(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[5] == null) {
 					army[5] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -429,7 +429,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -455,7 +455,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new RocketLauncherTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[6] == null) {
 					army[6] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -468,7 +468,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -494,7 +494,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Magician(this.technologyAttack), unidades)) {
 				if (this.army[7] == null) {
 					army[7] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -507,7 +507,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -533,7 +533,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Priest(), unidades)) {
 				if (this.army[8] == null) {
 					army[8] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[8].add(new Priest());
 					}
 					if (unidades > 1) {
@@ -546,7 +546,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[8].add(new Priest());
 					}
 					if (unidades > 1) {
