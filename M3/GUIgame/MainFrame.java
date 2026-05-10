@@ -40,7 +40,7 @@ public class MainFrame extends JFrame{
 	private ArmyPanel army_panel;
     private BuildingsPanel building_panel;
     private CivilizationPanel civilization_panel;
-    private TechnologyPanel technology_panel;
+    private TechnologysPanel technology_panel;
     private StatsPanel stats_panel;
     private BattlePanel battle_panel;
 	
@@ -70,7 +70,7 @@ public class MainFrame extends JFrame{
         army_panel = new ArmyPanel(civ);
         building_panel = new BuildingsPanel(civ);
         civilization_panel = new CivilizationPanel();
-        technology_panel = new TechnologyPanel();
+        technology_panel = new TechnologysPanel(civ);
         stats_panel = new StatsPanel();
         battle_panel = new BattlePanel();
         
@@ -384,10 +384,12 @@ class BuildingsPanel extends JPanel {
     }
 }
 
-class TechnologyPanel  extends JPanel {
-	public TechnologyPanel() {
-
+class TechnologysPanel  extends JPanel {
+	public TechnologysPanel(Civilization civ) {
+		setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
+        GeneralTechnologyPanel generaltechnologypanel= new GeneralTechnologyPanel(civ);
+        add(generaltechnologypanel, BorderLayout.CENTER);
     }
 }
 
