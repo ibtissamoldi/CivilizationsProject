@@ -2,7 +2,6 @@ package M3.units.attack;
 
 import M3.units.AttackUnit;
 
-
 public class Crossbow extends AttackUnit{
 
     public Crossbow(int technologyDefense, int technologyAttack) {

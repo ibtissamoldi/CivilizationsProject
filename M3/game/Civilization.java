@@ -1,6 +1,6 @@
 package M3.game;
 
-import M3.exceptions.*;
+
 import M3.interfaces.MilitaryUnit;
 import M3.interfaces.Variables;
 import M3.units.attack.Cannon;
@@ -12,6 +12,8 @@ import M3.units.defense.Catapult;
 import M3.units.defense.RocketLauncherTower;
 import M3.units.special.Magician;
 import M3.units.special.Priest;
+import M3.exceptions.ResourceException;
+
 import java.util.ArrayList;
 
 public class Civilization implements Variables{
