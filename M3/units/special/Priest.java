@@ -28,8 +28,6 @@ public class Priest extends SpecialUnit {
         return MANA_COST_PRIEST;
     }
 
-    
-
     public int getChanceGeneratinWaste() {
         return CHANCE_GENERATNG_WASTE_PRIEST;
     }

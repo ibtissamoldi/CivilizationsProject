@@ -14,4 +14,6 @@ public interface MilitaryUnit {
 	abstract void resetArmor();
 	abstract void setExperience(int n);
 	abstract int getExperience();
+	abstract void setArmor(int n);
+	
 }
