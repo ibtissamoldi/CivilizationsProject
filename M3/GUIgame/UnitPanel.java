@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
@@ -56,9 +58,16 @@ public class UnitPanel extends JPanel{
         this.unit_type = unit_type;
         
         setLayout(new BorderLayout(10,10));
-        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),unit_type,0,0,new Font("Serif", Font.BOLD, 16),
-        		GameColors.GOLD
-        	));        
+        setBorder(
+        	    BorderFactory.createTitledBorder(
+        	        BorderFactory.createLineBorder(GameColors.BORDER, 0),
+        	        unit_type,
+        	        TitledBorder.CENTER,
+        	        TitledBorder.TOP,
+        	        new Font("Serif", Font.BOLD, 16),
+        	        GameColors.GOLD
+        	    )
+        	);
         setBackground(GameColors.PANEL);
         
         
