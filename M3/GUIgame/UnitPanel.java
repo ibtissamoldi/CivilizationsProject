@@ -3,17 +3,20 @@ package M3.GUIgame;
 import java.awt.BorderLayout;
 
 
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
@@ -37,6 +40,7 @@ public class UnitPanel extends JPanel{
     private JLabel lbl_attackagain;
     private JLabel lbl_wastechance;
     private JLabel lbl_exp;
+    private JLabel lbl_image;
     
     private JButton btn_recruit;
     
@@ -53,10 +57,17 @@ public class UnitPanel extends JPanel{
     	this.civ = civ;
         this.unit_type = unit_type;
         
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),unit_type,0,0,new Font("Serif", Font.BOLD, 16),
-        		GameColors.GOLD
-        	));        
+        setLayout(new BorderLayout(10,10));
+        setBorder(
+        	    BorderFactory.createTitledBorder(
+        	        BorderFactory.createLineBorder(GameColors.BORDER, 0),
+        	        unit_type,
+        	        TitledBorder.CENTER,
+        	        TitledBorder.TOP,
+        	        new Font("Serif", Font.BOLD, 16),
+        	        GameColors.GOLD
+        	    )
+        	);
         setBackground(GameColors.PANEL);
         
         
@@ -90,9 +101,26 @@ public class UnitPanel extends JPanel{
             unit = new Priest();
             break;
         }
-      
+        
+    
+        
+        // Imagen de las unidades
+        
+        ImageIcon image = new ImageIcon(getImagePath());
+        
+        lbl_image = new JLabel(image);
+       
+
+        add(lbl_image, BorderLayout.EAST);
         
     	
+        // panel central y left panel
+        JPanel left_panel = new JPanel(new BorderLayout());
+        left_panel.setBackground(GameColors.PANEL);
+
+        
+        
+        
         
         JPanel center_panel = new JPanel(new GridLayout(7,1,5,5));
         center_panel.setBackground(GameColors.PANEL);
@@ -110,11 +138,14 @@ public class UnitPanel extends JPanel{
 
         for (JLabel label : labels) {
                 label.setForeground(GameColors.TEXT);
+                label.setFont(new Font("Serif", Font.PLAIN, 14));
                 center_panel.add(label);
                 }
+        
+      
         UpdateInfo();
         
-        add(center_panel,BorderLayout.CENTER);
+        
         
         JPanel bottom_panel = new JPanel();
         bottom_panel.setBackground(GameColors.PANEL);
@@ -122,7 +153,7 @@ public class UnitPanel extends JPanel{
         field_quantity.setBackground(GameColors.INPUT_BG);
         field_quantity.setForeground(GameColors.TEXT);
         field_quantity.setBorder(
-        	    BorderFactory.createLineBorder(GameColors.BORDER)
+        	    BorderFactory.createEmptyBorder(5,8,5,8)
         	);
         
         
@@ -131,15 +162,24 @@ public class UnitPanel extends JPanel{
         btn_recruit.setForeground(GameColors.TEXT);
         btn_recruit.setFocusPainted(false);
         btn_recruit.setBorder(
-        	    BorderFactory.createLineBorder(GameColors.BORDER, 2)
+        	    BorderFactory.createCompoundBorder(
+        	        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+        	        BorderFactory.createEmptyBorder(2, 15, 2, 15)
+        	    )
         	);
-        btn_recruit.setFont(new Font("Serif", Font.BOLD, 14));
+        btn_recruit.setFont(new Font("Serif", Font.BOLD, 12));
         btn_recruit.setOpaque(true);
         
         bottom_panel.add(field_quantity);
         bottom_panel.add(btn_recruit);
         
-        add(bottom_panel,BorderLayout.SOUTH);
+     // Añadimos texto y botón al panel izquierdo
+        left_panel.add(center_panel,BorderLayout.CENTER);
+        left_panel.add(bottom_panel,BorderLayout.SOUTH);
+        
+        // Añadimos el panelDOIZQUIERO al centro DE UNIT PANEL
+        add(left_panel, BorderLayout.CENTER);
+       
         
         
         btn_recruit.addActionListener(new ActionListener() {
@@ -147,6 +187,41 @@ public class UnitPanel extends JPanel{
                 RecruitUnit();
             }
         });        
+    }
+    
+	private String getImagePath() {
+        switch (unit_type) {
+            case "Swordsman":
+                return "./M3/images/swordsman.png";
+
+            case "Spearman":
+                return "./M3/images/spearman.png";
+
+            case "Crossbow":
+                return "./M3/images/crossbow.png";
+
+            case "Cannon":
+                return "./M3/images/cannon.png";
+
+            case "ArrowTower":
+                return "./M3/images/arrowTower.png";
+                
+            case "Catapult":
+            	return "./M3/images/catapult.png";
+
+            case "RocketLauncherTower":
+                return "./M3/images/rocketLauncherTower.png";
+
+            case "Magician":
+                return "./M3/images/magician.png";
+
+            case "Priest":
+                return "./M3/images/priest.png";
+
+
+             
+        }
+        return "";
     }
     
     private int GetNumber(String text) {
@@ -281,7 +356,7 @@ public class UnitPanel extends JPanel{
 }
 
 
-class AttackTabPanel extends JPanel {
+ class AttackTabPanel extends JPanel {
 	
 	public AttackTabPanel(Civilization civ) {
 		setLayout(new BorderLayout());
@@ -313,7 +388,7 @@ class DefenseTabPanel extends JPanel {
 		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
-        JPanel grid = new JPanel(new GridLayout(1,3,20,20));
+        JPanel grid = new JPanel(new GridLayout(2,1,20,20));
         grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         grid.setBackground(GameColors.BACKGROUND);
         
