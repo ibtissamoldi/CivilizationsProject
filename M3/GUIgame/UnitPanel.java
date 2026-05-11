@@ -3,13 +3,14 @@ package M3.GUIgame;
 import java.awt.BorderLayout;
 
 
+
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +38,7 @@ public class UnitPanel extends JPanel{
     private JLabel lbl_attackagain;
     private JLabel lbl_wastechance;
     private JLabel lbl_exp;
+    private JLabel lbl_image;
     
     private JButton btn_recruit;
     
@@ -90,11 +92,22 @@ public class UnitPanel extends JPanel{
             unit = new Priest();
             break;
         }
+        
+        // panel central y left panel
+        JPanel left_panel = new JPanel(new BorderLayout());
+        left_panel.setBackground(GameColors.PANEL);
       
         
-    	
+        // Imagen de las unidades
         
-        JPanel center_panel = new JPanel(new GridLayout(7,1,1,1));
+        ImageIcon image = new ImageIcon(getImagePath());
+        
+        lbl_image = new JLabel(image);
+       
+
+        add(lbl_image, BorderLayout.EAST);
+        
+        JPanel center_panel = new JPanel(new GridLayout(7,1,5,5));
         center_panel.setBackground(GameColors.PANEL);
 
         lbl_owned = new JLabel("Owned: "+ GetUnitCount());
@@ -115,7 +128,7 @@ public class UnitPanel extends JPanel{
                 }
         UpdateInfo();
         
-        add(center_panel,BorderLayout.CENTER);
+        
         
         JPanel bottom_panel = new JPanel();
         bottom_panel.setBackground(GameColors.PANEL);
@@ -143,6 +156,10 @@ public class UnitPanel extends JPanel{
         bottom_panel.add(field_quantity);
         bottom_panel.add(btn_recruit);
         
+        // Añadimos texto y botón al panel izquierdo
+        left_panel.add(center_panel,BorderLayout.CENTER);
+        left_panel.add(bottom_panel,BorderLayout.SOUTH);
+        
         add(bottom_panel,BorderLayout.SOUTH);
         
         
@@ -151,6 +168,41 @@ public class UnitPanel extends JPanel{
                 RecruitUnit();
             }
         });        
+    }
+    
+    private String getImagePath() {
+        switch (unit_type) {
+            case "Swordsman":
+                return "./M3/images/swordsman.png";
+
+            case "Spearman":
+                return "./M3/images/spearman.png";
+
+            case "Crossbow":
+                return "./M3/images/crossbow.png";
+
+            case "Cannon":
+                return "./M3/images/cannon.png";
+
+            case "ArrowTower":
+                return "./M3/images/arrowTower.png";
+                
+            case "Catapult":
+            	return "./M3/images/catapult.png";
+
+            case "RocketLauncherTower":
+                return "./M3/images/rocketLauncherTower.png";
+
+            case "Magician":
+                return "./M3/images/magician.png";
+
+            case "Priest":
+                return "./M3/images/priest.png";
+
+
+             
+        }
+        return "";
     }
     
     private int GetNumber(String text) {
@@ -285,10 +337,10 @@ public class UnitPanel extends JPanel{
 }
 
 
-class AttackTabPanel extends JPanel {
+ class AttackTabPanel extends JPanel {
 	
 	public AttackTabPanel(Civilization civ) {
-		setLayout(new BorderLayout(10,10));
+		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
         JPanel grid = new JPanel(new GridLayout(2,2,20,20));
@@ -317,7 +369,7 @@ class DefenseTabPanel extends JPanel {
 		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
-        JPanel grid = new JPanel(new GridLayout(3,1,20,20));
+        JPanel grid = new JPanel(new GridLayout(2,1,20,20));
         grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         grid.setBackground(GameColors.BACKGROUND);
         
