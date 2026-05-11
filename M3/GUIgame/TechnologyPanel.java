@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
@@ -39,16 +40,20 @@ public class TechnologyPanel extends JPanel implements Variables {
         this.civ = civ;
         this.technology_type = technology_type;
 
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout());
+        
+        //-------------
+        //TITULO
+       //-------------
+        JLabel title = new JLabel(technology_type);
+        title.setForeground(GameColors.TEXT);
+        title.setFont(new Font("Serif", Font.BOLD, 15));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBorder(BorderFactory.createEmptyBorder(30, 0, 30, 0));
+        
+        
+        add(title,BorderLayout.NORTH);
 
-        setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(GameColors.BORDER, 2),
-                technology_type,
-                0,
-                0,
-                new Font("Serif", Font.BOLD, 16),
-                GameColors.GOLD
-        ));
 
         setBackground(GameColors.PANEL);
 
@@ -69,16 +74,13 @@ public class TechnologyPanel extends JPanel implements Variables {
             ImageIcon image = new ImageIcon(scaled_image);
 
             lbl_image = new JLabel(image);
-          
-
+         
             add(lbl_image, BorderLayout.CENTER);
 
         } catch (IOException e) {
 
-   
             lbl_image = new JLabel("Image not found");
             lbl_image.setForeground(GameColors.TEXT);
-            lbl_image.setHorizontalAlignment(JLabel.CENTER);
             add(lbl_image, BorderLayout.CENTER);
         }
 
@@ -115,13 +117,11 @@ public class TechnologyPanel extends JPanel implements Variables {
         btn_upgrade.setBackground(GameColors.BUTTON);
         btn_upgrade.setForeground(GameColors.TEXT);
         btn_upgrade.setFocusPainted(false);
-        btn_upgrade.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         btn_upgrade.setFont(new Font("Serif", Font.BOLD, 14));
 
         bottom_panel.add(btn_upgrade);
         
        
-        
 
         // =========================
         // PANEL INFERIOR
@@ -149,17 +149,21 @@ public class TechnologyPanel extends JPanel implements Variables {
     }
 
     private void loadTechnologyData() {
+    	//hablar el coste real porque en civilizacion se empieza de 0
 
         switch (technology_type) {
 
             case "ATTACK TECHNOLOGY":
-                lbl_level.setText("Level: " + civ.getTechnologyAttack());
-                lbl_cost.setText("Cost: "  + " iron");
-                break;
+            	 lbl_level.setText("Level: " + civ.getTechnologyAttack());
+                 lbl_cost.setText("Cost: " +(int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyAttack() + 1))+
+                 		" iron " + (int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST/100.0 *civ.getTechnologyAttack() + 1)) + " wood" );
+                 break;
+                
 
             case "DEFENSE TECHNOLOGY":
                 lbl_level.setText("Level: " + civ.getTechnologyDefense());
-                lbl_cost.setText("Cost: " + " iron"  );
+                lbl_cost.setText("Cost: " +(int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyDefense() + 1))+
+                		" iron " + (int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST/100.0 * civ.getTechnologyDefense() + 1)) + " wood" );
                 break;
         }
     }
@@ -212,11 +216,11 @@ class GeneralTechnologyPanel extends JPanel {
     private TechnologyPanel attack_panel;
     private TechnologyPanel defense_panel;
 
-    private Civilization civ;
+   
 
     public GeneralTechnologyPanel(Civilization civ) {
 
-        this.civ = civ;
+        
 
         setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
