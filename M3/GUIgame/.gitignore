@@ -22,6 +22,8 @@
 /GameLog.class
 /MainFrame$6.class
 /TechnologyPanel.class
+/BuildingPanel.class
+/GeneralBuildingPanel.class
 /BackgroundPanel.class
 /BuildingPanel.class
 /GeneralBuildingPanel.class
@@ -37,3 +39,7 @@
 /HoverInfoPanel.class
 /BuildingPanel$1.class
 /TechnologysPanel.class
+/BuildingPanel$1.class
+/TechnologysPanel.class
+/TechnologyPanel$1.class
+/GeneralTechnologyPanel.class

@@ -107,6 +107,15 @@ public class UnitPanel extends JPanel{
 
         add(lbl_image, BorderLayout.EAST);
         
+    	
+        // panel central y left panel
+        JPanel left_panel = new JPanel(new BorderLayout());
+        left_panel.setBackground(GameColors.PANEL);
+
+        
+        
+        
+        
         JPanel center_panel = new JPanel(new GridLayout(7,1,5,5));
         center_panel.setBackground(GameColors.PANEL);
 
@@ -126,6 +135,8 @@ public class UnitPanel extends JPanel{
                 label.setFont(new Font("Serif", Font.PLAIN, 14));
                 center_panel.add(label);
                 }
+        
+      
         UpdateInfo();
         
         
@@ -156,11 +167,13 @@ public class UnitPanel extends JPanel{
         bottom_panel.add(field_quantity);
         bottom_panel.add(btn_recruit);
         
-        // Añadimos texto y botón al panel izquierdo
+     // Añadimos texto y botón al panel izquierdo
         left_panel.add(center_panel,BorderLayout.CENTER);
         left_panel.add(bottom_panel,BorderLayout.SOUTH);
         
-        add(bottom_panel,BorderLayout.SOUTH);
+        // Añadimos el panelDOIZQUIERO al centro DE UNIT PANEL
+        add(left_panel, BorderLayout.CENTER);
+       
         
         
         btn_recruit.addActionListener(new ActionListener() {
@@ -170,7 +183,7 @@ public class UnitPanel extends JPanel{
         });        
     }
     
-    private String getImagePath() {
+	private String getImagePath() {
         switch (unit_type) {
             case "Swordsman":
                 return "./M3/images/swordsman.png";

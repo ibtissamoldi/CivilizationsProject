@@ -30,6 +30,9 @@ public class MainFrame extends JFrame{
 	
 	public static void main(String[] args) {
 	    new MainFrame();
+	    
+	  
+	    
 	}
 	
 	private JPanel main_panel;	
@@ -61,9 +64,9 @@ public class MainFrame extends JFrame{
         
         civ = new Civilization();
         
-        civ.setFood(10000);
-        civ.setWood(13000);
-        civ.setIron(100);
+        civ.setFood(1000000);
+        civ.setWood(1300000);
+        civ.setIron(1000000);
         civ.setMana(0);
         
         createPanels();

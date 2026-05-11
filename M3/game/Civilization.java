@@ -1,6 +1,5 @@
 package M3.game;
 
-
 import M3.interfaces.MilitaryUnit;
 import M3.interfaces.Variables;
 import M3.units.attack.Cannon;
@@ -46,6 +45,9 @@ public class Civilization implements Variables{
 		this.smithy = 0;
 		this.carpentry = 0;
 		this.battles = 0;
+		
+		this.technologyDefense=0;
+		this.technologyAttack=0;
 	}
 	
 	public int getTechnologyDefense() {
@@ -186,29 +188,43 @@ public class Civilization implements Variables{
 	}
 	
 	public void upgradeTechnologyDefense() throws ResourceException {
-		int wood_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST / 100));
-		int iron_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST / 100));
-		if (this.iron >= iron_cost && this.wood >= wood_cost) {
-			this.technologyDefense += 1;
-			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
-		} else {
-			throw new ResourceException("Not enough material to upgrade technology defense");
-		}
+
+	    int wood_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST +
+	            (this.technologyDefense *
+	            (UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST *
+	             UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST / 100));
+
+	    int iron_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST +
+	            (this.technologyDefense *
+	            (UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST *
+	             UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST / 100));
+
+	    if (this.iron >= iron_cost && this.wood >= wood_cost) {
+	        this.technologyDefense += 1;
+	        takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+	    } else {
+	        throw new ResourceException("Not enough material to upgrade technology defense");
+	    }
 	}
 
 	public void upgradeTechnologyAttack() throws ResourceException {
-		int wood_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST / 100));
-		int iron_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST / 100));
-		if (this.iron >= iron_cost && this.wood >= wood_cost) {
-			this.technologyAttack += 1;
-			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
-		} else {
-			throw new ResourceException("Not enough material to upgrade technology attack");
-		}
+
+	    int wood_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST +
+	            (this.technologyAttack *
+	            (UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST *
+	             UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST / 100));
+
+	    int iron_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST +
+	            (this.technologyAttack *
+	            (UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST *
+	             UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST / 100));
+
+	    if (this.iron >= iron_cost && this.wood >= wood_cost) {
+	        this.technologyAttack += 1;
+	        takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+	    } else {
+	        throw new ResourceException("Not enough material to upgrade technology attack");
+	    }
 	}
 	
 	private void takeMaterialBuildingCost(int wood, int iron, int food) {
