@@ -93,10 +93,7 @@ public class UnitPanel extends JPanel{
             break;
         }
         
-        // panel central y left panel
-        JPanel left_panel = new JPanel(new BorderLayout());
-        left_panel.setBackground(GameColors.PANEL);
-      
+    
         
         // Imagen de las unidades
         
