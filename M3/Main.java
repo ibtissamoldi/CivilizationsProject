@@ -7,7 +7,7 @@ import M3.game.Civilization;
 public class Main {
     public static void main(String[] args) {
     	    	
-    	Civilization civil = new Civilization();
+    	Civilization civil = new Civilization("Player");
         System.out.println(civil.getArmy()[0]);
         civil.setFood(10000000);
         civil.setWood(10000000);
@@ -110,7 +110,7 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
         
-        Civilization enemigo = new Civilization();
+        Civilization enemigo = new Civilization("Enemy");
         
         enemigo.setFood(10000000);
         enemigo.setWood(10000000);
@@ -147,20 +147,32 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
     	
-    	Battle batalla = new Battle(civil.getArmy(), enemigo.getArmy());
+    	Battle batalla = new Battle(civil.getArmy(), enemigo.getArmy(), "PLAYER", "ENEMY");
     	
     	int porCivil = (int) (20 * 0.2);
     	int porEnemigo = (int) (20 * 0.2);
     	
     	batalla.countUnits();
-    	while (batalla.getActualNumberUnitsCivilization() > porCivil && batalla.getActualNumberUnitsEnemy() > porEnemigo) {
-    		batalla.combat();
-    	}
+    	batalla.combat();
     	
     	if (batalla.getActualNumberUnitsCivilization() > porCivil) {
     		System.out.println("Ha ganado JUGADOR");
     	} else {
     		System.out.println("Ha ganado ENEMIGO");
+    	}
+    	int[][] recursos = batalla.getResourcesLooses();
+    	for (int i = 0; i < recursos.length; i++) {
+    		String nombre;
+    		if (i == 0) {
+    			nombre = "JUGADOR";
+    		} else {
+    			nombre = "ENEMIGO";
+    		}
+    		System.out.print(nombre + ": ");
+    		for (int j = 0; j < recursos[i].length; j++) {
+    			System.out.print(recursos[i][j] + ", ");
+    		}
+    		System.out.println();
     	}
     	System.out.println("fin del programa");
     }

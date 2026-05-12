@@ -1,6 +1,7 @@
 package M3.interfaces;
 
 public interface Variables {
+	public final String[] UNITS_NAMES = {"Swordsman", "Spearman", "CrossBow", "Cannon", "Arrow Tower", "Catapult", "Rocket Launcher Tower", "Magician", "Priest"};
     // resources available to create the first enemy fleet
 	public final int IRON_BASE_ENEMY_ARMY = 26000;
 	public final int WOOD_BASE_ENEMY_ARMY = 180000;

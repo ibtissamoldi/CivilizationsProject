@@ -15,6 +15,7 @@ import M3.units.special.Priest;
 import java.util.ArrayList;
 
 public class Civilization implements Variables{
+	private String name;
     private int technologyDefense;
 	private int technologyAttack;
 	
@@ -33,7 +34,8 @@ public class Civilization implements Variables{
 
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
 
-	public Civilization() {
+	public Civilization(String name) {
+		this.name = name;
 		this.wood = CIVILIZATION_WOOD_GENERATED;
 		this.iron = CIVILIZATION_IRON_GENERATED;
 		this.food = CIVILIZATION_FOOD_GENERATED;
@@ -44,6 +46,18 @@ public class Civilization implements Variables{
 		this.smithy = 0;
 		this.carpentry = 0;
 		this.battles = 0;
+	}
+	
+	public void player() {
+		for (int i = 0; i < 9; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
+	}
+	
+	public void enemy() {
+		for (int i = 0; i < 4; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
 	}
 	
 	public int getTechnologyDefense() {
