@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.TimerTask;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -54,6 +55,9 @@ public class MainFrame extends JFrame{
     
 	private Civilization civ;
 	
+	private Timer resources_timer;
+	private TimerTask resources_task;
+	
 
     public MainFrame() {
     	
@@ -87,7 +91,6 @@ public class MainFrame extends JFrame{
         
         //dialog_panel.AddMessage("Welcome to Our Civilization!");
 
-		
         setVisible(true);
     }
     private void createPanels() {
@@ -120,6 +123,51 @@ public class MainFrame extends JFrame{
         center_switch_panel.add(panel,BorderLayout.CENTER);
         center_switch_panel.revalidate();
         center_switch_panel.repaint();
+    }
+    
+    private void StartResourcesGeneration() {
+
+        resources_timer = new Timer();
+
+        resources_task = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                GenerateResources();
+            }
+        };
+
+        resources_timer.scheduleAtFixedRate(resources_task, 0, 5000);
+    }
+    
+    private void GenerateResources() {
+
+        int generated_food = civ.getFarm() * 100;
+        int generated_wood = civ.getCarpentry() * 100;
+        int generated_iron = civ.getSmithy() * 100;
+        int generated_mana = civ.getMagicTower() * 50;
+
+        civ.setFood(civ.getFood() + generated_food);
+        civ.setWood(civ.getWood() + generated_wood);
+        civ.setIron(civ.getIron() + generated_iron);
+        civ.setMana(civ.getMana() + generated_mana);
+
+        if (generated_food > 0) {
+            GameLog.info("+" + generated_food + " food generated");
+        }
+
+        if (generated_wood > 0) {
+            GameLog.info("+" + generated_wood + " wood generated");
+        }
+
+        if (generated_iron > 0) {
+            GameLog.info("+" + generated_iron + " iron generated");
+        }
+
+        if (generated_mana > 0) {
+            GameLog.info("+" + generated_mana + " mana generated");
+        }
     }
     
     
@@ -179,8 +227,7 @@ public class MainFrame extends JFrame{
             System.out.println("Error loading icon.");
         }
     }
-       
-
+      
 }
 
 
