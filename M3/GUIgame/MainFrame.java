@@ -83,7 +83,7 @@ public class MainFrame extends JFrame implements Variables{
         building_panel = new BuildingsPanel(civ,this);
         civilization_panel = new CivilizationPanel();
         technology_panel = new TechnologysPanel(civ,this);
-        stats_panel = new StatsPanel();
+        stats_panel = new StatsPanel(civ,this);
         battle_panel = new BattlePanel();
         
         
@@ -321,12 +321,12 @@ class TechnologysPanel  extends JPanel {
 
 
 class StatsPanel  extends JPanel {
-	public StatsPanel(Civilization civ) {
+	public StatsPanel(Civilization civ,MainFrame frame) {
     setLayout(new BorderLayout());
     setBackground(GameColors.BACKGROUND);
  
 
-    add(new GeneralStatsPanel(civ), BorderLayout.CENTER);
+    add(new GeneralStatsPanel(civ,frame), BorderLayout.CENTER);
 		    
     }
 }
