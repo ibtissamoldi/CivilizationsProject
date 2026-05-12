@@ -250,9 +250,10 @@ class TechnologyPanel extends JPanel implements Variables {
             case "DEFENSE TECHNOLOGY":
                 return "./M3/images/defense_technology.png";
 
-            default:
-                return "";
+           
+               
         }
+        return "";
     }
 }
 

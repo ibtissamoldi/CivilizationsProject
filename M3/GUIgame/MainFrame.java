@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
+import M3.GUIgame.mainPanels.GeneralStatsPanel;
 import M3.GUIgame.mainPanels.GeneralTechnologyPanel;
 import M3.GUIgame.mainPanels.TopBarPanel;
 import M3.GUIgame.mainPanels.SideMenuPanel;
@@ -320,9 +321,13 @@ class TechnologysPanel  extends JPanel {
 
 
 class StatsPanel  extends JPanel {
-	public StatsPanel() {
+	public StatsPanel(Civilization civ) {
+    setLayout(new BorderLayout());
+    setBackground(GameColors.BACKGROUND);
+ 
 
-        setBackground(GameColors.PANEL);
+    add(new GeneralStatsPanel(civ), BorderLayout.CENTER);
+		    
     }
 }
 
