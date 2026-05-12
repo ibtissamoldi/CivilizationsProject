@@ -7,6 +7,14 @@ public class GameColors {
     public static final Color BACKGROUND = new Color(18, 28, 18);
     public static final Color PANEL = new Color(34, 48, 34);
     public static final Color PANEL_LIGHT = new Color(52, 72, 52);
+    
+    public static final Color FOOD = new Color(153, 0, 76);
+    public static final Color WOOD = new Color(137, 107, 73);
+    public static final Color IRON = new Color(96, 96, 96);
+    public static final Color MANA = new Color(102, 178, 255);
+
+
+    
 
     public static final Color GOLD = new Color(136, 78, 147);
     public static final Color GOLD_HOVER = new Color(235, 205, 90);

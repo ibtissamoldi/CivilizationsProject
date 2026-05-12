@@ -21,6 +21,7 @@ import M3.exceptions.ResourceException;
 import M3.game.Civilization;
 import M3.interfaces.Variables;
 import M3.GUIgame.GameLog;
+import M3.GUIgame.MainFrame;
 
 //GENERAL JUNTAR TODAS LA TARJETAS DE CADA EDIFICIO
 
@@ -29,18 +30,18 @@ public class GeneralBuildingPanel extends JPanel{
 	private BuildingPanel farm_panel,carpentry_panel,smithy_panel,magic_tower_panel,church_panel;
 	private Civilization civ;
 
-	public GeneralBuildingPanel(Civilization civ) {
+	public GeneralBuildingPanel(Civilization civ, MainFrame frame) {
         this.civ = civ;
 
         setLayout(new GridLayout(3, 2, 15, 15));
         setBackground(GameColors.BACKGROUND);
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        farm_panel = new BuildingPanel(civ, "Farm");
-        carpentry_panel = new BuildingPanel(civ, "Carpentry");
-        smithy_panel = new BuildingPanel(civ, "Smithy");
-        magic_tower_panel = new BuildingPanel(civ, "Magic Tower");
-        church_panel = new BuildingPanel(civ, "Church");
+        farm_panel = new BuildingPanel(civ, "Farm",frame);
+        carpentry_panel = new BuildingPanel(civ, "Carpentry",frame);
+        smithy_panel = new BuildingPanel(civ, "Smithy",frame);
+        magic_tower_panel = new BuildingPanel(civ, "Magic Tower",frame);
+        church_panel = new BuildingPanel(civ, "Church",frame);
 
         add(farm_panel);
         add(carpentry_panel);
@@ -68,9 +69,12 @@ class BuildingPanel extends JPanel implements Variables{
     
     private String building_type;
     
-    public BuildingPanel(Civilization civ, String building_type) {
+    private MainFrame frame;
+    
+    public BuildingPanel(Civilization civ, String building_type,MainFrame frame) {
     	this.civ = civ;
     	this.building_type= building_type;
+    	this.frame = frame;
     	
     	setLayout(new BorderLayout(15, 10));
     	
@@ -164,31 +168,31 @@ class BuildingPanel extends JPanel implements Variables{
 	case "Farm":
 		lbl_count.setText("Count: " + civ.getFarm());
 		lbl_effect.setText("Effect: Increases food generation by 10%");
-		lbl_cost.setText("Cost: Food " +FOOD_COST_FARM +" Wood " + WOOD_COST_FARM +" Iron " + IRON_COST_FARM);
+		lbl_cost.setText("Food " +FOOD_COST_FARM +" Wood " + WOOD_COST_FARM +" Iron " + IRON_COST_FARM);
         break;
         
 	 case "Smithy":
 		 lbl_count.setText("Count: " + civ.getSmithy());
          lbl_effect.setText("Effect: Increases iron generation by 10%");
-         lbl_cost.setText("Cost: Food " +FOOD_COST_SMITHY +" Wood " + WOOD_COST_SMITHY +" Iron " + IRON_COST_SMITHY);
+         lbl_cost.setText("Food " +FOOD_COST_SMITHY +" Wood " + WOOD_COST_SMITHY +" Iron " + IRON_COST_SMITHY);
          break;
 
      case "Magic Tower":
     	 lbl_count.setText("Count: " + civ.getMagicTower());
          lbl_effect.setText("Effect: Unlocks mana generation, magicians, churches and priests");
-         lbl_cost.setText("Cost: Food " +FOOD_COST_MAGICTOWER +" Wood " + WOOD_COST_MAGICTOWER +" Iron " + IRON_COST_MAGICTOWER);
+         lbl_cost.setText("Food " +FOOD_COST_MAGICTOWER +" Wood " + WOOD_COST_MAGICTOWER +" Iron " + IRON_COST_MAGICTOWER);
          break;
 
      case "Church":
     	 lbl_count.setText("Count: " + civ.getChurch());
          lbl_effect.setText("Effect: Unlocks Priests");
-         lbl_cost.setText("Cost: Food " +FOOD_COST_CHURCH +" Wood " + WOOD_COST_CHURCH +" Iron " + IRON_COST_CHURCH);
+         lbl_cost.setText("Food " +FOOD_COST_CHURCH +" Wood " + WOOD_COST_CHURCH +" Iron " + IRON_COST_CHURCH);
          break;
          
      case "Carpentry":
     	 lbl_count.setText("Count: " + civ.getCarpentry());
     	lbl_effect.setText("Increases wood generation by 10%");
-    	lbl_cost.setText("Cost: Food " +FOOD_COST_CARPENTRY +" Wood " + WOOD_COST_CARPENTRY +" Iron " + IRON_COST_CARPENTRY);
+    	lbl_cost.setText("Food " +FOOD_COST_CARPENTRY +" Wood " + WOOD_COST_CARPENTRY +" Iron " + IRON_COST_CARPENTRY);
          break;
 	}
     			
@@ -261,6 +265,7 @@ class BuildingPanel extends JPanel implements Variables{
         }
 
         loadBuildingData();  
+        frame.RefreshInterface();
     }
 		
 	
