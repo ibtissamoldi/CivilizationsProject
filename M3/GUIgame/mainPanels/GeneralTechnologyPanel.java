@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 
 import M3.GUIgame.GameColors;
 import M3.GUIgame.GameLog;
+import M3.GUIgame.MainFrame;
 import M3.exceptions.ResourceException;
 import M3.game.Civilization;
 import M3.interfaces.Variables;
@@ -38,7 +39,7 @@ public class GeneralTechnologyPanel extends JPanel {
 
    
 
-    public GeneralTechnologyPanel(Civilization civ) {
+    public GeneralTechnologyPanel(Civilization civ, MainFrame frame) {
 
         
 
@@ -51,8 +52,8 @@ public class GeneralTechnologyPanel extends JPanel {
         cards_panel.setBackground(GameColors.BACKGROUND);
         cards_panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        attack_panel = new TechnologyPanel(civ, "ATTACK TECHNOLOGY");
-        defense_panel = new TechnologyPanel(civ, "DEFENSE TECHNOLOGY");
+        attack_panel = new TechnologyPanel(civ, "ATTACK TECHNOLOGY",frame);
+        defense_panel = new TechnologyPanel(civ, "DEFENSE TECHNOLOGY",frame);
 
         cards_panel.add(attack_panel);
         cards_panel.add(defense_panel);
@@ -75,11 +76,14 @@ class TechnologyPanel extends JPanel implements Variables {
     private Civilization civ;
 
     private String technology_type;
+    
+    private MainFrame frame;
 
-    public TechnologyPanel(Civilization civ, String technology_type) {
+    public TechnologyPanel(Civilization civ, String technology_type,MainFrame frame) {
 
         this.civ = civ;
         this.technology_type = technology_type;
+        this.frame=frame;
 
         setLayout(new BorderLayout());
         
@@ -187,6 +191,7 @@ class TechnologyPanel extends JPanel implements Variables {
         });
 
         loadTechnologyData();
+        frame.RefreshInterface();
     }
 
     private void loadTechnologyData() {

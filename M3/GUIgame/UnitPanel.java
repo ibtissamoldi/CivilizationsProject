@@ -1,9 +1,7 @@
 package M3.GUIgame;
 
 import java.awt.BorderLayout;
-
-
-
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import M3.exceptions.ResourceException;
@@ -36,11 +33,15 @@ public class UnitPanel extends JPanel{
 	private JLabel lbl_owned;
     private JLabel lbl_dmg;
     private JLabel lbl_armor;
-    private JLabel lbl_cost;
+    private JLabel lbl_foodcost;
+    private JLabel lbl_woodcost;
+    private JLabel lbl_ironcost;
+    private JLabel lbl_manacost;
     private JLabel lbl_attackagain;
     private JLabel lbl_wastechance;
     private JLabel lbl_exp;
     private JLabel lbl_image;
+    private JLabel gap;
     
     private JButton btn_recruit;
     
@@ -52,10 +53,13 @@ public class UnitPanel extends JPanel{
 
     private String unit_type;
     
+    private MainFrame frame;
     
-    public UnitPanel(Civilization civ, String unit_type) {
+    
+    public UnitPanel(Civilization civ, String unit_type,MainFrame frame) {
     	this.civ = civ;
         this.unit_type = unit_type;
+        this.frame = frame;
         
         setLayout(new BorderLayout(10,10));
         setBorder(
@@ -64,7 +68,7 @@ public class UnitPanel extends JPanel{
         	        unit_type,
         	        TitledBorder.CENTER,
         	        TitledBorder.TOP,
-        	        new Font("Serif", Font.BOLD, 16),
+        	        new Font("Serif", Font.BOLD, 18),
         	        GameColors.GOLD
         	    )
         	);
@@ -122,25 +126,38 @@ public class UnitPanel extends JPanel{
         
         
         
-        JPanel center_panel = new JPanel(new GridLayout(7,1,5,5));
+        JPanel center_panel = new JPanel(new GridLayout(11,1,2,2));
         center_panel.setBackground(GameColors.PANEL);
 
         lbl_owned = new JLabel("Owned: "+ GetUnitCount());
-        lbl_dmg = new JLabel("Damage:  " + unit.attack());
+        lbl_dmg = new JLabel("Damage: " + unit.attack());
         lbl_armor = new JLabel("Armor: " + unit.getActualArmor());
-        lbl_attackagain = new JLabel("Attack Again: "+unit.getChanceAttackAgain() + "%");
-        lbl_wastechance =  new JLabel("Waste Chance: "+unit.getChanceGeneratinWaste() + "%");
-        lbl_cost  = new JLabel("Cost:     Food: " + unit.getFoodCost() + " Wood: " + unit.getWoodCost()+ " Iron: " + unit.getIronCost() +" Mana: "+unit.getManaCost());
+        lbl_attackagain = new JLabel("Attack Again:   "+unit.getChanceAttackAgain() + "%");
+        lbl_wastechance =  new JLabel("Waste Chance:   "+unit.getChanceGeneratinWaste() + "%");
+        gap = new JLabel(" ");
+        lbl_foodcost = new JLabel("Food: " + unit.getFoodCost());
+        lbl_woodcost = new JLabel("Wood: " + unit.getWoodCost());
+        lbl_ironcost= new JLabel("Iron: " + unit.getIronCost());
+        lbl_manacost= new JLabel("Mana: "+unit.getManaCost());
         lbl_exp = new JLabel("Experience: "+unit.getExperience());
+        gap = new JLabel(" ");
 
+        JLabel[] labels = {lbl_owned,lbl_dmg,lbl_armor,lbl_attackagain,lbl_wastechance,lbl_foodcost,lbl_woodcost,lbl_ironcost,lbl_manacost,gap,lbl_exp};
 
-        JLabel[] labels = {lbl_owned,lbl_dmg,lbl_armor,lbl_attackagain,lbl_wastechance,lbl_cost,lbl_exp};
+        
 
+        
+        
         for (JLabel label : labels) {
                 label.setForeground(GameColors.TEXT);
-                label.setFont(new Font("Serif", Font.PLAIN, 14));
+                label.setFont(new Font("Arial", Font.BOLD, 12));
+                lbl_foodcost.setForeground(GameColors.FOOD);
+                lbl_woodcost.setForeground(GameColors.WOOD);
+                lbl_ironcost.setForeground(GameColors.IRON);
+                lbl_manacost.setForeground(GameColors.MANA);
                 center_panel.add(label);
                 }
+        
         
       
         UpdateInfo();
@@ -284,6 +301,7 @@ public class UnitPanel extends JPanel{
             }
     		GameLog.info(quantity + " " + unit_type + " recruited!");
             UpdateInfo();
+            frame.RefreshInterface();
             
     	} catch (ResourceException e) {
     		
@@ -295,6 +313,7 @@ public class UnitPanel extends JPanel{
                }
                GameLog.error(notrecruited + " " + unit_type + " could not be recruited due to insufficient resources!!");
                UpdateInfo();
+               frame.RefreshInterface();
         }
     }
     
@@ -344,11 +363,14 @@ public class UnitPanel extends JPanel{
     private void UpdateInfo() {
 
         lbl_owned.setText("Owned: "+GetUnitCount());
-		lbl_dmg.setText("Damage:  " + unit.attack());
+		lbl_dmg.setText("Damage: " + unit.attack());
 		lbl_armor.setText( "Armor: " + unit.getActualArmor());
-		lbl_attackagain.setText("Attack Again: "+unit.getChanceAttackAgain() + "%");
-		lbl_wastechance.setText("Waste Chance: "+unit.getChanceGeneratinWaste() + "%");
-		lbl_cost.setText("Cost:     Food: " + unit.getFoodCost() + " Wood: " + unit.getWoodCost()+ " Iron: " + unit.getIronCost() +" Mana: "+unit.getManaCost());
+		lbl_attackagain.setText("Attack Again:   "+unit.getChanceAttackAgain() + "%");
+		lbl_wastechance.setText("Waste Chance:   "+unit.getChanceGeneratinWaste() + "%");
+        lbl_foodcost.setText("Food: " + unit.getFoodCost());
+        lbl_woodcost.setText("Wood: " + unit.getWoodCost());
+        lbl_ironcost.setText("Iron: " + unit.getIronCost());
+        lbl_manacost.setText("Mana: "+unit.getManaCost());		
 		lbl_exp.setText("Experience: "+unit.getExperience());
 	}
 
@@ -358,7 +380,7 @@ public class UnitPanel extends JPanel{
 
  class AttackTabPanel extends JPanel {
 	
-	public AttackTabPanel(Civilization civ) {
+	public AttackTabPanel(Civilization civ,MainFrame frame) {
 		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
@@ -366,10 +388,10 @@ public class UnitPanel extends JPanel{
         grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         grid.setBackground(GameColors.BACKGROUND);
         
-        grid.add(new UnitPanel(civ, "Swordsman"));
-        grid.add(new UnitPanel(civ, "Spearman"));
-        grid.add(new UnitPanel(civ, "Crossbow"));
-        grid.add(new UnitPanel(civ, "Cannon"));
+        grid.add(new UnitPanel(civ, "Swordsman",frame));
+        grid.add(new UnitPanel(civ, "Spearman",frame));
+        grid.add(new UnitPanel(civ, "Crossbow",frame));
+        grid.add(new UnitPanel(civ, "Cannon",frame));
         
         add(grid, BorderLayout.CENTER);
 
@@ -384,7 +406,7 @@ public class UnitPanel extends JPanel{
 
 class DefenseTabPanel extends JPanel {
 
-	public DefenseTabPanel(Civilization civ) {
+	public DefenseTabPanel(Civilization civ,MainFrame frame) {
 		setLayout(new BorderLayout());
         setBackground(GameColors.BACKGROUND);
         
@@ -392,9 +414,9 @@ class DefenseTabPanel extends JPanel {
         grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         grid.setBackground(GameColors.BACKGROUND);
         
-        grid.add(new UnitPanel(civ, "ArrowTower"));
-        grid.add(new UnitPanel(civ, "Catapult"));
-        grid.add(new UnitPanel(civ, "RocketLauncherTower"));
+        grid.add(new UnitPanel(civ, "ArrowTower",frame));
+        grid.add(new UnitPanel(civ, "Catapult",frame));
+        grid.add(new UnitPanel(civ, "RocketLauncherTower",frame));
         
         add(grid, BorderLayout.CENTER);
         
@@ -411,7 +433,7 @@ class DefenseTabPanel extends JPanel {
 
 class SpecialTabPanel extends JPanel {
 	
-	public SpecialTabPanel(Civilization civ) {
+	public SpecialTabPanel(Civilization civ,MainFrame frame) {
 	    setLayout(new BorderLayout());
 	    setBackground(GameColors.BACKGROUND);
 	
@@ -419,8 +441,8 @@ class SpecialTabPanel extends JPanel {
 	    grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 	    grid.setBackground(GameColors.BACKGROUND);
 	
-	    grid.add(new UnitPanel(civ, "Magician"));
-	    grid.add(new UnitPanel(civ, "Priest"));
+	    grid.add(new UnitPanel(civ, "Magician",frame));
+	    grid.add(new UnitPanel(civ, "Priest",frame));
 	
 	    add(grid, BorderLayout.CENTER);
 }

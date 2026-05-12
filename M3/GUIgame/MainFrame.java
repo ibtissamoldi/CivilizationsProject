@@ -2,6 +2,8 @@ package M3.GUIgame;
 
 import java.awt.BasicStroke;
 
+import M3.interfaces.Variables;
+
 
 import java.awt.BorderLayout;
 
@@ -28,7 +30,7 @@ import M3.GUIgame.mainPanels.SideMenuPanel;
 import M3.game.Civilization;
 
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame implements Variables{
 	
 	public static void main(String[] args) {
 	    new MainFrame();
@@ -69,25 +71,26 @@ public class MainFrame extends JFrame{
         
         civ = new Civilization();
         
-        civ.setFood(1000000);
-        civ.setWood(1300000);
-        civ.setIron(1000000);
+        civ.setFood(10000);
+        civ.setWood(13000);
+        civ.setIron(10000);
         civ.setMana(0);
         
         createPanels();
         
        
-        army_panel = new ArmyPanel(civ);
-        building_panel = new BuildingsPanel(civ);
+        army_panel = new ArmyPanel(civ,this);
+        building_panel = new BuildingsPanel(civ,this);
         civilization_panel = new CivilizationPanel();
-        technology_panel = new TechnologysPanel(civ);
-        stats_panel = new StatsPanel(civ);
+        technology_panel = new TechnologysPanel(civ,this);
+        stats_panel = new StatsPanel(civ,this);
         battle_panel = new BattlePanel();
         
         
 		
         initializeButtonActions();
         SwitchPanel(civilization_panel);
+        StartResourcesGeneration();
         
         //dialog_panel.AddMessage("Welcome to Our Civilization!");
 
@@ -125,51 +128,55 @@ public class MainFrame extends JFrame{
         center_switch_panel.repaint();
     }
     
+    
+    
+    public void RefreshInterface() {
+        topbar_panel.UpdateResources();
+        center_switch_panel.revalidate();
+        center_switch_panel.repaint();
+    }
+    
     private void StartResourcesGeneration() {
 
         resources_timer = new Timer();
 
         resources_task = new TimerTask() {
 
-            @Override
             public void run() {
-
                 GenerateResources();
+            	RefreshInterface();
             }
         };
 
-        resources_timer.scheduleAtFixedRate(resources_task, 0, 5000);
+        resources_timer.scheduleAtFixedRate(resources_task, 0, 60000);
     }
     
     private void GenerateResources() {
 
-        int generated_food = civ.getFarm() * 100;
-        int generated_wood = civ.getCarpentry() * 100;
-        int generated_iron = civ.getSmithy() * 100;
-        int generated_mana = civ.getMagicTower() * 50;
+        int food = CIVILIZATION_FOOD_GENERATED;
+        int wood = CIVILIZATION_WOOD_GENERATED;
+        int iron = CIVILIZATION_IRON_GENERATED;
 
-        civ.setFood(civ.getFood() + generated_food);
-        civ.setWood(civ.getWood() + generated_wood);
-        civ.setIron(civ.getIron() + generated_iron);
-        civ.setMana(civ.getMana() + generated_mana);
+        food += civ.getFarm() * CIVILIZATION_FOOD_GENERATED_PER_FARM;
+        wood += civ.getCarpentry() * CIVILIZATION_WOOD_GENERATED_PER_CARPENTRY;
+        iron += civ.getSmithy() * CIVILIZATION_IRON_GENERATED_PER_SMITHY;
 
-        if (generated_food > 0) {
-            GameLog.info("+" + generated_food + " food generated");
-        }
+        int mana = civ.getMagicTower() * CIVILIZATION_MANA_GENERATED_PER_MAGIC_TOWER;
 
-        if (generated_wood > 0) {
-            GameLog.info("+" + generated_wood + " wood generated");
-        }
+        civ.setFood(civ.getFood() + food);
+        civ.setWood(civ.getWood() + wood);
+        civ.setIron(civ.getIron() + iron);
+        civ.setMana(civ.getMana() + mana);
+        
+        GameLog.log.clear();
 
-        if (generated_iron > 0) {
-            GameLog.info("+" + generated_iron + " iron generated");
-        }
-
-        if (generated_mana > 0) {
-            GameLog.info("+" + generated_mana + " mana generated");
-        }
+        GameLog.info(
+            "+" + food + " food | " +
+            "+" + wood + " wood | " +
+            "+" + iron + " iron | " +
+            "+" + mana + " mana"
+        );
     }
-    
     
     private void initializeButtonActions() {
     	
@@ -243,7 +250,7 @@ class BackgroundPanel extends JPanel{
 	 public BackgroundPanel(String path) {
 		 try {
 
-			 bg_image =ImageIO.read(new File(path));//*"./M3/bg.png"*/
+			 bg_image =ImageIO.read(new File(path));//*"./M3/images/bg.png"*/
 			 
 
 	     } catch (IOException e) {
@@ -274,7 +281,7 @@ class CivilizationPanel  extends BackgroundPanel{
 
 class ArmyPanel extends JPanel {
 	private JTabbedPane tab_army_panel;
-    public ArmyPanel(Civilization civ) {
+    public ArmyPanel(Civilization civ, MainFrame frame) {
     	setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
         
@@ -283,9 +290,9 @@ class ArmyPanel extends JPanel {
 		tab_army_panel.setBackground(GameColors.PANEL);
 		tab_army_panel.setForeground(GameColors.GOLD);
 		
-		tab_army_panel.add("Attack Units", new AttackTabPanel(civ));
-		tab_army_panel.add("Defense Units", new DefenseTabPanel(civ));
-		tab_army_panel.add("Special Units", new SpecialTabPanel(civ));
+		tab_army_panel.add("Attack Units", new AttackTabPanel(civ,frame));
+		tab_army_panel.add("Defense Units", new DefenseTabPanel(civ,frame));
+		tab_army_panel.add("Special Units", new SpecialTabPanel(civ,frame));
 
         add(tab_army_panel, BorderLayout.CENTER);
     }
@@ -293,33 +300,33 @@ class ArmyPanel extends JPanel {
 
 class BuildingsPanel extends JPanel {
 
-    public BuildingsPanel(Civilization civ) {
+    public BuildingsPanel(Civilization civ,MainFrame frame) {
         setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
 
-        GeneralBuildingPanel generalBuildingPanel = new GeneralBuildingPanel(civ);
+        GeneralBuildingPanel generalBuildingPanel = new GeneralBuildingPanel(civ,frame);
 
         add(generalBuildingPanel, BorderLayout.CENTER);
     }
 }
 
 class TechnologysPanel  extends JPanel {
-	public TechnologysPanel(Civilization civ) {
+	public TechnologysPanel(Civilization civ,MainFrame frame) {
 		setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
-        GeneralTechnologyPanel generaltechnologypanel= new GeneralTechnologyPanel(civ);
+        GeneralTechnologyPanel generaltechnologypanel= new GeneralTechnologyPanel(civ,frame);
         add(generaltechnologypanel, BorderLayout.CENTER);
     }
 }
 
 
 class StatsPanel  extends JPanel {
-	public StatsPanel(Civilization civ) {
+	public StatsPanel(Civilization civ,MainFrame frame) {
     setLayout(new BorderLayout());
     setBackground(GameColors.BACKGROUND);
  
 
-    add(new GeneralStatsPanel(civ), BorderLayout.CENTER);
+    add(new GeneralStatsPanel(civ,frame), BorderLayout.CENTER);
 		    
     }
 }

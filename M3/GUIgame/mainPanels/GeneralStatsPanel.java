@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import M3.GUIgame.GameColors;
+import M3.GUIgame.MainFrame;
 import M3.game.Civilization;
 import M3.interfaces.Variables;
 
@@ -63,9 +64,10 @@ public class GeneralStatsPanel extends JPanel implements Variables {
     private JLabel lbl_woodGeneration;
     private JLabel lbl_ironGeneration;
     private JLabel lbl_manaGeneration;
+    
+    
 
-    public GeneralStatsPanel(Civilization civ) {
-
+    public GeneralStatsPanel(Civilization civ, MainFrame frame) {
         this.civ = civ;
 
         setLayout(new BorderLayout());
@@ -205,6 +207,7 @@ public class GeneralStatsPanel extends JPanel implements Variables {
 
         // Cargamos los datos iniciales
         loadStatsData();
+        frame.RefreshInterface();
 
         // Actualiza automáticamente cada medio segundo
         Timer timer = new Timer(500, e -> loadStatsData());

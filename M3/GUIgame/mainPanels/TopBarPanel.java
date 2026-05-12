@@ -63,6 +63,11 @@ public class TopBarPanel extends JPanel {
         label_iron = CreateResourcesBox("./M3/images/iron.png", civ.getIron());
         label_mana = CreateResourcesBox("./M3/images/mana.png", civ.getMana());
         
+        System.out.println("Food: " + civ.getFood());
+        System.out.println("wood: " + civ.getWood());
+        System.out.println("iron: " + civ.getIron());
+        System.out.println("mana: " + civ.getMana());
+        
         
         resources_panel.add(label_food);
         resources_panel.add(label_wood);
