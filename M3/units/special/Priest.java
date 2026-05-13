@@ -4,8 +4,8 @@ import M3.units.SpecialUnit;
 
 public class Priest extends SpecialUnit {
 
-    public Priest() {
-        super(0);
+    public Priest(int technologyDefense) {
+    	super(BASE_DAMAGE_PRIEST + (technologyDefense * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_PRIEST / 100));
     }
 
    

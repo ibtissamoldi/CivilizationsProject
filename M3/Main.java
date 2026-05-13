@@ -16,6 +16,18 @@ public class Main {
         civil.setMana(10000000);
         
         try {
+        	civil.newChurch();
+        } catch (ResourceException e) {
+			System.out.println(e.getMessage());
+		}
+        
+        try {
+        	civil.newMagicTower();
+        } catch (ResourceException e) {
+			System.out.println(e.getMessage());
+		}
+        
+        try {
 			civil.newSwordsman(4);
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
@@ -52,64 +64,18 @@ public class Main {
 		}
         
         try {
-			civil.newMagician(0);
+			civil.newMagician(1);
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
 		}
         
         try {
-			civil.newPriest(0);
+			civil.newPriest(1);
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
 		}
         
-        try {
-			civil.newSwordsman(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newSpearman(0);;
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newCrossbow(0);;
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newArrowTower(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newCannon(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newCatapult(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newMagician(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
-			civil.newPriest(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
+        System.out.println(civil.getArmy()[8].get(0).getClass().getSimpleName());
         
         Civilization enemigo = new Civilization("Enemy");
         
@@ -159,8 +125,9 @@ public class Main {
     	}
     	batalla.setBattleDevelopment();
     	
-    	System.out.println(batalla.getBattleDevelopment());
+
     	System.out.println("\n\n\n\n\n" + batalla.getReportStepStep());
+    	System.out.println(batalla.getBattleDevelopment());
     	
     	System.out.println("fin del programa");
     }
