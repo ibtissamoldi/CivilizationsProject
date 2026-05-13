@@ -5,9 +5,10 @@ import M3.game.Battle;
 import M3.game.Civilization;
 
 public class Main {
+	
     public static void main(String[] args) {
-    	    	
-    	Civilization civil = new Civilization("Player");
+    	
+		Civilization civil = new Civilization("Player");
         System.out.println(civil.getArmy()[0]);
         civil.setFood(10000000);
         civil.setWood(10000000);
@@ -153,27 +154,14 @@ public class Main {
     	int porEnemigo = (int) (20 * 0.2);
     	
     	batalla.countUnits();
-    	batalla.combat();
+    	while (!batalla.battleIsOver()) {
+    		batalla.combat();
+    	}
+    	batalla.setBattleDevelopment();
     	
-    	if (batalla.getActualNumberUnitsCivilization() > porCivil) {
-    		System.out.println("Ha ganado JUGADOR");
-    	} else {
-    		System.out.println("Ha ganado ENEMIGO");
-    	}
-    	int[][] recursos = batalla.getResourcesLooses();
-    	for (int i = 0; i < recursos.length; i++) {
-    		String nombre;
-    		if (i == 0) {
-    			nombre = "JUGADOR";
-    		} else {
-    			nombre = "ENEMIGO";
-    		}
-    		System.out.print(nombre + ": ");
-    		for (int j = 0; j < recursos[i].length; j++) {
-    			System.out.print(recursos[i][j] + ", ");
-    		}
-    		System.out.println();
-    	}
+    	System.out.println(batalla.getBattleDevelopment());
+    	System.out.println("\n\n\n\n\n" + batalla.getReportStepStep());
+    	
     	System.out.println("fin del programa");
     }
     	

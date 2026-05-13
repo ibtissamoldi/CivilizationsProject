@@ -68,7 +68,7 @@ public class Battle implements Variables{
     	while (true) {
     		int randomNum = (int) (Math.random() * 100);
         	int cumulativeProbability = 0;
-        	int chosenUnit = probability.length - 1;
+        	int chosenUnit = -1;
         	for (int i = 0; i < probability.length; i++) {
         		cumulativeProbability += probability[i];
         		if (randomNum < cumulativeProbability) {
@@ -76,7 +76,7 @@ public class Battle implements Variables{
         			break;
         		}
         	}
-        	if(this.armies[attacker][chosenUnit] != null && !this.armies[attacker][chosenUnit].isEmpty()) {
+        	if(chosenUnit != -1 && this.armies[attacker][chosenUnit] != null && !this.armies[attacker][chosenUnit].isEmpty()) {
         		return chosenUnit;
         	}
     	}
@@ -123,8 +123,6 @@ public class Battle implements Variables{
     }
     
     public void combat() {
-    	
-    	while (battleIsOver()) {
     		int attacker;
         	int defender;
         	String attacker_name;
@@ -159,6 +157,8 @@ public class Battle implements Variables{
         						"\n" + unitDefending.getClass().getSimpleName() + " stay with armor: " + unitDefending.getActualArmor() + "\n";
         		if (unitDefending.getActualArmor() <= 0) {
             		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
+            		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
+            		countUnits();
             		updateUnitsLooses(defender, indexDefendingUnit);
             		updateResourcesLooses(defender, unitDefending);
             		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
@@ -168,44 +168,11 @@ public class Battle implements Variables{
             	}
         		updateReportStepStep(step_report);
         		
-        	} while ((int) (Math.random() * 100) <= unitAttacking.getChanceAttackAgain());
-        	
-        	countUnits();
+        	} while ((int) (Math.random() * 100) <= unitAttacking.getChanceAttackAgain() && !battleIsOver());
         	
         	
-    	}
     	
     	this.battleDevelopment = "";
-    	String row = String.format("\n%-20s%9s%9s%-20s%9s%9s\n", this.civil_name + " army", "Units", "Drops", "Initial army " + this.enemy_name + "Units" , "Drops");
-    	for (int i = 0; i < this.unitsLooses[0].length; i++) {
-    		row += String.format("\n%-20s%9d%9d%", UNITS_NAMES[i], this.civilizationArmy[i].size(), this.unitsLooses[0][i]);
-    		if (i <= 3) {
-    			row += String.format("%-20s%9d%9d%\n", UNITS_NAMES[i], this.enemyArmy[i].size(), this.unitsLooses[1][i]);
-    		} else {
-    			row += "\n";
-    		}
-    	}
-    	row += "*".repeat(76) + "\n" + String.format("%-38s-38s", "Cost Army Civilization", "Cost Army Enemy") + "\n\n";
-    	row += String.format("%-38s-38s", String.format("Food:%15d", this.resourcesLooses[0][0]), String.format("Food:%15d", this.resourcesLooses[1][0])) + "\n";
-    	row += String.format("%-38s-38s", String.format("Wood:%15d", this.resourcesLooses[0][1]), String.format("Wood:%15d", this.resourcesLooses[1][1])) + "\n";
-    	row += String.format("%-38s-38s", String.format("Iron:%15d", this.resourcesLooses[0][2]), String.format("Iron:%15d", this.resourcesLooses[1][2])) + "\n";
-    	
-    	//NO SE DE DONDE SALEN LOS DATOS ------ PENDIENTE DE REVISÓN
-    	row += "\n" + "*".repeat(76) + "\n" + String.format("%-38s-38s", "Losses Army Civilization", "Losses Army Enemy") + "\n\n";
-    	row += String.format("%-38s-38s", String.format("Food:%15d", this.resourcesLooses[0][0]), String.format("Food:%15d", this.resourcesLooses[1][0])) + "\n";
-    	row += String.format("%-38s-38s", String.format("Wood:%15d", this.resourcesLooses[0][1]), String.format("Wood:%15d", this.resourcesLooses[1][1])) + "\n";
-    	row += String.format("%-38s-38s", String.format("Iron:%15d", this.resourcesLooses[0][2]), String.format("Iron:%15d", this.resourcesLooses[1][2])) + "\n";
-    	
-    	row += "\n" + "*".repeat(76) + "\n" + String.format("%-38s", "Waste Generated") + "\n\n";
-    	row += String.format("%-38s", String.format("Wood:%15d", this.wasteWoodIron[0])) + "\n";
-    	row += String.format("%-38s", String.format("Iron:%15d", this.wasteWoodIron[1])) + "\n";
-    	
-    	if (this.resourcesLooses[0][3] < this.resourcesLooses[1][3]) {
-    		row += "\n" + "Battle Winned by " + civil_name + ", We Collect Rubble";
-    	} else {
-    		row += "\n" + "Battle Winned by " + enemy_name + ", We don't Collect Rubble";
-    	}
-    	
     }
     
     public void updateResourcesLooses(int bando, MilitaryUnit unit) {
@@ -216,10 +183,10 @@ public class Battle implements Variables{
     }
     
     public boolean battleIsOver() {
-    	if (this.actualNumberUnitsCivilization > (int) (initialNumberUnitsCivilization) * 0.2 || this.actualNumberUnitsEnemy > (int) (initialNumberUnitsEnemy * 0.20)) {
-    		return true;
-    	} else {
+    	if (this.actualNumberUnitsCivilization > (int) (initialNumberUnitsCivilization) * 0.2 && this.actualNumberUnitsEnemy > (int) (initialNumberUnitsEnemy * 0.20)) {
     		return false;
+    	} else {
+    		return true;
     	}
     }
     
@@ -254,6 +221,10 @@ public class Battle implements Variables{
     	this.actualNumberUnitsEnemy = count;
     }
     
+	public String getReportStepStep() {
+		return reportStepStep;
+	}
+
 	public ArrayList<MilitaryUnit>[] getCivilizationArmy() {
 		return civilizationArmy;
 	}
@@ -275,8 +246,41 @@ public class Battle implements Variables{
 	public String getBattleDevelopment() {
 		return battleDevelopment;
 	}
-	public void setBattleDevelopment(String battleDevelopment) {
-		this.battleDevelopment = battleDevelopment;
+	public void setBattleDevelopment() {
+		String row = String.format("\n%-25s%-9s%-9s%-25s%9s%9s\n", this.civil_name + " army", "Units", "Drops", "Initial army " + this.enemy_name, "Units" , "Drops");
+    	for (int i = 0; i < this.unitsLooses[0].length; i++) {
+    		if (this.civilizationArmy[i] != null) {
+    			row += String.format("\n%-25s%5d%9d    ", UNITS_NAMES[i], this.civilizationArmy[i].size(), this.unitsLooses[0][i]);
+    		} else {
+    			row += String.format("\n%-25s%5d%9d    ", UNITS_NAMES[i], 0, this.unitsLooses[0][i]);
+    		}
+    		if (i <= 3) {
+    			row += String.format("%-25s%9d%9d\n", UNITS_NAMES[i], this.enemyArmy[i].size(), this.unitsLooses[1][i]);
+    		} else {
+    			row += "\n";
+    		}
+    	}
+    	row += "*".repeat(86) + "\n" + String.format("%-38s%-38s", "Cost Army Civilization", "Cost Army Enemy") + "\n\n";
+    	row += String.format("%-38s%-38s", String.format("Food:%15d", this.resourcesLooses[0][0]), String.format("Food:%15d", this.resourcesLooses[1][0])) + "\n";
+    	row += String.format("%-38s%-38s", String.format("Wood:%15d", this.resourcesLooses[0][1]), String.format("Wood:%15d", this.resourcesLooses[1][1])) + "\n";
+    	row += String.format("%-38s%-38s", String.format("Iron:%15d", this.resourcesLooses[0][2]), String.format("Iron:%15d", this.resourcesLooses[1][2])) + "\n";
+    	
+    	//NO SE DE DONDE SALEN LOS DATOS ------ PENDIENTE DE REVISÓN
+    	row += "\n" + "*".repeat(86) + "\n" + String.format("%-38s%-38s", "Losses Army Civilization", "Losses Army Enemy") + "\n\n";
+    	row += String.format("%-38s%-38s", String.format("Food:%15d", this.resourcesLooses[0][0]), String.format("Food:%15d", this.resourcesLooses[1][0])) + "\n";
+    	row += String.format("%-38s%-38s", String.format("Wood:%15d", this.resourcesLooses[0][1]), String.format("Wood:%15d", this.resourcesLooses[1][1])) + "\n";
+    	row += String.format("%-38s%-38s", String.format("Iron:%15d", this.resourcesLooses[0][2]), String.format("Iron:%15d", this.resourcesLooses[1][2])) + "\n";
+    	
+    	row += "\n" + "*".repeat(86) + "\n" + String.format("%-38s", "Waste Generated") + "\n\n";
+    	row += String.format("%-38s", String.format("Wood:%15d", this.wasteWoodIron[0])) + "\n";
+    	row += String.format("%-38s", String.format("Iron:%15d", this.wasteWoodIron[1])) + "\n";
+    	
+    	if (this.resourcesLooses[0][3] < this.resourcesLooses[1][3]) {
+    		row += "\n" + "Battle Winned by " + civil_name + ", We Collect Rubble";
+    	} else {
+    		row += "\n" + "Battle Winned by " + enemy_name + ", We don't Collect Rubble";
+    	}
+    	this.battleDevelopment = row;
 	}
 	public int getInitialCostFleet() {
 		return initialCostFleet;
