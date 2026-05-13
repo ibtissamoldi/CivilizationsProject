@@ -151,6 +151,13 @@ public class Battle implements Variables{
         		int defenseUnit = choiceDefenseUnit(defender);
         		int indexDefendingUnit = (int) (Math.random() * (0 - this.armies[defender][defenseUnit].size()) + this.armies[defender][defenseUnit].size());
             	MilitaryUnit unitDefending = this.armies[defender][defenseUnit].get(indexDefendingUnit);
+            	if (attacker == 0 && this.armies[0][8] != null && !this.armies[0][8].isEmpty()) {
+            		if (unitAttacking instanceof AttackUnit) {
+            			((AttackUnit) unitAttacking).isSanctified();
+            		} else if (unitAttacking instanceof DefenseUnit) {
+            			((DefenseUnit) unitAttacking).isSanctified();
+            		}
+            	}
         		unitDefending.setArmor(unitDefending.getActualArmor() - unitAttacking.attack());
         		step_report += "Attacks " + attacker_name + ": " + unitAttacking.getClass().getSimpleName() + " attacks " + unitDefending.getClass().getSimpleName() + 
         						"\n" + unitAttacking.getClass().getSimpleName() + " damage = "  + unitAttacking.attack() + 
@@ -159,7 +166,7 @@ public class Battle implements Variables{
             		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
             		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
             		countUnits();
-            		updateUnitsLooses(defender, indexDefendingUnit);
+            		updateUnitsLooses(defender, defenseUnit);
             		updateResourcesLooses(defender, unitDefending);
             		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
             			this.wasteWoodIron[0] += unitAttacking.getWoodCost() * PERCENTATGE_WASTE / 100;
@@ -277,6 +284,7 @@ public class Battle implements Variables{
     	
     	if (this.resourcesLooses[0][3] < this.resourcesLooses[1][3]) {
     		row += "\n" + "Battle Winned by " + civil_name + ", We Collect Rubble";
+    		
     	} else {
     		row += "\n" + "Battle Winned by " + enemy_name + ", We don't Collect Rubble";
     	}

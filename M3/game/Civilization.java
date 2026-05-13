@@ -156,6 +156,7 @@ public class Civilization implements Variables{
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;
 			takeMaterialBuildingCost(WOOD_COST_CHURCH, IRON_COST_CHURCH, FOOD_COST_CHURCH);
+			System.out.println("Ha generado la iglesia");
 		} else {
 			throw new ResourceException("Not enough material to create a church");
 		}
@@ -544,11 +545,11 @@ public class Civilization implements Variables{
 	public void newPriest(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Priest(), unidades)) {
+			if (checkCostsUnits(new Priest(this.technologyDefense), unidades)) {
 				if (this.army[8] == null) {
 					army[8] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < n; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");
@@ -561,7 +562,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < n; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");
