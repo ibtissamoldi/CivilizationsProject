@@ -266,6 +266,7 @@ class BuildingPanel extends JPanel implements Variables{
 
         loadBuildingData();  
         frame.RefreshInterface();
+    	frame.getDb().UpdateCivilization(frame.getCivId(), civ);
     }
 		
 	

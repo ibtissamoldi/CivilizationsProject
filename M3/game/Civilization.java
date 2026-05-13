@@ -137,6 +137,16 @@ public class Civilization implements Variables{
 	public void setCarpentry(int carpentry) {
 		this.carpentry = carpentry;
 	}
+	
+	
+
+	public int getBattles() {
+		return battles;
+	}
+
+	public void setBattles(int battles) {
+		this.battles = battles;
+	}
 
 	public ArrayList<MilitaryUnit>[] getArmy() {
 		return this.army;
@@ -548,11 +558,11 @@ public class Civilization implements Variables{
 	public void newPriest(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Priest(), unidades)) {
+			if (checkCostsUnits(new Priest(this.technologyDefense), unidades)) {
 				if (this.army[8] == null) {
 					army[8] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");
@@ -565,7 +575,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");

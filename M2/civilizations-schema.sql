@@ -3,7 +3,7 @@
  
 CREATE TABLE civilization_stats (
     civilization_id INT primary key AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL UNIQUE,
 
     wood_amount INT NOT NULL DEFAULT 0,
     iron_amount INT NOT NULL DEFAULT 0,
@@ -34,6 +34,7 @@ CREATE TABLE attack_units_stats (
 
     PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE defense_units_stats (
@@ -48,6 +49,7 @@ CREATE TABLE defense_units_stats (
 
     PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
+    ON DELETE CASCADE
 );
 
 
@@ -62,6 +64,7 @@ CREATE TABLE special_units_stats (
 
     PRIMARY KEY (unit_id),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
+    ON DELETE CASCADE
 );
 
 
@@ -77,6 +80,7 @@ CREATE TABLE battle_stats (
 
     PRIMARY KEY (civilization_id, num_battle),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE battle_log (
@@ -89,6 +93,7 @@ CREATE TABLE battle_log (
     PRIMARY KEY (civilization_id, num_battle, num_line),
     FOREIGN KEY (civilization_id, num_battle)
         REFERENCES battle_stats(civilization_id, num_battle)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE civilization_attack_stats (
@@ -102,6 +107,7 @@ CREATE TABLE civilization_attack_stats (
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
         REFERENCES battle_stats(civilization_id, num_battle)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE civilization_defense_stats (
@@ -115,6 +121,7 @@ CREATE TABLE civilization_defense_stats (
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
         REFERENCES battle_stats(civilization_id, num_battle)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE civilization_special_stats (
@@ -128,6 +135,7 @@ CREATE TABLE civilization_special_stats (
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
         REFERENCES battle_stats(civilization_id, num_battle)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE enemy_attack_stats (
@@ -141,4 +149,5 @@ CREATE TABLE enemy_attack_stats (
     PRIMARY KEY (civilization_id, num_battle, type),
     FOREIGN KEY (civilization_id, num_battle)
         REFERENCES battle_stats(civilization_id, num_battle)
+    ON DELETE CASCADE
 );

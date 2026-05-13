@@ -238,6 +238,7 @@ class TechnologyPanel extends JPanel implements Variables {
         }
 
         loadTechnologyData();
+        frame.getDb().UpdateCivilization(frame.getCivId(), civ);
     }
 
     private String getImagePath() {

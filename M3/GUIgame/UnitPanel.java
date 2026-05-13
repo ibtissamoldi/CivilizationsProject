@@ -102,7 +102,7 @@ public class UnitPanel extends JPanel{
             unit = new Magician(civ.getTechnologyAttack());
             break;
         case "Priest":
-            unit = new Priest();
+            unit = new Priest(civ.getTechnologyDefense());
             break;
         }
         
@@ -303,6 +303,7 @@ public class UnitPanel extends JPanel{
             UpdateInfo();
             frame.RefreshInterface();
             
+            
     	} catch (ResourceException e) {
     		
     		int notrecruited = GetNumber(e.getMessage());
@@ -315,6 +316,8 @@ public class UnitPanel extends JPanel{
                UpdateInfo();
                frame.RefreshInterface();
         }
+    	frame.getDb().SaveArmy(frame.getCivId(), civ);
+    	frame.getDb().UpdateCivilization(frame.getCivId(), civ);
     }
     
     
