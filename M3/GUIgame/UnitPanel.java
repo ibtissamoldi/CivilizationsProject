@@ -202,6 +202,8 @@ public class UnitPanel extends JPanel{
         btn_recruit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RecruitUnit();
+                frame.saveGame();
+                frame.RefreshInterface();
             }
         });        
     }
@@ -316,8 +318,6 @@ public class UnitPanel extends JPanel{
                UpdateInfo();
                frame.RefreshInterface();
         }
-    	frame.getDb().SaveArmy(frame.getCivId(), civ);
-    	frame.getDb().UpdateCivilization(frame.getCivId(), civ);
     }
     
     

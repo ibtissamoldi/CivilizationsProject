@@ -166,6 +166,11 @@ public class Civilization implements Variables{
 		return this.army;
 	}
 
+	
+	public String getName() {
+		return name;
+	}
+
 	public void newChurch() throws ResourceException {
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;

@@ -187,6 +187,8 @@ class TechnologyPanel extends JPanel implements Variables {
         btn_upgrade.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 upgradeTechnology();
+                frame.saveGame();
+                frame.RefreshInterface();
             }
         });
 
@@ -238,7 +240,6 @@ class TechnologyPanel extends JPanel implements Variables {
         }
 
         loadTechnologyData();
-        frame.getDb().UpdateCivilization(frame.getCivId(), civ);
     }
 
     private String getImagePath() {

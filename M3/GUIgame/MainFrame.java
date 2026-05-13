@@ -75,30 +75,27 @@ public class MainFrame extends JFrame implements Variables{
         
         loadIcon();
         
-        
         db = new DBConnection();
-        
-        civId = db.GetCivilizationIdByName("MyCivilization");
-        
-        if(civId == -1) {
 
-            civId = db.CreateCivilization("MyCivilization");
+        db.connect();
 
-            civ = new Civilization();
+        civ = db.loadCivilizationComplete("MyCivilization");
+
+        if (civ == null) {
+
+            civ = new Civilization("MyCivilization");
+
+            civ.player();
 
             civ.setFood(8000);
             civ.setWood(3000);
             civ.setIron(1500);
             civ.setMana(0);
 
-            db.UpdateCivilization(civId, civ);
-
-        } else {
-
-        	civ = db.LoadCivilizationComplete(civId);
-
+            db.saveCivilization(civ);
         }
-        
+
+        civId = db.getCivilizationId(civ.getName());
         
         createPanels();
         
@@ -124,9 +121,9 @@ public class MainFrame extends JFrame implements Variables{
 
             public void windowClosing(WindowEvent e) {
 
-                db.UpdateCivilization(civId, civ);
-                db.SaveArmy(civId, civ);
-                db.close();
+            	resources_timer.cancel();
+            	db.saveCivilization(civ);
+            	db.closeConnection();
             }
         });
 
@@ -226,10 +223,11 @@ public class MainFrame extends JFrame implements Variables{
             "+" + mana + " mana"
         );
         if (civId != -1) {
-            db.UpdateCivilization(civId, civ);
+        	db.saveCivilization(civ);
         }
 
     }
+    
     
     private void initializeButtonActions() {
     	
@@ -286,6 +284,15 @@ public class MainFrame extends JFrame implements Variables{
 
             System.out.println("Error loading icon.");
         }
+    }
+    
+    public Civilization getCivilization() {
+        return civ;
+    }
+    
+    public void saveGame() {
+
+        db.saveCivilization(civ);
     }
       
 }
