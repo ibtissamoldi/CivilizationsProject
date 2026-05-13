@@ -1,4 +1,4 @@
-package M3.GUIgame;
+	package M3.GUIgame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
