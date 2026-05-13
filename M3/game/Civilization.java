@@ -16,6 +16,7 @@ import M3.exceptions.ResourceException;
 import java.util.ArrayList;
 
 public class Civilization implements Variables{
+	private String name;
     private int technologyDefense;
 	private int technologyAttack;
 	
@@ -34,7 +35,8 @@ public class Civilization implements Variables{
 
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
 
-	public Civilization() {
+	public Civilization(String name) {
+		this.name = name;
 		this.wood = CIVILIZATION_WOOD_GENERATED;
 		this.iron = CIVILIZATION_IRON_GENERATED;
 		this.food = CIVILIZATION_FOOD_GENERATED;
@@ -48,6 +50,18 @@ public class Civilization implements Variables{
 		
 		this.technologyDefense=0;
 		this.technologyAttack=0;
+	}
+	
+	public void player() {
+		for (int i = 0; i < 9; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
+	}
+	
+	public void enemy() {
+		for (int i = 0; i < 4; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
 	}
 	
 	public int getTechnologyDefense() {
@@ -156,6 +170,7 @@ public class Civilization implements Variables{
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;
 			takeMaterialBuildingCost(WOOD_COST_CHURCH, IRON_COST_CHURCH, FOOD_COST_CHURCH);
+			System.out.println("Ha generado la iglesia");
 		} else {
 			throw new ResourceException("Not enough material to create a church");
 		}

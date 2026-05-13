@@ -10,7 +10,6 @@ public abstract class AttackUnit implements MilitaryUnit, Variables{
 	private boolean sanctified;
 
     public AttackUnit(int armor, int baseDamage) {
-        super();
         this.armor        = armor;
         this.initialArmor = armor;
         this.baseDamage   = baseDamage;

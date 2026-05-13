@@ -35,5 +35,4 @@ public class Magician extends SpecialUnit{
         return CHANCE_ATTACK_AGAIN_MAGICIAN;
     }
     
-    
 }

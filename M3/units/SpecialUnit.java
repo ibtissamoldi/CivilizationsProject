@@ -56,4 +56,8 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
     public void resetArmor() {
         armor = 0;
     }
+    
+    public void setArmor(int n) {
+    	this.armor = n;
+    }
 }
