@@ -19,7 +19,13 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
     public int getArmor() {
         return armor;
     }
-    public int getBaseDamage() {
+    
+    
+    public int getInitialArmor() {
+		return initialArmor;
+	}
+
+	public int getBaseDamage() {
         return baseDamage;
     }
     public void setExperience(int experience) {

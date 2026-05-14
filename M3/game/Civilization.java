@@ -1,6 +1,5 @@
 package M3.game;
 
-import M3.exceptions.*;
 import M3.interfaces.MilitaryUnit;
 import M3.interfaces.Variables;
 import M3.units.attack.Cannon;
@@ -12,6 +11,8 @@ import M3.units.defense.Catapult;
 import M3.units.defense.RocketLauncherTower;
 import M3.units.special.Magician;
 import M3.units.special.Priest;
+import M3.exceptions.ResourceException;
+
 import java.util.ArrayList;
 
 public class Civilization implements Variables{
@@ -46,6 +47,9 @@ public class Civilization implements Variables{
 		this.smithy = 0;
 		this.carpentry = 0;
 		this.battles = 0;
+		
+		this.technologyDefense=0;
+		this.technologyAttack=0;
 	}
 	
 	public void player() {
@@ -147,9 +151,24 @@ public class Civilization implements Variables{
 	public void setCarpentry(int carpentry) {
 		this.carpentry = carpentry;
 	}
+	
+	
+
+	public int getBattles() {
+		return battles;
+	}
+
+	public void setBattles(int battles) {
+		this.battles = battles;
+	}
 
 	public ArrayList<MilitaryUnit>[] getArmy() {
 		return this.army;
+	}
+
+	
+	public String getName() {
+		return name;
 	}
 
 	public void newChurch() throws ResourceException {
@@ -198,29 +217,43 @@ public class Civilization implements Variables{
 	}
 	
 	public void upgradeTechnologyDefense() throws ResourceException {
-		int wood_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST / 100));
-		int iron_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyDefense - 1) * (UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST / 100));
-		if (this.iron >= iron_cost && this.wood >= wood_cost) {
-			this.technologyDefense += 1;
-			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
-		} else {
-			throw new ResourceException("Not enough material to upgrade technology defense");
-		}
+
+	    int wood_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST +
+	            (this.technologyDefense *
+	            (UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST *
+	             UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST / 100));
+
+	    int iron_cost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST +
+	            (this.technologyDefense *
+	            (UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST *
+	             UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST / 100));
+
+	    if (this.iron >= iron_cost && this.wood >= wood_cost) {
+	        this.technologyDefense += 1;
+	        takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+	    } else {
+	        throw new ResourceException("Not enough material to upgrade technology defense");
+	    }
 	}
 
 	public void upgradeTechnologyAttack() throws ResourceException {
-		int wood_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST / 100));
-		int iron_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST + 
-				((int) (this.technologyAttack - 1) * (UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST * UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST / 100));
-		if (this.iron >= iron_cost && this.wood >= wood_cost) {
-			this.technologyAttack += 1;
-			takeMaterialBuildingCost(wood_cost, iron_cost, 0);
-		} else {
-			throw new ResourceException("Not enough material to upgrade technology attack");
-		}
+
+	    int wood_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST +
+	            (this.technologyAttack *
+	            (UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST *
+	             UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST / 100));
+
+	    int iron_cost = UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST +
+	            (this.technologyAttack *
+	            (UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST *
+	             UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST / 100));
+
+	    if (this.iron >= iron_cost && this.wood >= wood_cost) {
+	        this.technologyAttack += 1;
+	        takeMaterialBuildingCost(wood_cost, iron_cost, 0);
+	    } else {
+	        throw new ResourceException("Not enough material to upgrade technology attack");
+	    }
 	}
 	
 	private void takeMaterialBuildingCost(int wood, int iron, int food) {
@@ -235,7 +268,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Swordsman(), unidades)) {
 				if (this.army[0] == null) {
 					army[0] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[0].add(new Swordsman());
 					}
 					if (unidades > 1) {
@@ -248,7 +281,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[0].add(new Swordsman());
 					}
 					if (unidades > 1) {
@@ -274,7 +307,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Spearman(), unidades)) {
 				if (this.army[1] == null) {
 					army[1] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[1].add(new Spearman());
 					}
 					if (unidades > 1) {
@@ -287,7 +320,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[1].add(new Spearman());
 					}
 					if (unidades > 1) {
@@ -313,7 +346,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Crossbow(), unidades)) {
 				if (this.army[2] == null) {
 					army[2] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[2].add(new Crossbow());
 					}
 					if (unidades > 1) {
@@ -326,7 +359,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[2].add(new Crossbow());
 					}
 					if (unidades > 1) {
@@ -352,7 +385,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Cannon(), unidades)) {
 				if (this.army[3] == null) {
 					army[3] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[3].add(new Cannon());
 					}
 					if (unidades > 1) {
@@ -365,7 +398,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[3].add(new Cannon());
 					}
 					if (unidades > 1) {
@@ -391,7 +424,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new ArrowTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[4] == null) {
 					army[4] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -404,7 +437,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[4].add(new ArrowTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -430,7 +463,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Catapult(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[5] == null) {
 					army[5] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -443,7 +476,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[5].add(new Catapult(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -469,7 +502,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new RocketLauncherTower(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[6] == null) {
 					army[6] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -482,7 +515,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[6].add(new RocketLauncherTower(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -508,7 +541,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Magician(this.technologyAttack), unidades)) {
 				if (this.army[7] == null) {
 					army[7] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -521,7 +554,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[7].add(new Magician(this.technologyAttack));
 					}
 					if (unidades > 1) {
@@ -547,7 +580,7 @@ public class Civilization implements Variables{
 			if (checkCostsUnits(new Priest(this.technologyDefense), unidades)) {
 				if (this.army[8] == null) {
 					army[8] = new ArrayList<MilitaryUnit>();
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
@@ -560,7 +593,7 @@ public class Civilization implements Variables{
 					}
 					return;
 				} else {
-					for (int i = 0; i < n; i++) {
+					for (int i = 0; i < unidades; i++) {
 						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
