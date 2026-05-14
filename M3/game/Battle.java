@@ -2,6 +2,7 @@ package M3.game;
 
 import java.util.ArrayList;
 
+import M3.exceptions.ResourceException;
 import M3.interfaces.MilitaryUnit;
 import M3.interfaces.Variables;
 import M3.units.AttackUnit;
@@ -18,9 +19,10 @@ public class Battle implements Variables{
     private ArrayList<MilitaryUnit>[] civilizationArmy = new ArrayList[9];
     private ArrayList<MilitaryUnit>[] enemyArmy = new ArrayList[4];
     private ArrayList<MilitaryUnit>[][] armies = new ArrayList[2][9];
+    private int firstAttacker = -1;
     private int[][] unitsLooses = new int[2][9];
     private String battleDevelopment;
-    private String reportStepStep;
+    private String reportStepStep = "";
     private int initialCostFleet;
     private int initialNumberUnitsCivilization, initialNumberUnitsEnemy;
     private int[] wasteWoodIron = new int[2];
@@ -30,6 +32,7 @@ public class Battle implements Variables{
     private int initialArmies;
     private int actualNumberUnitsCivilization;
     private int actualNumberUnitsEnemy;
+    private int lastUnitEnemy = -1;
 
 	public Battle(ArrayList<MilitaryUnit>[] civilizationArmy, ArrayList<MilitaryUnit>[] enemyArmy, String civil_name, String enemy_name) {
 		this.civil_name = civil_name;
@@ -123,63 +126,80 @@ public class Battle implements Variables{
     }
     
     public void combat() {
-    		int attacker;
-        	int defender;
-        	String attacker_name;
-        	String defender_name;
-        	String step_report = "";
-        	
-        	if ((int) (Math.random() * (0 - 2) + 2) == 0) {
-        		attacker = 0;
-        		defender = 1;
-        		attacker_name = this.civil_name;
-        		defender_name = this.enemy_name;
-        	} else {
-        		attacker = 1;
-        		defender = 0;
-        		attacker_name = this.enemy_name;
-        		defender_name = this.civil_name;
-        	}
-        	
-        	int attackUnit = choiceAttackerUnit(attacker);
-        	int indexAttackingUnit = (int) (Math.random() * (0 - this.armies[attacker][attackUnit].size()) + this.armies[attacker][attackUnit].size());
-        	MilitaryUnit unitAttacking = this.armies[attacker][attackUnit].get(indexAttackingUnit);
-        	
-        	step_report += "\n********************CHANGE ATTACKER********************\n";
-        	
-        	do {
-        		int defenseUnit = choiceDefenseUnit(defender);
-        		int indexDefendingUnit = (int) (Math.random() * (0 - this.armies[defender][defenseUnit].size()) + this.armies[defender][defenseUnit].size());
-            	MilitaryUnit unitDefending = this.armies[defender][defenseUnit].get(indexDefendingUnit);
-            	if (attacker == 0 && this.armies[0][8] != null && !this.armies[0][8].isEmpty()) {
-            		if (unitAttacking instanceof AttackUnit) {
-            			((AttackUnit) unitAttacking).isSanctified();
-            		} else if (unitAttacking instanceof DefenseUnit) {
-            			((DefenseUnit) unitAttacking).isSanctified();
-            		}
-            	}
-        		unitDefending.setArmor(unitDefending.getActualArmor() - unitAttacking.attack());
-        		step_report += "Attacks " + attacker_name + ": " + unitAttacking.getClass().getSimpleName() + " attacks " + unitDefending.getClass().getSimpleName() + 
-        						"\n" + unitAttacking.getClass().getSimpleName() + " damage = "  + unitAttacking.attack() + 
-        						"\n" + unitDefending.getClass().getSimpleName() + " stay with armor: " + unitDefending.getActualArmor() + "\n";
-        		if (unitDefending.getActualArmor() <= 0) {
-            		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
-            		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
-            		countUnits();
-            		updateUnitsLooses(defender, defenseUnit);
-            		updateResourcesLooses(defender, unitDefending);
-            		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
-            			this.wasteWoodIron[0] += unitAttacking.getWoodCost() * PERCENTATGE_WASTE / 100;
-            			this.wasteWoodIron[1] += unitAttacking.getIronCost() * PERCENTATGE_WASTE / 100;
-            		}
-            	}
-        		updateReportStepStep(step_report);
-        		
-        	} while ((int) (Math.random() * 100) <= unitAttacking.getChanceAttackAgain() && !battleIsOver());
-        	
-        	
+    	int attacker;
+        int defender;
+        String attacker_name;
+        String defender_name;
+        if (this.firstAttacker == -1) {
+            this.firstAttacker = (int) (Math.random() * 2);
+        } else {
+            if (this.firstAttacker == 0) {
+                this.firstAttacker = 1;
+            } else {
+                this.firstAttacker = 0;
+            }
+        }
+        attacker = this.firstAttacker;
+        
+        if (attacker == 0) {
+            defender = 1;
+            attacker_name = this.civil_name;
+            defender_name = this.enemy_name;
+        } else {
+            defender = 0;
+            attacker_name = this.enemy_name;
+            defender_name = this.civil_name;
+        }
+		
+    	String step_report = "";
     	
-    	this.battleDevelopment = "";
+    	if (attacker == 0) {
+    		attacker_name = this.civil_name;
+    		defender_name = this.enemy_name;
+    	} else {
+    		attacker_name = this.enemy_name;
+    		defender_name = this.civil_name;
+    	}
+    	
+    	int attackUnit = choiceAttackerUnit(attacker);
+    	int indexAttackingUnit = (int) (Math.random() * (0 - this.armies[attacker][attackUnit].size()) + this.armies[attacker][attackUnit].size());
+    	MilitaryUnit unitAttacking = this.armies[attacker][attackUnit].get(indexAttackingUnit);
+    	
+    	step_report += "\n********************CHANGE ATTACKER********************\n";
+    	
+    	do {
+    		int defenseUnit = choiceDefenseUnit(defender);
+    		int indexDefendingUnit = (int) (Math.random() * (0 - this.armies[defender][defenseUnit].size()) + this.armies[defender][defenseUnit].size());
+        	MilitaryUnit unitDefending = this.armies[defender][defenseUnit].get(indexDefendingUnit);
+        	if (attacker == 0 && this.armies[0][8] != null && !this.armies[0][8].isEmpty()) {
+        		if (unitAttacking instanceof AttackUnit) {
+        			((AttackUnit) unitAttacking).isSanctified();
+        		} else if (unitAttacking instanceof DefenseUnit) {
+        			((DefenseUnit) unitAttacking).isSanctified();
+        		}
+        	}
+    		unitDefending.setArmor(unitDefending.getActualArmor() - unitAttacking.attack());
+    		step_report += "Attacks " + attacker_name + ": " + unitAttacking.getClass().getSimpleName() + " attacks " + unitDefending.getClass().getSimpleName() + 
+    						"\n" + unitAttacking.getClass().getSimpleName() + " damage = "  + unitAttacking.attack() + 
+    						"\n" + unitDefending.getClass().getSimpleName() + " stay with armor: " + unitDefending.getActualArmor() + "\n";
+    		if (unitDefending.getActualArmor() <= 0) {
+        		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
+        		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
+        		countUnits();
+        		updateUnitsLooses(defender, defenseUnit);
+        		updateResourcesLooses(defender, unitDefending);
+        		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
+        			this.wasteWoodIron[0] += unitAttacking.getWoodCost() * PERCENTATGE_WASTE / 100;
+        			this.wasteWoodIron[1] += unitAttacking.getIronCost() * PERCENTATGE_WASTE / 100;
+        		}
+        	}
+    		updateReportStepStep(step_report);
+    		step_report = "";
+    		
+    	} while ((int) (Math.random() * 100) <= unitAttacking.getChanceAttackAgain() && !battleIsOver());
+    	
+    	setBattleDevelopment();
+    	
     }
     
     public void updateResourcesLooses(int bando, MilitaryUnit unit) {
@@ -290,6 +310,77 @@ public class Battle implements Variables{
     	}
     	this.battleDevelopment = row;
 	}
+	
+	public void generateEnemyUnits(Civilization enemy) {
+		int[] final_chance = CHANCE_GENERATE_ENEMY_UNITS;
+		if (this.actualNumberUnitsCivilization < this.actualNumberUnitsEnemy) {
+			final_chance[0] -= 30;
+			final_chance[3] += 30;
+		} else if (enemy.getFood() < 20000 && enemy.getMana() < 20000 && enemy.getWood() < 20000 && enemy.getIron() < 20000) {
+			final_chance[0] += 40;
+			final_chance[1] -= 20;
+			final_chance[2] -= 15;
+			final_chance[3] -= 5;
+		} else if (this.lastUnitEnemy != -1) {
+			for (int i = 0; i < final_chance.length; i++) {
+				if(i == this.lastUnitEnemy) {
+					final_chance[this.lastUnitEnemy] -= 9; 
+				} else {
+					final_chance[i] += 3;
+				}
+			}
+		}
+		
+		int randomNum = (int) (Math.random() * 100);
+		
+    	if (randomNum <= final_chance[0]) {
+    		try {
+				enemy.newSwordsman(99);
+			} catch (ResourceException e) {
+				e.printStackTrace();
+			}
+    	} else if (randomNum <= final_chance[0] + final_chance[1]) {
+    		try {
+				enemy.newSpearman(99);
+			} catch (ResourceException e) {
+				e.printStackTrace();
+				if (e.getMessage().contains("99")) {
+					try {
+						enemy.newSwordsman(99);
+					} catch (ResourceException ee) {
+						ee.printStackTrace();
+					}
+				}
+			}
+    	} else if (randomNum <= final_chance[0] + final_chance[1] + final_chance[2]) {
+    		try {
+				enemy.newCrossbow(99);
+			} catch (ResourceException e) {
+				e.printStackTrace();
+				if (e.getMessage().contains("99")) {
+					try {
+						enemy.newSwordsman(99);
+					} catch (ResourceException ee) {
+						ee.printStackTrace();
+					}
+				}
+			}
+    	} else {
+    		try {
+				enemy.newCannon(99);
+			} catch (ResourceException e) {
+				e.printStackTrace();
+				if (e.getMessage().contains("99")) {
+					try {
+						enemy.newSwordsman(99);
+					} catch (ResourceException ee) {
+						ee.printStackTrace();
+					}
+				}
+			}
+    	}
+	}
+	
 	public int getInitialCostFleet() {
 		return initialCostFleet;
 	}
