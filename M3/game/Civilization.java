@@ -29,7 +29,7 @@ public class Civilization implements Variables{
 	private int farm;
 	private int smithy;
 	private int carpentry;
-
+	
 	private int battles;
 
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
@@ -156,7 +156,6 @@ public class Civilization implements Variables{
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;
 			takeMaterialBuildingCost(WOOD_COST_CHURCH, IRON_COST_CHURCH, FOOD_COST_CHURCH);
-			System.out.println("Ha generado la iglesia");
 		} else {
 			throw new ResourceException("Not enough material to create a church");
 		}
@@ -619,7 +618,6 @@ public class Civilization implements Variables{
 	}
 	
 	private void takeMaterialsForMilitaryUnit(MilitaryUnit m, int n) {
-		// wood iron food mana
 		this.mana =  this.mana - m.getManaCost() * n;
 		this.wood = this.wood - m.getWoodCost() * n;
 		this.food = this.food - m.getFoodCost() * n;

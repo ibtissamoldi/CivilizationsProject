@@ -164,4 +164,6 @@ public interface Variables {
 	public final int[] CHANCE_ATTACK_ENEMY_UNITS = {10,20,30,40};
 	// percentage of waste that will be generated with respect to the cost of the units
 	public final int PERCENTATGE_WASTE = 70;
+	// CHANCE ENEMY GENERATE UNIT
+	public final int[] CHANCE_GENERATE_ENEMY_UNITS = {40,30,20,10};
 }

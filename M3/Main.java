@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) {
     	
 		Civilization civil = new Civilization("Player");
-        System.out.println(civil.getArmy()[0]);
         civil.setFood(10000000);
         civil.setWood(10000000);
         civil.setIron(10000000);
@@ -58,12 +57,6 @@ public class Main {
 		}
         
         try {
-			civil.newCatapult(0);
-		} catch (ResourceException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        try {
 			civil.newMagician(1);
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
@@ -74,8 +67,6 @@ public class Main {
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
 		}
-        
-        System.out.println(civil.getArmy()[8].get(0).getClass().getSimpleName());
         
         Civilization enemigo = new Civilization("Enemy");
         
@@ -123,7 +114,6 @@ public class Main {
     	while (!batalla.battleIsOver()) {
     		batalla.combat();
     	}
-    	batalla.setBattleDevelopment();
     	
 
     	System.out.println("\n\n\n\n\n" + batalla.getReportStepStep());
@@ -131,131 +121,4 @@ public class Main {
     	
     	System.out.println("fin del programa");
     }
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-//        Civilization civil = new Civilization();
-//        System.out.println(civil.getArmy()[0]);
-//        civil.setFood(10000000);
-//        civil.setWood(10000000);
-//        civil.setIron(10000000);
-//        civil.setMana(10000000);
-//        civil.setChurch(0);
-//        civil.setMagicTower(0);
-//        
-//        try {
-//			civil.newSwordsman(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newSpearman(1254);;
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCrossbow(1254);;
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newArrowTower(3000);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCannon(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCatapult(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newMagician(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newPriest(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newSwordsman(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newSpearman(1254);;
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCrossbow(1254);;
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newArrowTower(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCannon(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newCatapult(1254);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newMagician(900);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-//        
-//        try {
-//			civil.newPriest(900);
-//		} catch (ResourceException e) {
-//			System.out.println(e.getMessage());
-//		}
-    
 }
