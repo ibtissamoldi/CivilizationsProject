@@ -3,7 +3,6 @@ package M3.GUIgame.mainPanels;
 import java.awt.BorderLayout;
 
 
-
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -156,8 +155,6 @@ class BuildingPanel extends JPanel implements Variables{
      btn_build.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
     	        buildBuilding();
-    	        frame.saveGame();
-    	        frame.RefreshInterface();
     	    }
     	});
     // cargamos informacion de las tarjetas
@@ -268,6 +265,7 @@ class BuildingPanel extends JPanel implements Variables{
         }
 
         loadBuildingData();  
+        frame.RefreshInterface();
     }
 		
 	

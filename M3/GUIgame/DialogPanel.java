@@ -20,9 +20,9 @@ public class DialogPanel extends JPanel {
 	    setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
 	
 	
-	    info_textarea = new JTextArea("⚔ Game log...",10,50);
+	    info_textarea = new JTextArea(10,50);
 	    info_textarea.setEditable(false);
-	    info_textarea.setBackground(new Color(30, 36, 40));
+	    info_textarea.setBackground(GameColors.PANEL);
 	    info_textarea.setForeground(GameColors.TEXT_DARK);
 	    info_textarea.setCaretColor(GameColors.TEXT);
 	    info_textarea.setFont(new Font("Monospaced", Font.BOLD, 14));

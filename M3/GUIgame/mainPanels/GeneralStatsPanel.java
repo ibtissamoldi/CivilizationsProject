@@ -167,7 +167,7 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         lbl_magician = new JLabel();
         lbl_priest = new JLabel();
 
-        content_panel.add(createStatCard("Mague", lbl_magician, "./M3/images/magician.png", 80, 80));
+        content_panel.add(createStatCard("Magician", lbl_magician, "./M3/images/magician.png", 80, 80));
         content_panel.add(createStatCard("Priest", lbl_priest, "./M3/images/priest.png", 120, 80));
 
         // =========================

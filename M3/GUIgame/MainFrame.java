@@ -26,6 +26,7 @@ import M3.Database.DBConnection;
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
 import M3.GUIgame.mainPanels.GeneralStatsPanel;
 import M3.GUIgame.mainPanels.GeneralTechnologyPanel;
+import M3.GUIgame.mainPanels.ReportsPanel;
 import M3.GUIgame.mainPanels.TopBarPanel;
 import M3.GUIgame.mainPanels.SideMenuPanel;
 import M3.game.Civilization;
@@ -55,6 +56,7 @@ public class MainFrame extends JFrame implements Variables{
     private TechnologysPanel technology_panel;
     private StatsPanel stats_panel;
     private BattlePanel battle_panel;
+    private ReportsPanel reports_panel;
 	
     private DialogPanel dialog_panel;
     
@@ -106,15 +108,15 @@ public class MainFrame extends JFrame implements Variables{
         technology_panel = new TechnologysPanel(civ,this);
         stats_panel = new StatsPanel(civ,this);
         battle_panel = new BattlePanel();
+        reports_panel= new ReportsPanel(civ, this);/*change it to get battle id method from database;*/
         
         
 		
         initializeButtonActions();
-        System.out.println("6 - before GUI");
         SwitchPanel(civilization_panel);
         StartResourcesGeneration();
         
-        dialog_panel.AddMessage("Welcome to Our Civilization!");
+        dialog_panel.AddMessage("⚔ Welcome to Our Civilization!");
         
         
         addWindowListener(new WindowAdapter() {
@@ -267,6 +269,12 @@ public class MainFrame extends JFrame implements Variables{
     			SwitchPanel(battle_panel);
     		}
     		});
+        
+        menu_panel.getBtn_battle_reports().addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			SwitchPanel(reports_panel);
+    		}
+    		});
     }
 
     
@@ -384,8 +392,6 @@ class StatsPanel  extends JPanel {
 	public StatsPanel(Civilization civ,MainFrame frame) {
     setLayout(new BorderLayout());
     setBackground(GameColors.BACKGROUND);
- 
-
     add(new GeneralStatsPanel(civ,frame), BorderLayout.CENTER);
 		    
     }

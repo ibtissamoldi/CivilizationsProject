@@ -26,7 +26,7 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             conn = DriverManager.getConnection(
-            		"jdbc:mysql://172.25.184.104:3306/civilizations?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+            		"jdbc:mysql://localhost:3307/civilizations?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
             		"civ_user",
             		"bichos2.0");
             System.out.println("Database connected.");

@@ -1,0 +1,27 @@
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">⚔</span>
+      <span class="logo-text">CIVILIZATIONS</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link {{#if isHome}}active{{/if}}">
+        <span class="nav-icon">🏰</span> Inici
+      </a></li>
+      <li><a href="/batalles" class="nav-link {{#if isBatalles}}active{{/if}}">
+        <span class="nav-icon">⚔</span> Batalles
+      </a></li>
+      <li><a href="/civilitzacio" class="nav-link {{#if isCivilitzacio}}active{{/if}}">
+        <span class="nav-icon">🌍</span> Civilització
+      </a></li>
+      <li><a href="/programadors" class="nav-link {{#if isProgramadors}}active{{/if}}">
+        <span class="nav-icon">👥</span> Programadors
+      </a></li>
+    </ul>
+  </div>
+</nav>
