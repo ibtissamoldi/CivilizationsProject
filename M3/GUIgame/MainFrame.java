@@ -22,6 +22,7 @@ import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import M3.Database.DBConnection;
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
 import M3.GUIgame.mainPanels.GeneralStatsPanel;
 import M3.GUIgame.mainPanels.GeneralTechnologyPanel;
@@ -29,6 +30,8 @@ import M3.GUIgame.mainPanels.TopBarPanel;
 import M3.GUIgame.mainPanels.SideMenuPanel;
 import M3.game.Civilization;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame implements Variables{
 	
@@ -60,6 +63,9 @@ public class MainFrame extends JFrame implements Variables{
 	private Timer resources_timer;
 	private TimerTask resources_task;
 	
+    private DBConnection db;
+    private int civId = -1;
+	
 
     public MainFrame() {
     	
@@ -69,12 +75,27 @@ public class MainFrame extends JFrame implements Variables{
         
         loadIcon();
         
-        civ = new Civilization();
-        
-        civ.setFood(10000);
-        civ.setWood(13000);
-        civ.setIron(10000);
-        civ.setMana(0);
+        db = new DBConnection();
+
+        db.connect();
+
+        civ = db.loadCivilizationComplete("MyCivilization");
+
+        if (civ == null) {
+
+            civ = new Civilization("MyCivilization");
+
+            civ.player();
+
+            civ.setFood(8000);
+            civ.setWood(3000);
+            civ.setIron(1500);
+            civ.setMana(0);
+
+            db.saveCivilization(civ);
+        }
+
+        civId = db.getCivilizationId(civ.getName());
         
         createPanels();
         
@@ -89,14 +110,39 @@ public class MainFrame extends JFrame implements Variables{
         
 		
         initializeButtonActions();
+        System.out.println("6 - before GUI");
         SwitchPanel(civilization_panel);
         StartResourcesGeneration();
         
-        //dialog_panel.AddMessage("Welcome to Our Civilization!");
+        dialog_panel.AddMessage("Welcome to Our Civilization!");
+        
+        
+        addWindowListener(new WindowAdapter() {
+
+            public void windowClosing(WindowEvent e) {
+
+            	resources_timer.cancel();
+            	db.saveCivilization(civ);
+            	db.closeConnection();
+            }
+        });
 
         setVisible(true);
     }
-    private void createPanels() {
+    
+    
+    public DBConnection getDb() {
+		return db;
+	}
+    
+
+
+	public int getCivId() {
+		return civId;
+	}
+
+
+	private void createPanels() {
     	main_panel = new JPanel(new BorderLayout());
         main_panel.setBackground(new Color(30, 36, 40));
         
@@ -148,7 +194,7 @@ public class MainFrame extends JFrame implements Variables{
             }
         };
 
-        resources_timer.scheduleAtFixedRate(resources_task, 0, 60000);
+        resources_timer.scheduleAtFixedRate(resources_task, 60000, 60000);
     }
     
     private void GenerateResources() {
@@ -176,7 +222,12 @@ public class MainFrame extends JFrame implements Variables{
             "+" + iron + " iron | " +
             "+" + mana + " mana"
         );
+        if (civId != -1) {
+        	db.saveCivilization(civ);
+        }
+
     }
+    
     
     private void initializeButtonActions() {
     	
@@ -233,6 +284,15 @@ public class MainFrame extends JFrame implements Variables{
 
             System.out.println("Error loading icon.");
         }
+    }
+    
+    public Civilization getCivilization() {
+        return civ;
+    }
+    
+    public void saveGame() {
+
+        db.saveCivilization(civ);
     }
       
 }

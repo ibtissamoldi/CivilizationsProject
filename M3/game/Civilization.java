@@ -16,6 +16,7 @@ import M3.exceptions.ResourceException;
 import java.util.ArrayList;
 
 public class Civilization implements Variables{
+	private String name;
     private int technologyDefense;
 	private int technologyAttack;
 	
@@ -34,7 +35,8 @@ public class Civilization implements Variables{
 
 	private ArrayList<MilitaryUnit>[] army = new ArrayList[9];
 
-	public Civilization() {
+	public Civilization(String name) {
+		this.name = name;
 		this.wood = CIVILIZATION_WOOD_GENERATED;
 		this.iron = CIVILIZATION_IRON_GENERATED;
 		this.food = CIVILIZATION_FOOD_GENERATED;
@@ -48,6 +50,18 @@ public class Civilization implements Variables{
 		
 		this.technologyDefense=0;
 		this.technologyAttack=0;
+	}
+	
+	public void player() {
+		for (int i = 0; i < 9; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
+	}
+	
+	public void enemy() {
+		for (int i = 0; i < 4; i++) {
+			this.army[i] = new ArrayList<MilitaryUnit>();
+		}
 	}
 	
 	public int getTechnologyDefense() {
@@ -137,15 +151,31 @@ public class Civilization implements Variables{
 	public void setCarpentry(int carpentry) {
 		this.carpentry = carpentry;
 	}
+	
+	
+
+	public int getBattles() {
+		return battles;
+	}
+
+	public void setBattles(int battles) {
+		this.battles = battles;
+	}
 
 	public ArrayList<MilitaryUnit>[] getArmy() {
 		return this.army;
+	}
+
+	
+	public String getName() {
+		return name;
 	}
 
 	public void newChurch() throws ResourceException {
 		if (this.wood >= WOOD_COST_CHURCH && this.iron >= IRON_COST_CHURCH && this.food >= FOOD_COST_CHURCH) {
 			this.church += 1;
 			takeMaterialBuildingCost(WOOD_COST_CHURCH, IRON_COST_CHURCH, FOOD_COST_CHURCH);
+			System.out.println("Ha generado la iglesia");
 		} else {
 			throw new ResourceException("Not enough material to create a church");
 		}
@@ -548,11 +578,11 @@ public class Civilization implements Variables{
 	public void newPriest(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Priest(), unidades)) {
+			if (checkCostsUnits(new Priest(this.technologyDefense), unidades)) {
 				if (this.army[8] == null) {
 					army[8] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");
@@ -565,7 +595,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[8].add(new Priest());
+						this.army[8].add(new Priest(this.technologyDefense));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " priests successfully created");

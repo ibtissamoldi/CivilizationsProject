@@ -18,7 +18,6 @@
 /SideMenuPanel.class
 /StatsPanel.class
 /TopBarPanel.class
-<<<<<<< Updated upstream
 /DialogPanel.class
 /GameLog.class
 /MainFrame$6.class
@@ -53,8 +52,7 @@
 /MainFrame$7.class
 /MainFrame$1$1.class
 /StatsPanel$BattlePanel.class
-=======
+/MainFrame$8.class
 /BuildingPanel.class
 /DialogPanel.class
 /GeneralBuildingPanel.class
->>>>>>> Stashed changes

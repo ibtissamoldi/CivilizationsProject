@@ -102,7 +102,7 @@ public class UnitPanel extends JPanel{
             unit = new Magician(civ.getTechnologyAttack());
             break;
         case "Priest":
-            unit = new Priest();
+            unit = new Priest(civ.getTechnologyDefense());
             break;
         }
         
@@ -202,6 +202,8 @@ public class UnitPanel extends JPanel{
         btn_recruit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RecruitUnit();
+                frame.saveGame();
+                frame.RefreshInterface();
             }
         });        
     }
@@ -302,6 +304,7 @@ public class UnitPanel extends JPanel{
     		GameLog.info(quantity + " " + unit_type + " recruited!");
             UpdateInfo();
             frame.RefreshInterface();
+            
             
     	} catch (ResourceException e) {
     		

@@ -1,6 +1,7 @@
 package M3.interfaces;
 
 public interface Variables {
+	public final String[] UNITS_NAMES = {"Swordsman", "Spearman", "CrossBow", "Cannon", "Arrow Tower", "Catapult", "Rocket Launcher Tower", "Magician", "Priest"};
     // resources available to create the first enemy fleet
 	public final int IRON_BASE_ENEMY_ARMY = 26000;
 	public final int WOOD_BASE_ENEMY_ARMY = 180000;
@@ -92,7 +93,9 @@ public interface Variables {
 	public final int BASE_DAMAGE_ARROWTOWER = 80;
 	public final int BASE_DAMAGE_CATAPULT = 250;
 	public final int BASE_DAMAGE_ROCKETLAUNCHERTOWER = 2000;
+	// BASE DAMAGE SPECIAL UNITS
 	public final int BASE_DAMAGE_MAGICIAN = 3000;
+	public final int BASE_DAMAGE_PRIEST = 250;
 	// ARMOR ATTACK UNITS
 	public final int ARMOR_SWORDSMAN = 400;
 	public final int ARMOR_SPEARMAN = 1000;
@@ -102,6 +105,9 @@ public interface Variables {
 	public final int ARMOR_ARROWTOWER = 200;
 	public final int ARMOR_CATAPULT = 1200;
 	public final int ARMOR_ROCKETLAUNCHERTOWER = 7000;
+	// BASE DAMAGE SPECIAL UNITS
+	public final int ARMOR_MAGICIAN = 400;
+	public final int ARMOR_PRIEST = 7500;
 	//Attack Units armor increase percentage per tech level
 	public final int PLUS_ARMOR_SWORDSMAN_BY_TECHNOLOGY = 5;
 	public final int PLUS_ARMOR_SPEARMAN_BY_TECHNOLOGY = 5;
