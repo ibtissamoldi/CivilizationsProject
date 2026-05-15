@@ -6,7 +6,7 @@ import M3.interfaces.Variables;
 
 
 import java.awt.BorderLayout;
-
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import M3.Database.DBConnection;
+import M3.GUIgame.Battlepanels.MainBattlePanel;
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
 import M3.GUIgame.mainPanels.GeneralStatsPanel;
 import M3.GUIgame.mainPanels.GeneralTechnologyPanel;
@@ -400,8 +401,44 @@ class StatsPanel  extends JPanel {
 
 
 class BattlePanel  extends JPanel {
-	public BattlePanel() {
+	private JPanel startPanel;
+    private MainBattlePanel mainBattlePanel;
 
+    public BattlePanel() {
+
+        setLayout(new BorderLayout());
         setBackground(GameColors.PANEL);
+
+        buildStartPanel();
+    }
+
+    private void buildStartPanel() {
+
+        startPanel = new JPanel();
+        startPanel.setBackground(GameColors.PANEL);
+
+        JButton btnStart = new JButton("START BATTLE");
+
+        btnStart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	switchToMainBattle();
+            }
+        });
+
+        startPanel.add(btnStart);
+
+        add(startPanel, BorderLayout.CENTER);
+    }
+
+    private void switchToMainBattle() {
+
+        removeAll();
+
+        mainBattlePanel = new MainBattlePanel();
+
+        add(mainBattlePanel, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
     }
 }
