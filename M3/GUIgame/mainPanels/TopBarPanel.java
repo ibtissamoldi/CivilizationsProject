@@ -171,9 +171,14 @@ public class TopBarPanel extends JPanel {
 	            if(time_left <= 0) {
 
 	                lbl_threat.setText("⚔ ENEMIES ATTACKING!");
-
-	                timer.cancel();
+	                
+	                time_left = 180;
+	                //timer.cancel();
 	            }
+	            if(time_left == 179) {
+	                lbl_threat.setText("No enemies detected");
+	            }
+	            
 	        }
 	    };
 

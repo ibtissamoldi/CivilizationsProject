@@ -27,9 +27,10 @@ public class SideMenuPanel extends JPanel {
 	private  JButton btn_technology;
 	private  JButton btn_Stats;
 	private  JButton btn_Battles;
+	private  JButton btn_battle_reports;
     
     public SideMenuPanel() {
-    	setLayout(new GridLayout(6,1,5,5));
+    	setLayout(new GridLayout(7,1,5,5));
     	setBackground(new Color(235,243,231));
         setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         
@@ -53,7 +54,7 @@ public class SideMenuPanel extends JPanel {
                         BorderFactory.createEmptyBorder(5, 15, 5, 15)));*/
         btn_civilization.setFocusPainted(false);
         btn_civilization.setBorderPainted(false);
-        btn_civilization.setBackground(new Color(235,243,231));
+        btn_civilization.setBackground(GameColors.PANEL);
         btn_civilization.setPreferredSize(new Dimension(140, 40));
         
         btn_Army = createMenuButton("Army");
@@ -61,6 +62,7 @@ public class SideMenuPanel extends JPanel {
         btn_technology = createMenuButton("Technology");
         btn_Stats = createMenuButton("Stats");
         btn_Battles = createMenuButton("Battles");
+        btn_battle_reports = createMenuButton("Reports");
         
         
         add(btn_civilization);
@@ -69,12 +71,20 @@ public class SideMenuPanel extends JPanel {
         add(btn_Buildings);
         add(btn_Stats);
         add(btn_Battles);
+        add(btn_battle_reports);
     }
     
     
     
     
-    public JButton getBtn_civilization() {
+    public JButton getBtn_battle_reports() {
+		return btn_battle_reports;
+	}
+
+
+
+
+	public JButton getBtn_civilization() {
 		return btn_civilization;
 	}
 
