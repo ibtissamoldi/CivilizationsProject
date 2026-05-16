@@ -58,4 +58,9 @@ public class CenterFightPanel extends JPanel {
 
         repaint();
     }
+    
+    
+    public void test() {
+    	
+    }
 }
