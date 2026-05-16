@@ -202,11 +202,7 @@ public class Battle implements Variables{
     			unitAttacking.setExperience(unitAttacking.getExperience() + 10);
         		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
         		currentDefender = null;
-        		if (defender == 0) {
-        		    actualNumberUnitsCivilization--;
-        		} else {
-        		    actualNumberUnitsEnemy--;
-        		}
+                countUnits();
         		updateUnitsLooses(defender, defenseUnit);
         		updateResourcesLooses(defender, unitDefending);
         		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
