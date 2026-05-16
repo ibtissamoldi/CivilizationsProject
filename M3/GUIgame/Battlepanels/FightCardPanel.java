@@ -23,7 +23,7 @@ public class FightCardPanel extends JPanel{
     public FightCardPanel() {
 
         setLayout(new GridLayout(4,1));
-        setPreferredSize(new Dimension(180,220));
+        setPreferredSize(new Dimension(180,260));
         setBackground(new Color(70,90,70));
         setOpaque(false);
 
@@ -87,7 +87,7 @@ public class FightCardPanel extends JPanel{
         Image img =
                 new ImageIcon(imagePath)
                 .getImage()
-                .getScaledInstance(80,80,Image.SCALE_SMOOTH);
+                .getScaledInstance(60,60,Image.SCALE_SMOOTH);
 
         image.setIcon(new ImageIcon(img));
 

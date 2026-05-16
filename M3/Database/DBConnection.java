@@ -197,8 +197,8 @@ public class DBConnection {
         ps.setInt(8, civ.getSmithy());
         ps.setInt(9, civ.getCarpentry());
         
-        ps.setInt(10, civ.getTechnologyAttack());
-        ps.setInt(11, civ.getTechnologyDefense());
+        ps.setInt(10, civ.getTechnologyDefense());
+        ps.setInt(11, civ.getTechnologyAttack());
         
         ps.setInt(12, civ.getBattles());
 

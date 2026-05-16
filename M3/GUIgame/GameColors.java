@@ -14,14 +14,9 @@ public class GameColors {
     public static final Color MANA = new Color(102, 178, 255);
 
 
-    public static final Color ENEMY_PANEL =
-    	    new Color(55, 32, 40);
-
-    	public static final Color ENEMY_BORDER =
-    	    new Color(170, 70, 120);
-
-    	public static final Color ENEMY_HIGHLIGHT =
-    	    new Color(210, 90, 150);
+    public static final Color ENEMY_PANEL =new Color(55, 32, 40);
+    public static final Color ENEMY_BORDER =new Color(170, 70, 120);
+    public static final Color ENEMY_HIGHLIGHT =new Color(210, 90, 150);
 
     public static final Color GOLD = new Color(136, 78, 147);
     public static final Color GOLD_HOVER = new Color(235, 205, 90);

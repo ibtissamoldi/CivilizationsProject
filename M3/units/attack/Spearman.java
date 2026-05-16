@@ -10,7 +10,6 @@ public class Spearman extends AttackUnit {
         );
     }
 
-     /*2nd constructor..*/
     public Spearman() {
         super(ARMOR_SPEARMAN, BASE_DAMAGE_SPEARMAN);
     } 
