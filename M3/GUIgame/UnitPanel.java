@@ -211,31 +211,31 @@ public class UnitPanel extends JPanel{
 	private String getImagePath() {
         switch (unit_type) {
             case "Swordsman":
-                return "./M3/images/swordsman.png";
+                return "./M3/images/swordsman_civ.png";
 
             case "Spearman":
-                return "./M3/images/spearman.png";
+                return "./M3/images/spearman_civ.png";
 
             case "Crossbow":
-                return "./M3/images/crossbow.png";
+                return "./M3/images/crossbow_civ.png";
 
             case "Cannon":
-                return "./M3/images/cannon.png";
+                return "./M3/images/cannon_civ.png";
 
             case "ArrowTower":
-                return "./M3/images/arrowTower.png";
+                return "./M3/images/arrowTower_civ.png";
                 
             case "Catapult":
-            	return "./M3/images/catapult.png";
+            	return "./M3/images/catapult_civ.png";
 
             case "RocketLauncherTower":
-                return "./M3/images/rocketLauncherTower.png";
+                return "./M3/images/rocketLauncherTower_civ.png";
 
             case "Magician":
-                return "./M3/images/magician.png";
+                return "./M3/images/magician_civ.png";
 
             case "Priest":
-                return "./M3/images/priest.png";
+                return "./M3/images/priest_civ.png";
 
 
              

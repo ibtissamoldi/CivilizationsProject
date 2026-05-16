@@ -138,9 +138,9 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         lbl_catapult = new JLabel();
         lbl_rocketLauncher = new JLabel();
 
-        content_panel.add(createStatCard("Arrow Tower", lbl_arrowTower, "./M3/images/arrowTower.png", 80, 80));
-        content_panel.add(createStatCard("Catapult", lbl_catapult, "./M3/images/catapult.png", 80, 80));
-        content_panel.add(createStatCard("Rocket Launcher", lbl_rocketLauncher, "./M3/images/rocketLauncherTower.png", 80, 80));
+        content_panel.add(createStatCard("Arrow Tower", lbl_arrowTower, "./M3/images/arrowTower_civ.png", 80, 80));
+        content_panel.add(createStatCard("Catapult", lbl_catapult, "./M3/images/catapult_civ.png", 80, 80));
+        content_panel.add(createStatCard("Rocket Launcher", lbl_rocketLauncher, "./M3/images/rocketLauncherTower_civ.png", 80, 80));
 
         // =========================
         // ATTACK UNITS
@@ -153,10 +153,10 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         lbl_crossbow = new JLabel();
         lbl_cannon = new JLabel();
 
-        content_panel.add(createStatCard("Swordsman", lbl_swordsman, "./M3/images/swordsman.png", 80, 80));
-        content_panel.add(createStatCard("Spearman", lbl_spearman, "./M3/images/spearman.png", 80, 80));
-        content_panel.add(createStatCard("Crossbow", lbl_crossbow, "./M3/images/crossbow.png", 80, 80));
-        content_panel.add(createStatCard("Cannon", lbl_cannon, "./M3/images/cannon.png", 80, 80));
+        content_panel.add(createStatCard("Swordsman", lbl_swordsman, "./M3/images/swordsman_civ.png", 80, 80));
+        content_panel.add(createStatCard("Spearman", lbl_spearman, "./M3/images/spearman_civ.png", 80, 80));
+        content_panel.add(createStatCard("Crossbow", lbl_crossbow, "./M3/images/crossbow_civ.png", 80, 80));
+        content_panel.add(createStatCard("Cannon", lbl_cannon, "./M3/images/cannon_civ.png", 80, 80));
 
         // =========================
         // SPECIAL UNITS
