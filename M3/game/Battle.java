@@ -214,7 +214,6 @@ public class Battle implements Variables{
     		
     	} while ((int) (Math.random() * 100) <= unitAttacking.getChanceAttackAgain() && !battleIsOver());
     	
-    	resetAllUnitsArmor();
     	setBattleDevelopment();
     	
     }
@@ -268,29 +267,7 @@ public class Battle implements Variables{
     
  
     
-    public void resetAllUnitsArmor() {
-
-        for(int i = 0; i < civilizationArmy.length; i++) {
-            if(civilizationArmy[i] != null) {
-
-                for(MilitaryUnit unit : civilizationArmy[i]) {
-
-                    unit.resetArmor();
-                }
-            }
-        }
-
-        for(int i = 0; i < enemyArmy.length; i++) {
-
-            if(enemyArmy[i] != null) {
-
-                for(MilitaryUnit unit : enemyArmy[i]) {
-
-                    unit.resetArmor();
-                }
-            }
-        }
-    }
+    
 	public String getReportStepStep() {
 		return reportStepStep;
 	}

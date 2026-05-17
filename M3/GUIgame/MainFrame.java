@@ -148,10 +148,10 @@ public class MainFrame extends JFrame implements Variables{
 
         try {
 
-            civ.newSwordsman(10);
-            civ.newSpearman(10);
-            civ.newCrossbow(10);
-            civ.newCannon(5);
+            civ.newSwordsman(5);
+            civ.newSpearman(5);
+            civ.newCrossbow(5);
+            civ.newCannon(2);
 
             civ.newArrowTower(3);
             civ.newCatapult(2);
