@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import M3.Database.DBConnection;
+import M3.GUIgame.Battlepanels.CenterFightPanel;
 import M3.GUIgame.Battlepanels.MainBattlePanel;
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
 import M3.GUIgame.mainPanels.GeneralStatsPanel;
@@ -37,6 +38,7 @@ import M3.game.Civilization;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 
 public class MainFrame extends JFrame implements Variables{
 	
@@ -86,20 +88,19 @@ public class MainFrame extends JFrame implements Variables{
         db.connect();
 
         civ = db.loadCivilizationComplete("MyCivilization");
+        
 
         if (civ == null) {
 
             civ = new Civilization("MyCivilization");
 
             civ.player();
-
-            civ.setFood(8000);
-            civ.setWood(3000);
-            civ.setIron(1500);
-            civ.setMana(0);
+            
+            
 
             db.saveCivilization(civ);
         }
+        setupDebugCivilization();
 
         civId = db.getCivilizationId(civ.getName());
         
@@ -111,7 +112,7 @@ public class MainFrame extends JFrame implements Variables{
         civilization_panel = new CivilizationPanel();
         technology_panel = new TechnologysPanel(civ,this);
         stats_panel = new StatsPanel(civ,this);
-        battle_panel = new BattlePanel();
+        battle_panel = new BattlePanel(civ);
         reports_panel= new ReportsPanel(civ, this);/*change it to get battle id method from database;*/
         
         
@@ -134,6 +135,38 @@ public class MainFrame extends JFrame implements Variables{
         });
 
         setVisible(true);
+    }
+    
+    
+    
+    private void setupDebugCivilization() {
+
+        civ.setFood(999999);
+        civ.setWood(999999);
+        civ.setIron(999999);
+        civ.setMana(999999);
+
+        try {
+
+            civ.newSwordsman(5);
+            civ.newSpearman(5);
+            civ.newCrossbow(5);
+            civ.newCannon(2);
+
+            civ.newArrowTower(3);
+            civ.newCatapult(2);
+            civ.newRocketLauncher(1);
+
+            civ.newChurch();
+            civ.newMagicTower();
+            
+            civ.newMagician(1);
+            civ.newPriest(1);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
     
     
@@ -406,9 +439,14 @@ class StatsPanel  extends JPanel {
 class BattlePanel  extends BackgroundPanel   {
 	private JPanel startPanel;
     private MainBattlePanel mainBattlePanel;
+    
+    private Civilization civ;
+    
+    
 
-    public BattlePanel() {
+    public BattlePanel(Civilization civ) {
     	super("./M3/images/battlebg.png");
+    	this.civ = civ;
     	
         setLayout(new BorderLayout());
         
@@ -450,10 +488,10 @@ class BattlePanel  extends BackgroundPanel   {
 
     	removeAll();
 
-        mainBattlePanel = new MainBattlePanel();
+    	mainBattlePanel = new MainBattlePanel(civ);
+        
 
         add(mainBattlePanel, BorderLayout.CENTER);
-
         revalidate();
         repaint();
     }

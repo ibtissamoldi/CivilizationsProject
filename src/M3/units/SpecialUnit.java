@@ -15,7 +15,6 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
         this.experience = 0;
     }
 
-    //getters and setters
     public int getArmor() {
         return armor;
     }
@@ -32,7 +31,6 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
         this.experience = experience;
     }
 
-    //common methods
     public int getExperience() {
         return experience;
     }
@@ -47,6 +45,9 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
 
     public void takeDamage(int receivedDamage) {
         armor -= receivedDamage;
+        if(armor < 0) {
+	        armor = 0;
+	    }
     }
 
     public int getActualArmor() {

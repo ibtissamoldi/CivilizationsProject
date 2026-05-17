@@ -12,7 +12,6 @@ public class Crossbow extends AttackUnit{
 
     }
 
-    /*2nd constructor..*/
     public Crossbow() {
         super(ARMOR_CROSSBOW, BASE_DAMAGE_CROSSBOW);
     } 

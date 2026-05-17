@@ -116,7 +116,7 @@ public class TopBarPanel extends JPanel {
         threat_panel.add(threat_title, BorderLayout.NORTH);
         threat_panel.add(lbl_threat, BorderLayout.CENTER);
         
-        resources_panel.setPreferredSize(new Dimension(350, 30));
+        resources_panel.setPreferredSize(new Dimension(400, 40));
         timer_panel.setPreferredSize(new Dimension(200, 30));
         threat_panel.setPreferredSize(new Dimension(170, 30));
         
