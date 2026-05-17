@@ -199,7 +199,6 @@ public class Battle implements Variables{
     						"\n" + unitDefending.getClass().getSimpleName() + " stay with armor: " + unitDefending.getActualArmor() + "\n";
     		if (unitDefending.getActualArmor() <= 0) {
         		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
-    			unitAttacking.setExperience(unitAttacking.getExperience() + 10);
         		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
         		currentDefender = null;
                 countUnits();
@@ -266,6 +265,8 @@ public class Battle implements Variables{
     	}
     	this.actualNumberUnitsEnemy = count;
     }
+    
+ 
     
     public void resetAllUnitsArmor() {
 
