@@ -1,8 +1,7 @@
 package M3.GUIgame.mainPanels;
 
 import java.awt.BorderLayout;
-
-
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -69,7 +68,9 @@ class TechnologyPanel extends JPanel implements Variables {
     private JLabel lbl_image;
 
     private JLabel lbl_level;
-    private JLabel lbl_cost;
+
+    private JLabel lbl_ironcost;
+    private JLabel lbl_woodcost;
 
     private JButton btn_upgrade;
 
@@ -87,9 +88,7 @@ class TechnologyPanel extends JPanel implements Variables {
 
         setLayout(new BorderLayout());
         
-        //-------------
-        //TITULO
-       //-------------
+  
         JLabel title = new JLabel(technology_type);
         title.setForeground(GameColors.TEXT);
         title.setFont(new Font("Serif", Font.BOLD, 15));
@@ -102,9 +101,7 @@ class TechnologyPanel extends JPanel implements Variables {
 
         setBackground(GameColors.PANEL);
 
-        // =========================
-        // IMAGEN
-        // =========================
+    
 
         try {
             String image_path = getImagePath();
@@ -129,31 +126,53 @@ class TechnologyPanel extends JPanel implements Variables {
             add(lbl_image, BorderLayout.CENTER);
         }
 
-        // =========================
-        // PANEL DE INFORMACIÓN
-        // =========================
+ 
 
-        JPanel info_panel = new JPanel(new GridLayout(2, 1, 5, 10));
+        JPanel info_panel = new JPanel(new GridLayout(3, 2, 25, 10));
         info_panel.setBackground(GameColors.PANEL);
+        info_panel.setBorder(
+        	    BorderFactory.createEmptyBorder(10, 25, 10, 25)
+        	);
+
+        Color labelColor = new Color(190,180,160);
+        Color valueColor = new Color(245,230,190);
+
+        Font statFont = new Font("Arial", Font.BOLD, 13);
+
+        JLabel lbl_level_text = new JLabel("Level:");
+        lbl_level_text.setForeground(labelColor);
+        lbl_level_text.setFont(statFont);
 
         lbl_level = new JLabel();
-        lbl_cost = new JLabel();
+        lbl_level.setForeground(valueColor);
+        lbl_level.setFont(statFont);
 
-        lbl_level.setForeground(GameColors.TEXT);
-        lbl_cost.setForeground(GameColors.TEXT);
-        
-        lbl_level.setHorizontalAlignment(JLabel.CENTER);
-        lbl_cost.setHorizontalAlignment(JLabel.CENTER);
-        
-        lbl_level.setFont(new Font("Serif", Font.BOLD, 15));
-        lbl_cost.setFont(new Font("Serif", Font.BOLD, 14));
+        JLabel lbl_iron_text = new JLabel("Iron Cost:");
+        lbl_iron_text.setForeground(labelColor);
+        lbl_iron_text.setFont(statFont);
 
+        lbl_ironcost = new JLabel();
+        lbl_ironcost.setForeground(GameColors.IRON);
+        lbl_ironcost.setFont(statFont);
+
+        JLabel lbl_wood_text = new JLabel("Wood Cost:");
+        lbl_wood_text.setForeground(labelColor);
+        lbl_wood_text.setFont(statFont);
+
+        lbl_woodcost = new JLabel();
+        lbl_woodcost.setForeground(GameColors.WOOD);
+        lbl_woodcost.setFont(statFont);
+
+        info_panel.add(lbl_level_text);
         info_panel.add(lbl_level);
-        info_panel.add(lbl_cost);
 
-        // =========================
-        // BOTÓN
-        // =========================
+        info_panel.add(lbl_iron_text);
+        info_panel.add(lbl_ironcost);
+
+        info_panel.add(lbl_wood_text);
+        info_panel.add(lbl_woodcost);
+
+
 
         JPanel bottom_panel = new JPanel();
         bottom_panel.setBackground(GameColors.PANEL);
@@ -168,9 +187,6 @@ class TechnologyPanel extends JPanel implements Variables {
         
        
 
-        // =========================
-        // PANEL INFERIOR
-        // =========================
 
         JPanel south_panel = new JPanel(new BorderLayout());
         south_panel.setBackground(GameColors.PANEL);
@@ -180,9 +196,7 @@ class TechnologyPanel extends JPanel implements Variables {
 
         add(south_panel, BorderLayout.SOUTH);
 
-        // =========================
-        // ACTION LISTENER
-        // =========================
+      
 
         btn_upgrade.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -197,21 +211,20 @@ class TechnologyPanel extends JPanel implements Variables {
     }
 
     private void loadTechnologyData() {
-    	//hablar el coste real porque en civilizacion se empieza de 0
 
         switch (technology_type) {
 
             case "ATTACK TECHNOLOGY":
-            	 lbl_level.setText("Level: " + civ.getTechnologyAttack());
-                 lbl_cost.setText("Cost: " +(int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyAttack() + 1))+
-                 		" iron " + (int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST/100.0 *civ.getTechnologyAttack() + 1)) + " wood" );
+            	 lbl_level.setText(String.valueOf(civ.getTechnologyAttack()));
+            	 lbl_ironcost.setText(String.valueOf((int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyAttack() + 1))));
+            	 lbl_woodcost.setText(String.valueOf((int)(UPGRADE_BASE_ATTACK_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_ATTACK_TECHNOLOGY_WOOD_COST/100.0 *civ.getTechnologyAttack() + 1))));
                  break;
                 
 
             case "DEFENSE TECHNOLOGY":
-                lbl_level.setText("Level: " + civ.getTechnologyDefense());
-                lbl_cost.setText("Cost: " +(int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyDefense() + 1))+
-                		" iron " + (int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST/100.0 * civ.getTechnologyDefense() + 1)) + " wood" );
+                lbl_level.setText(String.valueOf(civ.getTechnologyDefense()));
+                lbl_ironcost.setText(String.valueOf((int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_IRON_COST/100.0 * civ.getTechnologyDefense() + 1))));
+                lbl_woodcost.setText(String.valueOf((int)(UPGRADE_BASE_DEFENSE_TECHNOLOGY_WOOD_COST*(UPGRADE_PLUS_DEFENSE_TECHNOLOGY_WOOD_COST/100.0 * civ.getTechnologyDefense() + 1))));
                 break;
         }
     }
@@ -251,9 +264,7 @@ class TechnologyPanel extends JPanel implements Variables {
 
             case "DEFENSE TECHNOLOGY":
                 return "./M3/images/defense_technology.png";
-
-           
-               
+ 
         }
         return "";
     }

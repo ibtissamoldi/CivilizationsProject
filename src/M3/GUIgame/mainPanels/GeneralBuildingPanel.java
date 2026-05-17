@@ -1,8 +1,7 @@
 package M3.GUIgame.mainPanels;
 
 import java.awt.BorderLayout;
-
-
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -60,7 +59,11 @@ class BuildingPanel extends JPanel implements Variables{
 	
 	private JTextField field_quantity;
 	
-	private JLabel lbl_count,lbl_effect,lbl_cost;
+	private JLabel lbl_count,lbl_effect;
+	
+	private JLabel lbl_foodcost;
+	private JLabel lbl_woodcost;
+	private JLabel lbl_ironcost;
 
    
     private JButton btn_build;
@@ -102,20 +105,57 @@ class BuildingPanel extends JPanel implements Variables{
 
 
      // Panel central con textos
-     JPanel center_panel = new JPanel(new GridLayout(3, 1));
+     JPanel center_panel = new JPanel(new GridLayout(5, 2, 5, 5));
      center_panel.setBackground(GameColors.PANEL);
 
+     JLabel lbl_count_text = new JLabel("Buildings:");
+     lbl_count_text.setForeground(new Color(190,180,160));
+     
      lbl_count = new JLabel();
+     lbl_count.setForeground(new Color(245,230,190));
+     
+     JLabel lbl_effect_text = new JLabel("Effect:");
+     lbl_effect_text.setForeground(new Color(190,180,160));
+
      lbl_effect = new JLabel();
-     lbl_cost = new JLabel();
+     lbl_effect.setForeground(new Color(220,220,200));
 
-     lbl_count.setForeground(GameColors.TEXT);
-     lbl_effect.setForeground(GameColors.TEXT);
-     lbl_cost.setForeground(GameColors.TEXT);
 
+     JLabel lbl_food_text = new JLabel("Food:");
+     lbl_food_text.setForeground(new Color(190,180,160));
+
+     lbl_foodcost = new JLabel();
+     lbl_foodcost.setForeground(GameColors.FOOD);
+     
+     
+     JLabel lbl_wood_text = new JLabel("Wood:");
+     lbl_wood_text.setForeground(new Color(190,180,160));
+
+     lbl_woodcost = new JLabel();
+     lbl_woodcost.setForeground(GameColors.WOOD);
+     
+     
+     JLabel lbl_iron_text = new JLabel("Iron:");
+     lbl_iron_text.setForeground(new Color(190,180,160));
+
+     lbl_ironcost = new JLabel();
+     lbl_ironcost.setForeground(GameColors.IRON);
+     
+     
+     center_panel.add(lbl_count_text);
      center_panel.add(lbl_count);
+
+     center_panel.add(lbl_effect_text);
      center_panel.add(lbl_effect);
-     center_panel.add(lbl_cost);
+
+     center_panel.add(lbl_food_text);
+     center_panel.add(lbl_foodcost);
+
+     center_panel.add(lbl_wood_text);
+     center_panel.add(lbl_woodcost);
+
+     center_panel.add(lbl_iron_text);
+     center_panel.add(lbl_ironcost);
 
 
      // Panel inferior con botón y textfield
@@ -135,8 +175,13 @@ class BuildingPanel extends JPanel implements Variables{
      btn_build.setForeground(GameColors.TEXT);
 
      btn_build.setFocusPainted(false); 
-     btn_build.setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
-     btn_build.setFont(new Font("Serif", Font.BOLD, 14));
+     btn_build.setBorder(
+        	    BorderFactory.createCompoundBorder(
+        	        BorderFactory.createLineBorder(GameColors.BORDER, 2),
+        	        BorderFactory.createEmptyBorder(2, 15, 2, 15)
+        	    )
+        	);
+     btn_build.setFont(new Font("Serif", Font.BOLD, 12));
 
      bottom_panel.add(field_quantity);
      bottom_panel.add(btn_build);
@@ -166,33 +211,43 @@ class BuildingPanel extends JPanel implements Variables{
 	switch (building_type) {
 	
 	case "Farm":
-		lbl_count.setText("Count: " + civ.getFarm());
-		lbl_effect.setText("Effect: Increases food generation by 10%");
-		lbl_cost.setText("Food " +FOOD_COST_FARM +" Wood " + WOOD_COST_FARM +" Iron " + IRON_COST_FARM);
+		lbl_count.setText(String.valueOf(civ.getFarm()));
+		lbl_effect.setText("+10% Food");
+		lbl_foodcost.setText(String.valueOf(FOOD_COST_FARM));
+		lbl_woodcost.setText(String.valueOf(WOOD_COST_FARM));
+		lbl_ironcost.setText(String.valueOf(IRON_COST_FARM));
         break;
         
 	 case "Smithy":
-		 lbl_count.setText("Count: " + civ.getSmithy());
-         lbl_effect.setText("Effect: Increases iron generation by 10%");
-         lbl_cost.setText("Food " +FOOD_COST_SMITHY +" Wood " + WOOD_COST_SMITHY +" Iron " + IRON_COST_SMITHY);
+		 lbl_count.setText(String.valueOf(civ.getSmithy()));
+         lbl_effect.setText("+10% Iron");
+         lbl_foodcost.setText(String.valueOf(FOOD_COST_SMITHY));
+ 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_SMITHY));
+ 		 lbl_ironcost.setText(String.valueOf(IRON_COST_SMITHY));
          break;
 
      case "Magic Tower":
-    	 lbl_count.setText("Count: " + civ.getMagicTower());
-         lbl_effect.setText("Effect: Unlocks mana generation, magicians, churches and priests");
-         lbl_cost.setText("Food " +FOOD_COST_MAGICTOWER +" Wood " + WOOD_COST_MAGICTOWER +" Iron " + IRON_COST_MAGICTOWER);
+    	 lbl_count.setText(String.valueOf(civ.getMagicTower()));
+         lbl_effect.setText("Unlocks mana");
+         lbl_foodcost.setText(String.valueOf(FOOD_COST_MAGICTOWER));
+ 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_MAGICTOWER));
+ 		 lbl_ironcost.setText(String.valueOf(IRON_COST_MAGICTOWER));
          break;
 
      case "Church":
-    	 lbl_count.setText("Count: " + civ.getChurch());
-         lbl_effect.setText("Effect: Unlocks Priests");
-         lbl_cost.setText("Food " +FOOD_COST_CHURCH +" Wood " + WOOD_COST_CHURCH +" Iron " + IRON_COST_CHURCH);
+    	 lbl_count.setText(String.valueOf(civ.getChurch()));
+         lbl_effect.setText("Unlocks Priests");
+         lbl_foodcost.setText(String.valueOf(FOOD_COST_CHURCH));
+ 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_CHURCH));
+ 		 lbl_ironcost.setText(String.valueOf(IRON_COST_CHURCH));
          break;
          
      case "Carpentry":
-    	 lbl_count.setText("Count: " + civ.getCarpentry());
-    	lbl_effect.setText("Increases wood generation by 10%");
-    	lbl_cost.setText("Food " +FOOD_COST_CARPENTRY +" Wood " + WOOD_COST_CARPENTRY +" Iron " + IRON_COST_CARPENTRY);
+    	lbl_count.setText(String.valueOf(civ.getCarpentry()));
+    	lbl_effect.setText("+10% Wood");
+    	lbl_foodcost.setText(String.valueOf(FOOD_COST_CARPENTRY));
+		lbl_woodcost.setText(String.valueOf(WOOD_COST_CARPENTRY));
+		lbl_ironcost.setText(String.valueOf(IRON_COST_CARPENTRY));
          break;
 	}
     			

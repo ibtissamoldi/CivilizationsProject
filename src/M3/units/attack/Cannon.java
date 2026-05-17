@@ -13,8 +13,6 @@ public class Cannon extends AttackUnit{
 
     }
     
-
-    /*2nd constructor.. */
     public Cannon() {
         super(ARMOR_CANNON, BASE_DAMAGE_CANNON);
     }

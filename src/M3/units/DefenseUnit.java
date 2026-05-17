@@ -18,7 +18,6 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
         this.sanctified   = false;
     }
 
-    //getters and setters
 
     public int getArmor() {
         return armor;
@@ -48,7 +47,6 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
         this.sanctified = sanctified;
     }
 
-    //common methods in all units
 
     public int getExperience() {
         return experience;
@@ -67,6 +65,9 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
 
     public void takeDamage(int receivedDamage) {
         armor -= receivedDamage;
+        if(armor < 0) {
+	        armor = 0;
+	    }
     }
 
     public int getActualArmor() {
