@@ -58,10 +58,10 @@ public class TopBarPanel extends JPanel {
 			    )
 			);
 		
-		label_food = CreateResourcesBox("./M3/images/food.png", civ.getFood());
-        label_wood = CreateResourcesBox("./M3/images/wood.png", civ.getWood());
-        label_iron = CreateResourcesBox("./M3/images/iron.png", civ.getIron());
-        label_mana = CreateResourcesBox("./M3/images/mana.png", civ.getMana());
+		label_food = CreateResourcesBox("/M3/images/food.png", civ.getFood());
+        label_wood = CreateResourcesBox("/M3/images/wood.png", civ.getWood());
+        label_iron = CreateResourcesBox("/M3/images/iron.png", civ.getIron());
+        label_mana = CreateResourcesBox("/M3/images/mana.png", civ.getMana());
         
         System.out.println("Food: " + civ.getFood());
         System.out.println("wood: " + civ.getWood());
@@ -116,7 +116,7 @@ public class TopBarPanel extends JPanel {
         threat_panel.add(threat_title, BorderLayout.NORTH);
         threat_panel.add(lbl_threat, BorderLayout.CENTER);
         
-        resources_panel.setPreferredSize(new Dimension(350, 30));
+        resources_panel.setPreferredSize(new Dimension(400, 40));
         timer_panel.setPreferredSize(new Dimension(200, 30));
         threat_panel.setPreferredSize(new Dimension(170, 30));
         
@@ -134,10 +134,15 @@ public class TopBarPanel extends JPanel {
 		BufferedImage image = null;
 		
 		try {
-			image = ImageIO.read(new File(imagepath));
+			image = ImageIO.read(getClass().getResource(imagepath));
 		} catch (IOException e) {
 		    System.out.println("Error loading resources images");
 		}
+		
+		 if (image == null) {
+		        System.out.println("Failed to load image: " + imagepath);
+		        return new JLabel("Missing");
+		    }
 		
 		Image scaled = image.getScaledInstance(18, 18, Image.SCALE_SMOOTH);
 		ImageIcon resource_icon = new ImageIcon(scaled);
@@ -203,3 +208,4 @@ public class TopBarPanel extends JPanel {
     }
 	
 }
+

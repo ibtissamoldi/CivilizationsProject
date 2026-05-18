@@ -19,6 +19,11 @@ public class Battle implements Variables{
     private ArrayList<MilitaryUnit>[] civilizationArmy = new ArrayList[9];
     private ArrayList<MilitaryUnit>[] enemyArmy = new ArrayList[4];
     private ArrayList<MilitaryUnit>[][] armies = new ArrayList[2][9];
+    
+    private MilitaryUnit currentAttacker;
+    private MilitaryUnit currentDefender;
+    private boolean civilizationTurn;
+    
     private int firstAttacker = -1;
     private int[][] unitsLooses = new int[2][9];
     private String battleDevelopment;
@@ -59,6 +64,7 @@ public class Battle implements Variables{
     		}
     	}
 		this.initialNumberUnitsEnemy = count;
+		countUnits();
 	}
 
 	public int choiceAttackerUnit(int attacker) {
@@ -165,12 +171,21 @@ public class Battle implements Variables{
     	int indexAttackingUnit = (int) (Math.random() * (0 - this.armies[attacker][attackUnit].size()) + this.armies[attacker][attackUnit].size());
     	MilitaryUnit unitAttacking = this.armies[attacker][attackUnit].get(indexAttackingUnit);
     	
-    	step_report += "\n********************CHANGE ATTACKER********************\n";
+    	step_report += "\n********CHANGE ATTACKER********\n";
     	
     	do {
     		int defenseUnit = choiceDefenseUnit(defender);
     		int indexDefendingUnit = (int) (Math.random() * (0 - this.armies[defender][defenseUnit].size()) + this.armies[defender][defenseUnit].size());
         	MilitaryUnit unitDefending = this.armies[defender][defenseUnit].get(indexDefendingUnit);
+        	
+        	currentAttacker = unitAttacking;
+        	currentDefender = unitDefending;
+        	if (attacker == 0) {
+        	    civilizationTurn = true;
+        	} else {
+        	    civilizationTurn = false;
+        	}
+        	
         	if (attacker == 0 && this.armies[0][8] != null && !this.armies[0][8].isEmpty()) {
         		if (unitAttacking instanceof AttackUnit) {
         			((AttackUnit) unitAttacking).isSanctified();
@@ -178,14 +193,16 @@ public class Battle implements Variables{
         			((DefenseUnit) unitAttacking).isSanctified();
         		}
         	}
-    		unitDefending.setArmor(unitDefending.getActualArmor() - unitAttacking.attack());
+        	int damage = unitAttacking.attack();
+        	unitDefending.takeDamage(damage);
+        	int armorAfter = unitDefending.getActualArmor();
     		step_report += "Attacks " + attacker_name + ": " + unitAttacking.getClass().getSimpleName() + " attacks " + unitDefending.getClass().getSimpleName() + 
-    						"\n" + unitAttacking.getClass().getSimpleName() + " damage = "  + unitAttacking.attack() + 
-    						"\n" + unitDefending.getClass().getSimpleName() + " stay with armor: " + unitDefending.getActualArmor() + "\n";
+    						"\n" + unitAttacking.getClass().getSimpleName() + " damage = "  + damage  + "\nArmor left for "+unitDefending.getClass().getSimpleName()+" = "+ armorAfter+"\n" ;
     		if (unitDefending.getActualArmor() <= 0) {
         		step_report += attacker_name + " eliminates " + unitDefending.getClass().getSimpleName() + "\n";
         		this.armies[defender][defenseUnit].remove(indexDefendingUnit);
-        		countUnits();
+        		currentDefender = null;
+                countUnits();
         		updateUnitsLooses(defender, defenseUnit);
         		updateResourcesLooses(defender, unitDefending);
         		if ((int) (Math.random() * 100) <= unitAttacking.getChanceGeneratinWaste()) {
@@ -210,7 +227,8 @@ public class Battle implements Variables{
     }
     
     public boolean battleIsOver() {
-    	if (this.actualNumberUnitsCivilization > (int) (initialNumberUnitsCivilization) * 0.2 && this.actualNumberUnitsEnemy > (int) (initialNumberUnitsEnemy * 0.20)) {
+    	if (this.actualNumberUnitsCivilization > (int) (initialNumberUnitsCivilization) * 0.2 
+    			&& this.actualNumberUnitsEnemy > (int) (initialNumberUnitsEnemy * 0.20)) {
     		return false;
     	} else {
     		return true;
@@ -247,6 +265,9 @@ public class Battle implements Variables{
     	}
     	this.actualNumberUnitsEnemy = count;
     }
+    
+ 
+    
     
 	public String getReportStepStep() {
 		return reportStepStep;
@@ -380,7 +401,14 @@ public class Battle implements Variables{
 			}
     	}
 	}
+
 	
+
+	
+	public int[][] getUnitsLooses() {
+		return unitsLooses;
+	}
+
 	public int getInitialCostFleet() {
 		return initialCostFleet;
 	}
@@ -435,5 +463,15 @@ public class Battle implements Variables{
 	public void setActualNumberUnitsEnemy(int actualNumberUnitsEnemy) {
 		this.actualNumberUnitsEnemy = actualNumberUnitsEnemy;
 	}
-    
+	public MilitaryUnit getCurrentAttacker() {
+	    return currentAttacker;
+	}
+
+	public MilitaryUnit getCurrentDefender() {
+	    return currentDefender;
+	}
+
+	public boolean isCivilizationTurn() {
+	    return civilizationTurn;
+	}
 }

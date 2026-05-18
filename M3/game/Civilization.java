@@ -37,9 +37,9 @@ public class Civilization implements Variables{
 
 	public Civilization(String name) {
 		this.name = name;
-		this.wood = CIVILIZATION_WOOD_GENERATED;
-		this.iron = CIVILIZATION_IRON_GENERATED;
-		this.food = CIVILIZATION_FOOD_GENERATED;
+		this.wood = 0;
+		this.iron = 0;
+		this.food = 0;
 		this.mana = 0;
 		this.magicTower = 0;
 		this.church = 0;
@@ -56,6 +56,7 @@ public class Civilization implements Variables{
 		for (int i = 0; i < 9; i++) {
 			this.army[i] = new ArrayList<MilitaryUnit>();
 		}
+		
 	}
 	
 	public void enemy() {
@@ -658,7 +659,31 @@ public class Civilization implements Variables{
 		
 	}
 	
-	public void printStats() {
-		
+	public void generateEnemyArmy(Civilization player) {
+
+	    try {
+	    	
+	    	this.setFood(999999);
+	        this.setWood(999999);
+	        this.setIron(999999);
+	        this.setMana(999999);
+	        
+	        int swords =player.getArmy()[0].size();
+	        int spears =player.getArmy()[1].size();
+	        int crossbows =player.getArmy()[2].size();
+	        int cannons =player.getArmy()[3].size();
+
+	        this.newSwordsman(swords);
+	        this.newSpearman(spears);
+	        this.newCrossbow(crossbows);
+	        this.newCannon(cannons);
+	        
+	        
+
+	    } catch (ResourceException e) {
+
+	        System.out.println("Error generating enemy army");
+	    }
 	}
+	
 }

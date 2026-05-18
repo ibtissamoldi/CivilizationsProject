@@ -39,7 +39,7 @@ public class SideMenuPanel extends JPanel {
         BufferedImage image = null;
 		
 		try {
-			image = ImageIO.read(new File("./M3/images/logo_.png"));
+			image = ImageIO.read(getClass().getResource("/M3/images/logo_.png"));
 		} catch (IOException e) {
 		    System.out.println("Error loading logo");
 		}

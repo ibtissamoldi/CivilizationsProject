@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -23,7 +24,7 @@ public class FightCardPanel extends JPanel{
     public FightCardPanel() {
 
         setLayout(new GridLayout(4,1));
-        setPreferredSize(new Dimension(180,220));
+        setPreferredSize(new Dimension(180,260));
         setBackground(new Color(70,90,70));
         setOpaque(false);
 
@@ -84,14 +85,31 @@ public class FightCardPanel extends JPanel{
         name.setText(unitName);
 
 
-        Image img =
-                new ImageIcon(imagePath)
-                .getImage()
-                .getScaledInstance(80,80,Image.SCALE_SMOOTH);
+        try {
 
-        image.setIcon(new ImageIcon(img));
+            Image img =ImageIO.read(
+                getClass().getResource(imagePath)
+            );
+
+            Image scaled = img.getScaledInstance(
+                60,
+                60,
+                Image.SCALE_SMOOTH
+            );
+
+            image.setIcon(new ImageIcon(scaled));
+            image.repaint();
+
+            repaint();
+
+        } catch (Exception e) {
+
+            System.out.println("IMAGE FAILED: " + imagePath);
+
+            e.printStackTrace();
+        }
 
         damage.setText("Damage: " + dmg);
         armor.setText("Armor: " + arm);
     }
-}	
+}

@@ -31,10 +31,10 @@ public class UnitCardPanel extends JPanel{
     	
     	 setLayout(new BorderLayout());
          setBackground(GameColors.PANEL_LIGHT);
-         setPreferredSize(new Dimension(280,220));
+         setPreferredSize(new Dimension(170,160));
          setBorder(BorderFactory.createCompoundBorder(
         		    BorderFactory.createLineBorder(GameColors.BORDER,2),
-        		    BorderFactory.createEmptyBorder(15,15,15,15)
+        		    BorderFactory.createEmptyBorder(8,8,8,8)
         		));
 
          lbl_name = new JLabel(displayName(unitName));
@@ -46,12 +46,12 @@ public class UnitCardPanel extends JPanel{
 
          
          Image img = new ImageIcon(imagePath).getImage();
-         Image scaled = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+         Image scaled = img.getScaledInstance(75, 75, Image.SCALE_SMOOTH);
          ImageIcon icon =new ImageIcon(scaled);
          
          lbl_image = new JLabel(icon);
          lbl_image.setHorizontalAlignment(JLabel.CENTER);
-         lbl_image.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+         lbl_image.setBorder(BorderFactory.createEmptyBorder(2,0,2,0));
 
          lbl_count = new JLabel("Count: 0");
          lbl_count.setHorizontalAlignment(JLabel.CENTER);
@@ -60,12 +60,12 @@ public class UnitCardPanel extends JPanel{
          add(lbl_name, BorderLayout.NORTH);
          add(lbl_image, BorderLayout.CENTER);
 
-         JPanel south = new JPanel(new GridLayout(3,1));
+         JPanel south = new JPanel(new BorderLayout(0,4));
          south.setOpaque(false);
 
-         south.add(lbl_count);
+         south.add(lbl_count,BorderLayout.NORTH);
          
-         quantity = new JTextField("1", 5); 
+         quantity = new JTextField("1",3); 
          quantity.setBackground(GameColors.INPUT_BG);
          quantity.setForeground(GameColors.TEXT);
          quantity.setBorder(
@@ -80,8 +80,11 @@ public class UnitCardPanel extends JPanel{
              recruit_btn.setBorder(
             		    BorderFactory.createLineBorder(GameColors.BORDER)
             		);
-             south.add(quantity);
-             south.add(recruit_btn);
+             JPanel controls = new JPanel(new GridLayout(1,2,4,0));
+             controls.setOpaque(false);
+             controls.add(quantity);
+             controls.add(recruit_btn);
+             south.add(controls, BorderLayout.SOUTH);
              
          }
          
@@ -128,7 +131,9 @@ public class UnitCardPanel extends JPanel{
         }
     }
     
-    private String buildImagePath(String unitName, boolean civ){
+   
+
+	private String buildImagePath(String unitName, boolean civ){
 
         String side;
 
@@ -143,6 +148,14 @@ public class UnitCardPanel extends JPanel{
      public void setCount(int count){
          lbl_count.setText("Count: " + count);
      }
+     
+     public JTextField getQuantity() {
+ 		return quantity;
+ 	}
+
+ 	public JButton getRecruit_btn() {
+ 		return recruit_btn;
+ 	}
     
 
 }

@@ -55,12 +55,9 @@ public class CenterFightPanel extends JPanel {
 
         attackerCard.setLocation(200,220);
         defenderCard.setLocation(10,120);
-
         repaint();
     }
     
     
-    public void test() {
-    	
-    }
+   
 }
