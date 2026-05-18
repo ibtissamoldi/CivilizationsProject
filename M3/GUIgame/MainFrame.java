@@ -1,16 +1,11 @@
 package M3.GUIgame;
 
-import java.awt.BasicStroke;
 
 import M3.interfaces.Variables;
 
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -23,7 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import M3.Database.DBConnection;
-import M3.GUIgame.Battlepanels.MainBattlePanel;
+import M3.GUIgame.Battlepanels.BackgroundPanel;
+import M3.GUIgame.Battlepanels.BattlePanel;
 import M3.GUIgame.mainPanels.GeneralBuildingPanel;
 import M3.GUIgame.mainPanels.GeneralStatsPanel;
 import M3.GUIgame.mainPanels.GeneralTechnologyPanel;
@@ -34,6 +30,7 @@ import M3.game.Civilization;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 
 public class MainFrame extends JFrame implements Variables{
 	
@@ -83,20 +80,19 @@ public class MainFrame extends JFrame implements Variables{
         db.connect();
 
         civ = db.loadCivilizationComplete("MyCivilization");
+        
 
         if (civ == null) {
 
             civ = new Civilization("MyCivilization");
 
             civ.player();
-
-            civ.setFood(8000);
-            civ.setWood(3000);
-            civ.setIron(1500);
-            civ.setMana(0);
+            
+            
 
             db.saveCivilization(civ);
         }
+        setupDebugCivilization();
 
         civId = db.getCivilizationId(civ.getName());
         
@@ -108,8 +104,8 @@ public class MainFrame extends JFrame implements Variables{
         civilization_panel = new CivilizationPanel();
         technology_panel = new TechnologysPanel(civ,this);
         stats_panel = new StatsPanel(civ,this);
-        battle_panel = new BattlePanel();
-        reports_panel= new ReportsPanel(civ, this);/*change it to get battle id method from database;*/
+        battle_panel = new BattlePanel(civ,this);
+        reports_panel= new ReportsPanel(civ, this);
         
         
 		
@@ -131,6 +127,38 @@ public class MainFrame extends JFrame implements Variables{
         });
 
         setVisible(true);
+    }
+    
+    
+    
+    private void setupDebugCivilization() {
+
+        civ.setFood(999999);
+        civ.setWood(999999);
+        civ.setIron(999999);
+        civ.setMana(999999);
+
+        try {
+
+            civ.newSwordsman(5);
+            civ.newSpearman(5);
+            civ.newCrossbow(5);
+            civ.newCannon(2);
+
+            civ.newArrowTower(3);
+            civ.newCatapult(2);
+            civ.newRocketLauncher(1);
+
+            civ.newChurch();
+            civ.newMagicTower();
+            
+            civ.newMagician(1);
+            civ.newPriest(1);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
     
     
@@ -285,7 +313,7 @@ public class MainFrame extends JFrame implements Variables{
         try {
 
             icon_image =
-                    ImageIO.read(new File("./M3/images/swords_icon.png"));
+                    ImageIO.read(getClass().getResource("/M3/images/swords_icon.png"));
 
             setIconImage(icon_image);
 
@@ -313,37 +341,10 @@ public class MainFrame extends JFrame implements Variables{
 
 
 
-class BackgroundPanel extends JPanel{
-	BufferedImage bg_image;
-	
-	 public BackgroundPanel(String path) {
-		 try {
-
-			 bg_image =ImageIO.read(new File(path));//*"./M3/images/bg.png"*/
-			 
-
-	     } catch (IOException e) {
-
-	         System.out.println("Error loading background image.");
-	     }
-	 }
-
-	 protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(bg_image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), 0, 0, this);
-		g2d.setColor(GameColors.BORDER);
-		int thickness = 2;
-		g2d.setStroke(new BasicStroke(thickness));
-	    g2d.drawRect(thickness / 2, thickness / 2, getWidth() - thickness, getHeight() - thickness);
-		
-		}
-
-}
 
 class CivilizationPanel  extends BackgroundPanel{
 	public CivilizationPanel() {
-		super("./M3/images/bg.png");
+		super("/M3/images/bg.png");
 		setLayout(new BorderLayout());
     }
 }
@@ -395,50 +396,5 @@ class StatsPanel  extends JPanel {
     setBackground(GameColors.BACKGROUND);
     add(new GeneralStatsPanel(civ,frame), BorderLayout.CENTER);
 		    
-    }
-}
-
-
-
-class BattlePanel  extends JPanel {
-	private JPanel startPanel;
-    private MainBattlePanel mainBattlePanel;
-
-    public BattlePanel() {
-
-        setLayout(new BorderLayout());
-        setBackground(GameColors.PANEL);
-
-        buildStartPanel();
-    }
-
-    private void buildStartPanel() {
-
-        startPanel = new JPanel();
-        startPanel.setBackground(GameColors.PANEL);
-
-        JButton btnStart = new JButton("START BATTLE");
-
-        btnStart.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	switchToMainBattle();
-            }
-        });
-
-        startPanel.add(btnStart);
-
-        add(startPanel, BorderLayout.CENTER);
-    }
-
-    private void switchToMainBattle() {
-
-        removeAll();
-
-        mainBattlePanel = new MainBattlePanel();
-
-        add(mainBattlePanel, BorderLayout.CENTER);
-
-        revalidate();
-        repaint();
     }
 }

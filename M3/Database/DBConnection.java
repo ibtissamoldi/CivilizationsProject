@@ -21,16 +21,48 @@ public class DBConnection {
 
     public void connect() {
 
-        try {
+    	String[] urls = {"jdbc:mysql://localhost:3306/civilizations?useSSL=false&serverTimezone=UTC","jdbc:mysql://localhost:3307/civilizations?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"};
 
+        String user = "root";
+        String password = "12345";
+        
+        try {
+        	
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(
+            boolean connected = false;
+            	
+            /*conn = DriverManager.getConnection(
             		"jdbc:mysql://localhost:3307/civilizations?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
             		"civ_user",
-            		"bichos2.0");
-            System.out.println("Database connected.");
+            		"bichos2.0");*/
+           // System.out.println("Database connected.");
 
+        	for (String url : urls) {
+
+        		try {
+
+                    conn = DriverManager.getConnection(url, user, password);
+
+                    System.out.println("Connected to: " + url);
+
+                    connected = true;
+
+                    break;
+
+                } catch (SQLException e) {
+
+                    System.out.println("Failed: " + url);
+                }
+            
+        	 }
+
+            if (!connected) {
+
+                throw new SQLException("No database available.");
+            }
+            
+            
         } catch (Exception e) {
 
             System.out.println("Database connection error.");
@@ -197,8 +229,8 @@ public class DBConnection {
         ps.setInt(8, civ.getSmithy());
         ps.setInt(9, civ.getCarpentry());
         
-        ps.setInt(10, civ.getTechnologyAttack());
-        ps.setInt(11, civ.getTechnologyDefense());
+        ps.setInt(10, civ.getTechnologyDefense());
+        ps.setInt(11, civ.getTechnologyAttack());
         
         ps.setInt(12, civ.getBattles());
 
@@ -387,7 +419,7 @@ public class DBConnection {
                     ps.setString(2, atkTypes[i]);
 
                     ps.setInt(3,
-                            au.getActualArmor());
+                            au.getInitialArmor());
 
                     ps.setInt(4,
                             au.getBaseDamage());
@@ -448,7 +480,7 @@ public class DBConnection {
                             defTypes[i - 4]);
 
                     ps.setInt(3,
-                            du.getActualArmor());
+                            du.getInitialArmor());
 
                     ps.setInt(4,
                             du.getBaseDamage());
@@ -508,7 +540,7 @@ public class DBConnection {
                             spcTypes[i - 7]);
 
                     ps.setInt(3,
-                            su.getActualArmor());
+                            su.getInitialArmor());
 
                     ps.setInt(4,
                             su.getBaseDamage());
@@ -793,5 +825,438 @@ public class DBConnection {
         }
 
         return list;
+    }
+    
+    
+    
+    public void saveBattleStats(
+
+            int civId,
+            int battleNumber,
+
+            int woodAcquired,
+            int ironAcquired,
+
+            String winner,
+
+            int civFoodCost,
+            int civWoodCost,
+            int civIronCost,
+
+            int enemyFoodCost,
+            int enemyWoodCost,
+            int enemyIronCost,
+
+            int civFoodLosses,
+            int civWoodLosses,
+            int civIronLosses,
+
+            int enemyFoodLosses,
+            int enemyWoodLosses,
+            int enemyIronLosses,
+
+            int rubbleWood,
+            int rubbleIron) {
+
+        try {
+
+            String sql = """
+                INSERT INTO battle_stats (
+
+                civilization_id,
+                num_battle,
+
+                wood_acquired,
+                iron_acquired,
+
+                winner,
+
+                civ_food_cost,
+                civ_wood_cost,
+                civ_iron_cost,
+
+                enemy_food_cost,
+                enemy_wood_cost,
+                enemy_iron_cost,
+
+                civ_food_losses,
+                civ_wood_losses,
+                civ_iron_losses,
+
+                enemy_food_losses,
+                enemy_wood_losses,
+                enemy_iron_losses,
+
+                rubble_wood,
+                rubble_iron
+
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """;
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setInt(1, civId);
+            ps.setInt(2, battleNumber);
+
+            ps.setInt(3, woodAcquired);
+            ps.setInt(4, ironAcquired);
+
+            ps.setString(5, winner);
+
+            ps.setInt(6, civFoodCost);
+            ps.setInt(7, civWoodCost);
+            ps.setInt(8, civIronCost);
+
+            ps.setInt(9, enemyFoodCost);
+            ps.setInt(10, enemyWoodCost);
+            ps.setInt(11, enemyIronCost);
+
+            ps.setInt(12, civFoodLosses);
+            ps.setInt(13, civWoodLosses);
+            ps.setInt(14, civIronLosses);
+
+            ps.setInt(15, enemyFoodLosses);
+            ps.setInt(16, enemyWoodLosses);
+            ps.setInt(17, enemyIronLosses);
+
+            ps.setInt(18, rubbleWood);
+            ps.setInt(19, rubbleIron);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    public void saveBattleUnitsStats(
+    		 int civId,
+    	        int battleNumber,
+
+    	        String side,
+    	        String category,
+    	        String type,
+
+    	        int initialUnits,
+    	        int droppedUnits) {
+
+    	    try {
+
+    	        String sql = """
+    	            INSERT INTO battle_units_stats (
+
+    	            civilization_id,
+    	            num_battle,
+
+    	            side,
+    	            unit_category,
+    	            type,
+
+    	            initial_units,
+    	            dropped_units
+
+    	            ) VALUES (?,?,?,?,?,?,?)
+    	            """;
+
+    	        PreparedStatement ps =
+    	                conn.prepareStatement(sql);
+
+    	        ps.setInt(1, civId);
+
+    	        ps.setInt(2, battleNumber);
+
+    	        ps.setString(3, side);
+
+    	        ps.setString(4, category);
+
+    	        ps.setString(5, type);
+
+    	        ps.setInt(6, initialUnits);
+
+    	        ps.setInt(7, droppedUnits);
+
+    	        ps.executeUpdate();
+
+    	    } catch (SQLException e) {
+
+    	        e.printStackTrace();
+    	    }
+
+           
+}
+    
+    
+    public void saveBattleLog(
+
+            int civId,
+            int battleNumber,
+
+            String fullLog) {
+
+        try {
+
+            String sql = """
+                INSERT INTO battle_log (
+
+                civilization_id,
+                num_battle,
+                num_line,
+                log_entry
+
+                ) VALUES (?,?,?,?)
+                """;
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+            
+            String[] lines = fullLog.split("\n");
+
+            for(int i = 0; i < lines.length; i++) {
+
+                ps.setInt(1, civId);
+
+                ps.setInt(2, battleNumber);
+
+                ps.setInt(3, i + 1);
+
+                ps.setString(4, lines[i]);
+
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    public void saveBattleUnitStat(
+
+            int civId,
+            int battleNumber,
+
+            String side,
+            String category,
+            String type,
+
+            int initialUnits,
+            int droppedUnits
+    ) {
+
+        try {
+
+            String sql = """
+                INSERT INTO battle_units_stats(
+
+                    civilization_id,
+                    num_battle,
+
+                    side,
+                    unit_category,
+                    type,
+
+                    initial_units,
+                    dropped_units
+                )
+
+                VALUES(?,?,?,?,?,?,?)
+                """;
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setInt(1, civId);
+
+            ps.setInt(2, battleNumber);
+
+            ps.setString(3, side);
+
+            ps.setString(4, category);
+
+            ps.setString(5, type);
+
+            ps.setInt(6, initialUnits);
+
+            ps.setInt(7, droppedUnits);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    public ArrayList<String[]> loadBattleReports(int civId) {
+
+        ArrayList<String[]> reports =
+                new ArrayList<>();
+
+        try {
+
+            String sql = """
+                SELECT * 
+                FROM battle_stats
+                WHERE civilization_id=?
+                ORDER BY num_battle DESC
+                """;
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setInt(1, civId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	
+            	int battleNumber = rs.getInt("num_battle");
+
+                String title =
+                        "Battle #" +battleNumber;
+
+                String detail1 =   "Date:\n"
+                        + rs.getTimestamp("battle_date")+"\n\nWinner: " +
+                        rs.getString("winner") + "\n\nCivilization Losses:\n" + "Food: "
+                                + rs.getInt("civ_food_losses") + "\nWood: "
+                                        + rs.getInt("civ_wood_losses")+ "\nIron: "
+                                                + rs.getInt("civ_iron_losses") + "\n\nEnemy Losses:\n"+ "Food: "
+                                                        + rs.getInt("enemy_food_losses")
+
+                                                        + "\nWood: "
+                                                        + rs.getInt("enemy_wood_losses")
+
+                                                        + "\nIron: "
+                                                        + rs.getInt("enemy_iron_losses")
+
+                                                        + "\n\nRubble Collected:\n"
+
+                                                        + "Wood: "
+                                                        + rs.getInt("rubble_wood")
+
+                                                        + "\nIron: "
+                                                        + rs.getInt("rubble_iron") + "\n\n===== UNIT STATS =====\n\n"
+                                                        
+                                                        + loadBattleUnitStats(civId, battleNumber);
+                
+                String detail2 =
+                		"\n\n===== BATTLE LOG =====\n\n"
+
+        					+loadBattleLog(civId,battleNumber );
+
+                reports.add(
+                        new String[]{
+                                title,
+                                detail1,detail2
+                        }
+                );
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return reports;
+    }
+    
+    
+    
+    public String loadBattleLog(
+            int civId,
+            int battleNumber) {
+
+    	String log = "";
+
+        try {
+
+        	String sql =
+                    "SELECT log_entry "
+                  + "FROM battle_log "
+                  + "WHERE civilization_id=? "
+                  + "AND num_battle=? "
+                  + "ORDER BY num_line";
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setInt(1, civId);
+
+            ps.setInt(2, battleNumber);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+            	log += rs.getString("log_entry");
+
+            	 log += "\n";
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return log;
+    }
+    
+    public String loadBattleUnitStats(
+            int civId,
+            int battleNumber) {
+
+        String text = "";
+
+        try {
+
+            String sql = """
+                SELECT *
+                FROM battle_units_stats
+                WHERE civilization_id=?
+                AND num_battle=?
+                ORDER BY side, unit_category
+                """;
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setInt(1, civId);
+            ps.setInt(2, battleNumber);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+
+                text += rs.getString("side")
+                        + " - "
+                        + rs.getString("type")
+
+                        + "\nInitial Units: "
+                        + rs.getInt("initial_units")
+
+                        + "\nDropped Units: "
+                        + rs.getInt("dropped_units")
+
+                        + "\n\n";
+            }
+
+        } catch(SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return text;
     }
 }

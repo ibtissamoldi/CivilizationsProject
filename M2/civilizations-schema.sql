@@ -76,7 +76,28 @@ CREATE TABLE battle_stats (
     wood_acquired INT NOT NULL DEFAULT 0,
     iron_acquired INT NOT NULL DEFAULT 0,
 
-    winner VARCHAR(20) NOT NULL DEFAULT 'Enemy',
+    winner VARCHAR(50) NOT NULL DEFAULT 'Enemy',
+    
+    civ_food_cost INT DEFAULT 0,
+	civ_wood_cost INT DEFAULT 0,
+	civ_iron_cost INT DEFAULT 0,
+	
+	enemy_food_cost INT DEFAULT 0,
+	enemy_wood_cost INT DEFAULT 0,
+	enemy_iron_cost INT DEFAULT 0,
+	
+	civ_food_losses INT DEFAULT 0,
+	civ_wood_losses INT DEFAULT 0,
+	civ_iron_losses INT DEFAULT 0,
+	
+	enemy_food_losses INT DEFAULT 0,
+	enemy_wood_losses INT DEFAULT 0,
+	enemy_iron_losses INT DEFAULT 0,
+	
+	rubble_wood INT DEFAULT 0,
+	rubble_iron INT DEFAULT 0,
+	
+	battle_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (civilization_id, num_battle),
     FOREIGN KEY (civilization_id) REFERENCES civilization_stats(civilization_id)
@@ -96,58 +117,25 @@ CREATE TABLE battle_log (
     ON DELETE CASCADE
 );
 
-CREATE TABLE civilization_attack_stats (
-    civilization_id INT not null,
-    num_battle INT not null,
-    type VARCHAR(50),
 
-    initial INT,
-    drops INT,
 
-    PRIMARY KEY (civilization_id, num_battle, type),
+CREATE TABLE battle_units_stats (
+
+    civilization_id INT NOT NULL,
+    num_battle INT NOT NULL,
+
+    side ENUM('Player', 'Enemy') NOT NULL,
+
+    unit_category ENUM('Attack', 'Defense', 'Special') NOT NULL,
+
+    type VARCHAR(50) NOT NULL,
+
+    initial_units INT NOT NULL DEFAULT 0,
+    dropped_units INT NOT NULL DEFAULT 0,
+
+    PRIMARY KEY(civilization_id, num_battle, side, type),
+
     FOREIGN KEY (civilization_id, num_battle)
-        REFERENCES battle_stats(civilization_id, num_battle)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE civilization_defense_stats (
-    civilization_id INT not null,
-    num_battle INT not null,
-    type VARCHAR(50),
-
-    initial INT,
-    drops INT,
-
-    PRIMARY KEY (civilization_id, num_battle, type),
-    FOREIGN KEY (civilization_id, num_battle)
-        REFERENCES battle_stats(civilization_id, num_battle)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE civilization_special_stats (
-    civilization_id INT not null,
-    num_battle INT not null,
-    type VARCHAR(50) not null,
-
-    initial INT NOT NULL DEFAULT 0,
-    drops INT NOT NULL DEFAULT 0,
-
-    PRIMARY KEY (civilization_id, num_battle, type),
-    FOREIGN KEY (civilization_id, num_battle)
-        REFERENCES battle_stats(civilization_id, num_battle)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE enemy_attack_stats (
-    civilization_id INT not null,
-    num_battle INT not null,
-    type VARCHAR(50) not null,
-
-    initial INT NOT NULL DEFAULT 0,
-    drops INT NOT NULL DEFAULT 0,
-
-    PRIMARY KEY (civilization_id, num_battle, type),
-    FOREIGN KEY (civilization_id, num_battle)
-        REFERENCES battle_stats(civilization_id, num_battle)
+    REFERENCES battle_stats(civilization_id, num_battle)
     ON DELETE CASCADE
 );

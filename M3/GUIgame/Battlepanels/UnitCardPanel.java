@@ -3,6 +3,7 @@ package M3.GUIgame.Battlepanels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import M3.GUIgame.GameColors;
 
@@ -22,19 +24,21 @@ public class UnitCardPanel extends JPanel{
 	private JLabel lbl_name;
     private JLabel lbl_image;
     private JLabel lbl_count;
+    private JTextField quantity;
     private JButton recruit_btn;
     
     public UnitCardPanel(String unitName, boolean isCivilization, boolean recruit) {
     	
     	 setLayout(new BorderLayout());
          setBackground(GameColors.PANEL_LIGHT);
-         setPreferredSize(new Dimension(220,190));
+         setPreferredSize(new Dimension(170,160));
          setBorder(BorderFactory.createCompoundBorder(
         		    BorderFactory.createLineBorder(GameColors.BORDER,2),
-        		    BorderFactory.createEmptyBorder(15,15,15,15)
+        		    BorderFactory.createEmptyBorder(8,8,8,8)
         		));
 
          lbl_name = new JLabel(displayName(unitName));
+         lbl_name.setFont(new Font("Serif", Font.BOLD, 12));
          lbl_name.setHorizontalAlignment(JLabel.CENTER);
          lbl_name.setForeground(GameColors.TEXT);
          
@@ -42,12 +46,12 @@ public class UnitCardPanel extends JPanel{
 
          
          Image img = new ImageIcon(imagePath).getImage();
-         Image scaled = img.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+         Image scaled = img.getScaledInstance(75, 75, Image.SCALE_SMOOTH);
          ImageIcon icon =new ImageIcon(scaled);
          
          lbl_image = new JLabel(icon);
          lbl_image.setHorizontalAlignment(JLabel.CENTER);
-         lbl_image.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+         lbl_image.setBorder(BorderFactory.createEmptyBorder(2,0,2,0));
 
          lbl_count = new JLabel("Count: 0");
          lbl_count.setHorizontalAlignment(JLabel.CENTER);
@@ -56,11 +60,17 @@ public class UnitCardPanel extends JPanel{
          add(lbl_name, BorderLayout.NORTH);
          add(lbl_image, BorderLayout.CENTER);
 
-         JPanel south = new JPanel(new GridLayout(2,1));
+         JPanel south = new JPanel(new BorderLayout(0,4));
          south.setOpaque(false);
 
-         south.add(lbl_count);
-
+         south.add(lbl_count,BorderLayout.NORTH);
+         
+         quantity = new JTextField("1",3); 
+         quantity.setBackground(GameColors.INPUT_BG);
+         quantity.setForeground(GameColors.TEXT);
+         quantity.setBorder(
+         	    BorderFactory.createEmptyBorder(5,8,5,8)
+         	);
          if(recruit){
              recruit_btn = new JButton("+");
              recruit_btn.setBackground(GameColors.BUTTON);
@@ -70,7 +80,12 @@ public class UnitCardPanel extends JPanel{
              recruit_btn.setBorder(
             		    BorderFactory.createLineBorder(GameColors.BORDER)
             		);
-             south.add(recruit_btn);
+             JPanel controls = new JPanel(new GridLayout(1,2,4,0));
+             controls.setOpaque(false);
+             controls.add(quantity);
+             controls.add(recruit_btn);
+             south.add(controls, BorderLayout.SOUTH);
+             
          }
          
          if(!isCivilization){
@@ -106,17 +121,19 @@ public class UnitCardPanel extends JPanel{
         switch(unit){
 
             case "RocketLauncherTower":
-                return "Rocket Launcher";
+                return "Rocket";
 
             case "ArrowTower":
-                return "Arrow Tower";
+                return "Arrow";
 
             default:
                 return unit;
         }
     }
     
-    private String buildImagePath(String unitName, boolean civ){
+   
+
+	private String buildImagePath(String unitName, boolean civ){
 
         String side;
 
@@ -131,6 +148,14 @@ public class UnitCardPanel extends JPanel{
      public void setCount(int count){
          lbl_count.setText("Count: " + count);
      }
+     
+     public JTextField getQuantity() {
+ 		return quantity;
+ 	}
+
+ 	public JButton getRecruit_btn() {
+ 		return recruit_btn;
+ 	}
     
 
 }

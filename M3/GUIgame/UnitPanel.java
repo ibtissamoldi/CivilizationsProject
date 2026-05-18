@@ -1,9 +1,11 @@
-	package M3.GUIgame;
+package M3.GUIgame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,7 +43,6 @@ public class UnitPanel extends JPanel{
     private JLabel lbl_wastechance;
     private JLabel lbl_exp;
     private JLabel lbl_image;
-    private JLabel gap;
     
     private JButton btn_recruit;
     
@@ -65,7 +66,7 @@ public class UnitPanel extends JPanel{
         setBorder(
         	    BorderFactory.createTitledBorder(
         	        BorderFactory.createLineBorder(GameColors.BORDER, 0),
-        	        unit_type,
+        	        "•"+unit_type+"•",
         	        TitledBorder.CENTER,
         	        TitledBorder.TOP,
         	        new Font("Serif", Font.BOLD, 18),
@@ -111,9 +112,15 @@ public class UnitPanel extends JPanel{
         // Imagen de las unidades
         
         ImageIcon image = new ImageIcon(getImagePath());
+
+        Image scaled = image.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+
+        lbl_image = new JLabel(new ImageIcon(scaled));
         
-        lbl_image = new JLabel(image);
+        lbl_image.setHorizontalAlignment(JLabel.CENTER);
+        lbl_image.setVerticalAlignment(JLabel.CENTER);
        
+        lbl_image.setPreferredSize(new Dimension(150, 150));
 
         add(lbl_image, BorderLayout.EAST);
         
@@ -124,42 +131,92 @@ public class UnitPanel extends JPanel{
 
         
         
-        
-        
         JPanel center_panel = new JPanel(new GridLayout(11,1,2,2));
         center_panel.setBackground(GameColors.PANEL);
 
-        lbl_owned = new JLabel("Owned: "+ GetUnitCount());
-        lbl_dmg = new JLabel("Damage: " + unit.attack());
-        lbl_armor = new JLabel("Armor: " + unit.getActualArmor());
-        lbl_attackagain = new JLabel("Attack Again:   "+unit.getChanceAttackAgain() + "%");
-        lbl_wastechance =  new JLabel("Waste Chance:   "+unit.getChanceGeneratinWaste() + "%");
-        gap = new JLabel(" ");
-        lbl_foodcost = new JLabel("Food: " + unit.getFoodCost());
-        lbl_woodcost = new JLabel("Wood: " + unit.getWoodCost());
-        lbl_ironcost= new JLabel("Iron: " + unit.getIronCost());
-        lbl_manacost= new JLabel("Mana: "+unit.getManaCost());
-        lbl_exp = new JLabel("Experience: "+unit.getExperience());
-        gap = new JLabel(" ");
+        JLabel lbl_owned_text = new JLabel("Total Units:");
+        lbl_owned_text.setForeground(new Color(190, 180, 160));
+        lbl_owned = new JLabel(String.valueOf(GetUnitCount()));
+        lbl_owned.setForeground(new Color(245, 230, 190));
+        
+        JLabel lbl_dmg_text = new JLabel("DMG/Unit:");
+        lbl_dmg_text.setForeground(new Color(190, 180, 160));
+        lbl_dmg = new JLabel(String.valueOf(unit.attack()));
+        lbl_dmg.setForeground(new Color(245, 230, 190));
 
-        JLabel[] labels = {lbl_owned,lbl_dmg,lbl_armor,lbl_attackagain,lbl_wastechance,lbl_foodcost,lbl_woodcost,lbl_ironcost,lbl_manacost,gap,lbl_exp};
+        JLabel lbl_armor_text = new JLabel("Armor/Unit:");
+        lbl_armor_text.setForeground(new Color(190, 180, 160));
+        lbl_armor = new JLabel(String.valueOf(unit.getActualArmor()));
+        lbl_armor.setForeground(new Color(245, 230, 190));
 
-        
+        JLabel lbl_attack_text = new JLabel("Attack Again:");
+        lbl_attack_text.setForeground(new Color(190, 180, 160));
+        lbl_attackagain = new JLabel(unit.getChanceAttackAgain() + "%");
+        lbl_attackagain.setForeground(new Color(245, 230, 190));
 
+        JLabel lbl_waste_text = new JLabel("Waste Chance:");
+        lbl_waste_text.setForeground(new Color(190, 180, 160));
+        lbl_wastechance = new JLabel(unit.getChanceGeneratinWaste() + "%");
+        lbl_wastechance.setForeground(new Color(245, 230, 190));
         
         
-        for (JLabel label : labels) {
-                label.setForeground(GameColors.TEXT);
-                label.setFont(new Font("Arial", Font.BOLD, 12));
-                lbl_foodcost.setForeground(GameColors.FOOD);
-                lbl_woodcost.setForeground(GameColors.WOOD);
-                lbl_ironcost.setForeground(GameColors.IRON);
-                lbl_manacost.setForeground(GameColors.MANA);
-                center_panel.add(label);
-                }
+        JLabel lbl_food_text = new JLabel("Food:");
+        lbl_food_text.setForeground(new Color(190, 180, 160));
+        lbl_foodcost = new JLabel(String.valueOf(unit.getFoodCost()));
+        lbl_foodcost.setForeground(GameColors.FOOD);
+
+        JLabel lbl_wood_text = new JLabel("Wood:");
+        lbl_wood_text.setForeground(new Color(190, 180, 160));
+        lbl_woodcost = new JLabel(String.valueOf(unit.getWoodCost()));
+        lbl_woodcost.setForeground(GameColors.WOOD);
+
+        JLabel lbl_iron_text = new JLabel("Iron:");
+        lbl_iron_text.setForeground(new Color(190, 180, 160));
+        lbl_ironcost = new JLabel(String.valueOf(unit.getIronCost()));
+        lbl_ironcost.setForeground(GameColors.IRON);
+
+        JLabel lbl_mana_text = new JLabel("Mana:");
+        lbl_mana_text.setForeground(new Color(190, 180, 160));
+        lbl_manacost = new JLabel(String.valueOf(unit.getManaCost()));
+        lbl_manacost.setForeground(GameColors.MANA);
+
+        JLabel lbl_exp_text = new JLabel("Total Experience:");
+        lbl_exp_text.setForeground(new Color(190, 180, 160));
+        lbl_exp = new JLabel(String.valueOf(unit.getExperience()));
+        lbl_exp.setForeground(new Color(245, 230, 190));
         
+        setFont(new Font("Arial", Font.BOLD, 12));
+
+        center_panel.add(lbl_owned_text);
+        center_panel.add(lbl_owned);
+
+        center_panel.add(lbl_dmg_text);
+        center_panel.add(lbl_dmg);
+
+        center_panel.add(lbl_armor_text);
+        center_panel.add(lbl_armor);
+
+        center_panel.add(lbl_attack_text);
+        center_panel.add(lbl_attackagain);
+
+        center_panel.add(lbl_waste_text);
+        center_panel.add(lbl_wastechance);
+
+        center_panel.add(lbl_food_text);
+        center_panel.add(lbl_foodcost);
+
+        center_panel.add(lbl_wood_text);
+        center_panel.add(lbl_woodcost);
+
+        center_panel.add(lbl_iron_text);
+        center_panel.add(lbl_ironcost);
+
+        center_panel.add(lbl_mana_text);
+        center_panel.add(lbl_manacost);
+
+        center_panel.add(lbl_exp_text);
+        center_panel.add(lbl_exp);
         
-      
         UpdateInfo();
         
         
@@ -211,31 +268,31 @@ public class UnitPanel extends JPanel{
 	private String getImagePath() {
         switch (unit_type) {
             case "Swordsman":
-                return "./M3/images/swordsman.png";
+                return "./M3/images/swordsman_civ.png";
 
             case "Spearman":
-                return "./M3/images/spearman.png";
+                return "./M3/images/spearman_civ.png";
 
             case "Crossbow":
-                return "./M3/images/crossbow.png";
+                return "./M3/images/crossbow_civ.png";
 
             case "Cannon":
-                return "./M3/images/cannon.png";
+                return "./M3/images/cannon_civ.png";
 
             case "ArrowTower":
-                return "./M3/images/arrowTower.png";
+                return "./M3/images/arrowTower_civ.png";
                 
             case "Catapult":
-            	return "./M3/images/catapult.png";
+            	return "./M3/images/catapult_civ.png";
 
             case "RocketLauncherTower":
-                return "./M3/images/rocketLauncherTower.png";
+                return "./M3/images/rocketLauncherTower_civ.png";
 
             case "Magician":
-                return "./M3/images/magician.png";
+                return "./M3/images/magician_civ.png";
 
             case "Priest":
-                return "./M3/images/priest.png";
+                return "./M3/images/priest_civ.png";
 
 
              
@@ -365,16 +422,16 @@ public class UnitPanel extends JPanel{
     
     private void UpdateInfo() {
 
-        lbl_owned.setText("Owned: "+GetUnitCount());
-		lbl_dmg.setText("Damage: " + unit.attack());
-		lbl_armor.setText( "Armor: " + unit.getActualArmor());
-		lbl_attackagain.setText("Attack Again:   "+unit.getChanceAttackAgain() + "%");
-		lbl_wastechance.setText("Waste Chance:   "+unit.getChanceGeneratinWaste() + "%");
-        lbl_foodcost.setText("Food: " + unit.getFoodCost());
-        lbl_woodcost.setText("Wood: " + unit.getWoodCost());
-        lbl_ironcost.setText("Iron: " + unit.getIronCost());
-        lbl_manacost.setText("Mana: "+unit.getManaCost());		
-		lbl_exp.setText("Experience: "+unit.getExperience());
+        lbl_owned.setText(String.valueOf(GetUnitCount()));
+		lbl_dmg.setText(String.valueOf(unit.attack()));
+		lbl_armor.setText(String.valueOf(unit.getActualArmor()));
+		lbl_attackagain.setText(unit.getChanceAttackAgain() + "%");
+		lbl_wastechance.setText(unit.getChanceGeneratinWaste() + "%");
+        lbl_foodcost.setText(String.valueOf(unit.getFoodCost()));
+        lbl_woodcost.setText(String.valueOf(unit.getWoodCost()));
+        lbl_ironcost.setText(String.valueOf(unit.getIronCost()));
+        lbl_manacost.setText(String.valueOf(unit.getManaCost()));		
+		lbl_exp.setText(String.valueOf(unit.getExperience()));
 	}
 
     
