@@ -1,0 +1,192 @@
+<main class="container">
+
+  {{#if noData}}
+
+    <div class="card">
+      <h1>There is no battle report available</h1>
+    </div>
+
+  {{else}}
+
+    <div class="toolbar">
+      <a class="btn" href="/batalles">← Back to Battles</a>
+    </div>
+
+    <h1>Battle Report #{{battle.num_battle}}</h1>
+
+    <section class="card">
+      <h2>Battle Overview</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/swords_icon.png" alt="Winner">
+          <strong>{{battle.winner}}</strong>
+          <span>Winner</span>
+        </div>
+
+        <div>
+          <img src="/img/wood.png" alt="Wood">
+          <strong>{{battle.wood_acquired}}</strong>
+          <span>Wood Obtained</span>
+        </div>
+
+        <div>
+          <img src="/img/iron.png" alt="Iron">
+          <strong>{{battle.iron_acquired}}</strong>
+          <span>Iron Obtained</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Battle Log</h2>
+
+      {{#if log}}
+        <ol class="battle-log">
+          {{#each log}}
+            <li>{{log_entry}}</li>
+          {{/each}}
+        </ol>
+      {{else}}
+        <p>No log lines were saved for this battle.</p>
+      {{/if}}
+    </section>
+
+    <section class="card">
+      <h2>Civilization Attack Units</h2>
+
+      <div class="resource-grid compact">
+
+        <div>
+          <img src="/img/swordsman_civ.png" alt="Swordsman">
+          <strong>Swordsman</strong>
+          <span>Initial: {{report.swordsman.initial}}</span>
+          <span>Losses: {{report.swordsman.drops}}</span>
+          <span>Survivors: {{report.swordsman.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/spearman_civ.png" alt="Spearman">
+          <strong>Spearman</strong>
+          <span>Initial: {{report.spearman.initial}}</span>
+          <span>Losses: {{report.spearman.drops}}</span>
+          <span>Survivors: {{report.spearman.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/crossbow_civ.png" alt="Crossbow">
+          <strong>Crossbow</strong>
+          <span>Initial: {{report.crossbow.initial}}</span>
+          <span>Losses: {{report.crossbow.drops}}</span>
+          <span>Survivors: {{report.crossbow.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/cannon_civ.png" alt="Cannon">
+          <strong>Cannon</strong>
+          <span>Initial: {{report.cannon.initial}}</span>
+          <span>Losses: {{report.cannon.drops}}</span>
+          <span>Survivors: {{report.cannon.survivors}}</span>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Civilization Defense Units</h2>
+
+      <div class="resource-grid compact">
+
+        <div>
+          <img src="/img/arrowTower_civ.png" alt="Arrow Tower">
+          <strong>Arrow Tower</strong>
+          <span>Initial: {{report.arrowTower.initial}}</span>
+          <span>Losses: {{report.arrowTower.drops}}</span>
+          <span>Survivors: {{report.arrowTower.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/catapult_civ.png" alt="Catapult">
+          <strong>Catapult</strong>
+          <span>Initial: {{report.catapult.initial}}</span>
+          <span>Losses: {{report.catapult.drops}}</span>
+          <span>Survivors: {{report.catapult.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/rocketLauncherTower_civ.png" alt="Rocket Launcher Tower">
+          <strong>Rocket Launcher</strong>
+          <span>Initial: {{report.rocketLauncherTower.initial}}</span>
+          <span>Losses: {{report.rocketLauncherTower.drops}}</span>
+          <span>Survivors: {{report.rocketLauncherTower.survivors}}</span>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Special Units</h2>
+
+      <div class="resource-grid compact">
+
+        <div>
+          <img src="/img/magician_civ.png" alt="Magician">
+          <strong>Magician</strong>
+          <span>Initial: {{report.magician.initial}}</span>
+          <span>Losses: {{report.magician.drops}}</span>
+          <span>Survivors: {{report.magician.survivors}}</span>
+        </div>
+
+        <div>
+          <img src="/img/priest_civ.png" alt="Priest">
+          <strong>Priest</strong>
+          <span>Initial: {{report.priest.initial}}</span>
+          <span>Losses: {{report.priest.drops}}</span>
+          <span>Survivors: {{report.priest.survivors}}</span>
+        </div>
+
+      </div>
+    </section>
+<section class="card">
+  <h2>Enemy Army</h2>
+
+  <div class="resource-grid compact enemy-army-grid">
+
+    <div class="battle-unit-card enemy-card">
+      <img src="/img/swordsman_enemy.png" alt="Enemy Swordsman">
+      <strong>Swordsman</strong>
+      <span>Initial: {{report.enemySwordsman.initial}}</span>
+      <span>Losses: {{report.enemySwordsman.drops}}</span>
+      <span>Survivors: {{report.enemySwordsman.survivors}}</span>
+    </div>
+
+    <div class="battle-unit-card enemy-card">
+      <img src="/img/spearman_enemy.png" alt="Enemy Spearman">
+      <strong>Spearman</strong>
+      <span>Initial: {{report.enemySpearman.initial}}</span>
+      <span>Losses: {{report.enemySpearman.drops}}</span>
+      <span>Survivors: {{report.enemySpearman.survivors}}</span>
+    </div>
+
+    <div class="battle-unit-card enemy-card">
+      <img src="/img/crossbow_enemy.png" alt="Enemy Crossbow">
+      <strong>Crossbow</strong>
+      <span>Initial: {{report.enemyCrossbow.initial}}</span>
+      <span>Losses: {{report.enemyCrossbow.drops}}</span>
+      <span>Survivors: {{report.enemyCrossbow.survivors}}</span>
+    </div>
+
+    <div class="battle-unit-card enemy-card">
+      <img src="/img/cannon_enemy.png" alt="Enemy Cannon">
+      <strong>Cannon</strong>
+      <span>Initial: {{report.enemyCannon.initial}}</span>
+      <span>Losses: {{report.enemyCannon.drops}}</span>
+      <span>Survivors: {{report.enemyCannon.survivors}}</span>
+    </div>
+
+  </div>
+</section>
+
+  {{/if}}
+
+</main>

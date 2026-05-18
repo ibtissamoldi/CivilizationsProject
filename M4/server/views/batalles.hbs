@@ -1,0 +1,73 @@
+<main class="container">
+{{#if noData}}
+  <div class="card">
+    <h1>There is no civilization in the database</h1>
+  </div>
+{{else}}
+
+<div class="kpi-flex">
+  <div>
+    <img src="/img/swordsman_civ.png" alt="Swordsman">
+  </div>
+
+  <div class="kpi-box featured">
+    <div class="num">{{totalBattles}}</div>
+    <div class="label">Total Battles Played</div>
+  </div>
+
+  <div>
+    <img src="/img/spearman_civ.png" alt="Spearman">
+  </div>
+</div>
+
+<div class="card">
+  <h2>Battle List</h2>
+
+  {{#if battles}}
+  <table>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Result</th>
+        <th>Wood Obtained</th>
+        <th>Iron Obtained</th>
+        <th>Report</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each battles}}
+      <tr>
+        <td>#{{num_battle}}</td>
+        <td><span class="badge">{{winner}}</span></td>
+        <td><img class="icon" src="/img/wood.png" alt="Wood"> {{wood_acquired}}</td>
+        <td><img class="icon" src="/img/iron.png" alt="Iron"> {{iron_acquired}}</td>
+        <td>
+          <a class="btn" href="/informe?informe={{num_battle}}">
+            Battle Report
+          </a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="paginacio">
+    {{#if hiHaPrev}}
+      <a class="btn" href="/batalles?pagina={{paginaAnt}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{pagina}}</span>
+
+    {{#if hiHaNext}}
+      <a class="btn" href="/batalles?pagina={{paginaSeg}}">Next</a>
+    {{/if}}
+  </div>
+
+  {{else}}
+    <p>No battles registered.</p>
+  {{/if}}
+</div>
+
+{{/if}}
+</main>
