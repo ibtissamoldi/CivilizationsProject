@@ -21,8 +21,8 @@ if (!isProxmox) {
   db.init({
     host: '127.0.0.1',
     port: 3306,
-    user: 'super',
-    password: '1234',
+    user: 'civ_user',
+    password: 'bichos2.0',
     database: 'civilizations'
   })
 }
