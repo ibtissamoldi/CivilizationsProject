@@ -9,7 +9,7 @@ public abstract class SpecialUnit implements MilitaryUnit, Variables{
 	private int experience;
 
     public SpecialUnit(int baseDamage) {
-        this.armor = 0;
+        this.armor = 50;
         this.initialArmor = 0;
         this.baseDamage = baseDamage;
         this.experience = 0;

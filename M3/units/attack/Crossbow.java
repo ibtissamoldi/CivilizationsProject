@@ -16,7 +16,10 @@ public class Crossbow extends AttackUnit{
     public Crossbow() {
         super(ARMOR_CROSSBOW, BASE_DAMAGE_CROSSBOW);
     } 
-
+    public Crossbow(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
+  
     
     public int getFoodCost() {
         return FOOD_COST_CROSSBOW;

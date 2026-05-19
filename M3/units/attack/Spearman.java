@@ -14,6 +14,10 @@ public class Spearman extends AttackUnit {
     public Spearman() {
         super(ARMOR_SPEARMAN, BASE_DAMAGE_SPEARMAN);
     } 
+    
+    public Spearman(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_SPEARMAN;

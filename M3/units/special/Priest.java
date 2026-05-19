@@ -10,7 +10,9 @@ public class Priest extends SpecialUnit {
 
    
 
-   
+    public Priest(int damage, String nada) {
+    	super(damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_PRIEST;

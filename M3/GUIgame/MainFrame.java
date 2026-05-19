@@ -4,6 +4,7 @@ package M3.GUIgame;
 import M3.interfaces.Variables;
 
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 
 import M3.Database.DBConnection;
 import M3.GUIgame.Battlepanels.BackgroundPanel;
@@ -35,30 +37,17 @@ import java.awt.event.WindowEvent;
 public class MainFrame extends JFrame implements Variables{
 	
 	public static void main(String[] args) {
-	    new MainFrame();
-	    
-	  
-	    
+	    new MainFrame();	    
 	}
-	
-	private JPanel main_panel;	
 
+	private JPanel main_panel;	
 	private TopBarPanel topbar_panel;
 	private SideMenuPanel menu_panel;
-	
 	private JPanel center_switch_panel;
 	
-	private ArmyPanel army_panel;
-    private BuildingsPanel building_panel;
-    private CivilizationPanel civilization_panel;
-    private TechnologysPanel technology_panel;
-    private StatsPanel stats_panel;
-    private BattlePanel battle_panel;
-    private ReportsPanel reports_panel;
-	
-    private DialogPanel dialog_panel;
-    
+	private DialogPanel dialog_panel;
 	private Civilization civ;
+	private Civilization enemy;
 	
 	private Timer resources_timer;
 	private TimerTask resources_task;
@@ -74,43 +63,28 @@ public class MainFrame extends JFrame implements Variables{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         loadIcon();
-        
         db = new DBConnection();
-
         db.connect();
-
+        
         civ = db.loadCivilizationComplete("MyCivilization");
         
 
         if (civ == null) {
 
             civ = new Civilization("MyCivilization");
-
             civ.player();
-            
-            
-
             db.saveCivilization(civ);
         }
+        
         setupDebugCivilization();
-
         civId = db.getCivilizationId(civ.getName());
         
         createPanels();
-        
-       
-        army_panel = new ArmyPanel(civ,this);
-        building_panel = new BuildingsPanel(civ,this);
-        civilization_panel = new CivilizationPanel();
-        technology_panel = new TechnologysPanel(civ,this);
-        stats_panel = new StatsPanel(civ,this);
-        battle_panel = new BattlePanel(civ,this);
-        reports_panel= new ReportsPanel(civ, this);
-        
-        
-		
         initializeButtonActions();
-        SwitchPanel(civilization_panel);
+       
+  
+        
+        SwitchPanel("civilization");
         StartResourcesGeneration();
         
         dialog_panel.AddMessage("⚔ Welcome to Our Civilization!");
@@ -119,7 +93,6 @@ public class MainFrame extends JFrame implements Variables{
         addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
-
             	resources_timer.cancel();
             	db.saveCivilization(civ);
             	db.closeConnection();
@@ -130,9 +103,13 @@ public class MainFrame extends JFrame implements Variables{
     }
     
     
+    public void setEnemy(Civilization enemy) {
+		this.enemy = enemy;
+	}
     
     private void setupDebugCivilization() {
 
+    	
         civ.setFood(999999);
         civ.setWood(999999);
         civ.setIron(999999);
@@ -140,10 +117,10 @@ public class MainFrame extends JFrame implements Variables{
 
         try {
 
-            civ.newSwordsman(5);
-            civ.newSpearman(5);
-            civ.newCrossbow(5);
-            civ.newCannon(2);
+            civ.newSwordsman(1);
+            civ.newSpearman(1);
+            civ.newCrossbow(1);
+            civ.newCannon(1);
 
             civ.newArrowTower(3);
             civ.newCatapult(2);
@@ -154,6 +131,12 @@ public class MainFrame extends JFrame implements Variables{
             
             civ.newMagician(1);
             civ.newPriest(1);
+            
+            System.out.println("Food: " + civ.getFood());
+            System.out.println("wood: " + civ.getWood());
+            System.out.println("iron: " + civ.getIron());
+            System.out.println("mana: " + civ.getMana());
+            
 
         } catch (Exception e) {
 
@@ -198,9 +181,36 @@ public class MainFrame extends JFrame implements Variables{
    	
     }
     
-    private void SwitchPanel(JPanel panel) {
-        center_switch_panel.removeAll();
-        center_switch_panel.add(panel,BorderLayout.CENTER);
+    private void SwitchPanel(String panelName) {
+    	center_switch_panel.removeAll();
+    	
+    	JPanel targetPanel;
+        switch (panelName) {
+            case "army":
+                targetPanel = new ArmyPanel(civ, this);
+                break;
+            case "buildings":
+                targetPanel = new BuildingsPanel(civ, this);
+                break;
+            case "technology":
+                targetPanel = new TechnologysPanel(civ, this);
+                break;
+            case "stats":
+                targetPanel = new StatsPanel(civ, this);
+                break;
+            case "battles":
+                targetPanel = new BattlePanel(civ, this);
+                break;
+            case "reports":
+                targetPanel = new ReportsPanel(civ, this);
+                break;
+            case "civilization":
+            default:
+                targetPanel = new CivilizationPanel();
+                break;
+        }
+        
+        center_switch_panel.add(targetPanel, BorderLayout.CENTER);
         center_switch_panel.revalidate();
         center_switch_panel.repaint();
     }
@@ -213,6 +223,9 @@ public class MainFrame extends JFrame implements Variables{
         center_switch_panel.repaint();
     }
     
+    public TopBarPanel getTopBarPanel() {
+        return topbar_panel;
+    }
     private void StartResourcesGeneration() {
 
         resources_timer = new Timer();
@@ -225,7 +238,7 @@ public class MainFrame extends JFrame implements Variables{
             }
         };
 
-        resources_timer.scheduleAtFixedRate(resources_task, 60000, 60000);
+        resources_timer.scheduleAtFixedRate(resources_task, 30000, 30000);
     }
     
     private void GenerateResources() {
@@ -233,17 +246,20 @@ public class MainFrame extends JFrame implements Variables{
         int food = CIVILIZATION_FOOD_GENERATED;
         int wood = CIVILIZATION_WOOD_GENERATED;
         int iron = CIVILIZATION_IRON_GENERATED;
+        
+        
+        
 
         food += civ.getFarm() * CIVILIZATION_FOOD_GENERATED_PER_FARM;
         wood += civ.getCarpentry() * CIVILIZATION_WOOD_GENERATED_PER_CARPENTRY;
         iron += civ.getSmithy() * CIVILIZATION_IRON_GENERATED_PER_SMITHY;
-
         int mana = civ.getMagicTower() * CIVILIZATION_MANA_GENERATED_PER_MAGIC_TOWER;
 
         civ.setFood(civ.getFood() + food);
         civ.setWood(civ.getWood() + wood);
         civ.setIron(civ.getIron() + iron);
         civ.setMana(civ.getMana() + mana);
+        
         
         GameLog.log.clear();
 
@@ -259,49 +275,48 @@ public class MainFrame extends JFrame implements Variables{
 
     }
     
-    
     private void initializeButtonActions() {
     	
 
         menu_panel.getBtn_Army().addActionListener(new ActionListener() {
         		public void actionPerformed(ActionEvent e) {
-        			SwitchPanel(army_panel);
+        			SwitchPanel("army");
         		}
         		});
         		
         menu_panel.getBtn_Buildings().addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			SwitchPanel(building_panel);
+    			SwitchPanel("buildings");
     		}
     		});
         
         menu_panel.getBtn_technology().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    SwitchPanel(technology_panel);
+                    SwitchPanel("technology");
             }
             });
         
         menu_panel.getBtn_civilization().addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			SwitchPanel(civilization_panel);
+    			SwitchPanel("civilization");
     		}
     		});
         
         menu_panel.getBtn_Stats().addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			SwitchPanel(stats_panel);
+    			SwitchPanel("stats");
     		}
     		});
         
         menu_panel.getBtn_Battles().addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			SwitchPanel(battle_panel);
+    			SwitchPanel("battles");
     		}
     		});
         
         menu_panel.getBtn_battle_reports().addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			SwitchPanel(reports_panel);
+    			SwitchPanel("reports");
     		}
     		});
     }

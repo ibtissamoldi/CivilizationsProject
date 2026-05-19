@@ -8,6 +8,10 @@ public class Magician extends SpecialUnit{
     	super(BASE_DAMAGE_MAGICIAN + (technologyAttack * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_MAGICIAN / 100));
     	
     }
+    
+    public Magician(int damage, String nada) {
+    	super(damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_MAGICIAN;

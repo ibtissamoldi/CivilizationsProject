@@ -11,6 +11,10 @@ public class RocketLauncherTower extends DefenseUnit{
         );
 
     }
+    
+    public RocketLauncherTower(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_ROCKETLAUNCHERTOWER;

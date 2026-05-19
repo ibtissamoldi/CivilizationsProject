@@ -497,7 +497,7 @@ class SpecialTabPanel extends JPanel {
 	    setLayout(new BorderLayout());
 	    setBackground(GameColors.BACKGROUND);
 	
-	    JPanel grid = new JPanel(new GridLayout(2,1,20,20));
+	    JPanel grid = new JPanel(new GridLayout(1,2,20,20));
 	    grid.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 	    grid.setBackground(GameColors.BACKGROUND);
 	

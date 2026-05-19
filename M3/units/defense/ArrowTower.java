@@ -10,6 +10,10 @@ public class ArrowTower extends DefenseUnit{
         );
     }
 
+    
+    public ArrowTower(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_ARROWTOWER;

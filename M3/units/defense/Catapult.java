@@ -11,6 +11,9 @@ public class Catapult extends DefenseUnit{
 
     }
 
+    public Catapult(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_CATAPULT;

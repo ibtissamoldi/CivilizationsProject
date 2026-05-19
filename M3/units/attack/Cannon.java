@@ -18,6 +18,12 @@ public class Cannon extends AttackUnit{
     public Cannon() {
         super(ARMOR_CANNON, BASE_DAMAGE_CANNON);
     }
+    
+    
+    
+    public Cannon(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
     public int getFoodCost() {
         return FOOD_COST_CANNON;

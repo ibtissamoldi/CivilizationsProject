@@ -13,6 +13,10 @@ public class Swordsman extends AttackUnit {
     public Swordsman() {
 		super(ARMOR_SWORDSMAN, BASE_DAMAGE_SWORDSMAN);
     } 
+    
+    public Swordsman(int armor, int damage, String nada) {
+    	super(armor, damage);
+	}
 
 	public int getFoodCost() {
 		return FOOD_COST_SWORDSMAN;

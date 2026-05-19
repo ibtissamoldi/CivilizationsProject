@@ -356,18 +356,18 @@ public class Battle implements Variables{
 		
     	if (randomNum <= final_chance[0]) {
     		try {
-				enemy.newSwordsman(99);
+				enemy.newSwordsman(3);
 			} catch (ResourceException e) {
 				e.printStackTrace();
 			}
     	} else if (randomNum <= final_chance[0] + final_chance[1]) {
     		try {
-				enemy.newSpearman(99);
+				enemy.newSpearman(3);
 			} catch (ResourceException e) {
 				e.printStackTrace();
-				if (e.getMessage().contains("99")) {
+				if (e.getMessage().contains("3")) {
 					try {
-						enemy.newSwordsman(99);
+						enemy.newSwordsman(3);
 					} catch (ResourceException ee) {
 						ee.printStackTrace();
 					}
@@ -375,12 +375,12 @@ public class Battle implements Variables{
 			}
     	} else if (randomNum <= final_chance[0] + final_chance[1] + final_chance[2]) {
     		try {
-				enemy.newCrossbow(99);
+				enemy.newCrossbow(3);
 			} catch (ResourceException e) {
 				e.printStackTrace();
-				if (e.getMessage().contains("99")) {
+				if (e.getMessage().contains("3")) {
 					try {
-						enemy.newSwordsman(99);
+						enemy.newSwordsman(3);
 					} catch (ResourceException ee) {
 						ee.printStackTrace();
 					}
@@ -388,12 +388,12 @@ public class Battle implements Variables{
 			}
     	} else {
     		try {
-				enemy.newCannon(99);
+				enemy.newCannon(3);
 			} catch (ResourceException e) {
 				e.printStackTrace();
-				if (e.getMessage().contains("99")) {
+				if (e.getMessage().contains("3")) {
 					try {
-						enemy.newSwordsman(99);
+						enemy.newSwordsman(3);
 					} catch (ResourceException ee) {
 						ee.printStackTrace();
 					}

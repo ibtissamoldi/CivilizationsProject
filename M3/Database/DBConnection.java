@@ -636,25 +636,25 @@ public class DBConnection {
                     case "Swordsman":
 
                         unit =
-                                new Swordsman(armor, damage);
+                                new Swordsman(armor, damage, "");
                         break;
 
                     case "Spearman":
 
                         unit =
-                                new Spearman(armor, damage);
+                                new Spearman(armor, damage,"");
                         break;
 
                     case "Crossbow":
 
                         unit =
-                                new Crossbow(armor, damage);
+                                new Crossbow(armor, damage,"");
                         break;
 
                     case "Cannon":
 
                         unit =
-                                new Cannon(armor, damage);
+                                new Cannon(armor, damage,"");
                         break;
 
                     default:
@@ -721,13 +721,13 @@ public class DBConnection {
                     case "ArrowTower":
 
                         unit =
-                                new ArrowTower(armor, damage);
+                                new ArrowTower(armor, damage,"");
                         break;
 
                     case "Catapult":
 
                         unit =
-                                new Catapult(armor, damage);
+                                new Catapult(armor, damage,"");
                         break;
 
                     case "RocketLauncherTower":
@@ -735,7 +735,7 @@ public class DBConnection {
                         unit =
                                 new RocketLauncherTower(
                                         armor,
-                                        damage);
+                                        damage,"");
 
                         break;
 
@@ -799,14 +799,14 @@ public class DBConnection {
                     case "Magician":
 
                         unit =
-                                new Magician(damage);
+                                new Magician(damage,"");
 
                         break;
 
                     case "Priest":
 
                         unit =
-                                new Priest(damage);
+                                new Priest(damage,"");
 
                         break;
 

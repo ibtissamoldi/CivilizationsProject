@@ -270,7 +270,7 @@ public class Civilization implements Variables{
 				if (this.army[0] == null) {
 					army[0] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[0].add(new Swordsman());
+						this.army[0].add(new Swordsman(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " swordsmen successfully created");
@@ -283,7 +283,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[0].add(new Swordsman());
+						this.army[0].add(new Swordsman(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " swordsmen successfully created");
@@ -305,11 +305,11 @@ public class Civilization implements Variables{
 	public void newSpearman(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Spearman(), unidades)) {
+			if (checkCostsUnits(new Spearman(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[1] == null) {
 					army[1] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[1].add(new Spearman());
+						this.army[1].add(new Spearman(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " spearmen successfully created");
@@ -322,7 +322,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[1].add(new Spearman());
+						this.army[1].add(new Spearman(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " spearmen successfully created");
@@ -344,11 +344,11 @@ public class Civilization implements Variables{
 	public void newCrossbow(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Crossbow(), unidades)) {
+			if (checkCostsUnits(new Crossbow(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[2] == null) {
 					army[2] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[2].add(new Crossbow());
+						this.army[2].add(new Crossbow(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " crossbows successfully created");
@@ -361,7 +361,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[2].add(new Crossbow());
+						this.army[2].add(new Crossbow(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " crossbows successfully created");
@@ -383,11 +383,11 @@ public class Civilization implements Variables{
 	public void newCannon(int n) throws ResourceException {
 		int contador = 0;
 		for (int unidades = n; unidades > 0; unidades--) {
-			if (checkCostsUnits(new Cannon(), unidades)) {
+			if (checkCostsUnits(new Cannon(this.technologyDefense, this.technologyAttack), unidades)) {
 				if (this.army[3] == null) {
 					army[3] = new ArrayList<MilitaryUnit>();
 					for (int i = 0; i < unidades; i++) {
-						this.army[3].add(new Cannon());
+						this.army[3].add(new Cannon(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " cannons successfully created");
@@ -400,7 +400,7 @@ public class Civilization implements Variables{
 					return;
 				} else {
 					for (int i = 0; i < unidades; i++) {
-						this.army[3].add(new Cannon());
+						this.army[3].add(new Cannon(this.technologyDefense, this.technologyAttack));
 					}
 					if (unidades > 1) {
 						System.out.println(unidades + " cannons successfully created");
@@ -659,30 +659,68 @@ public class Civilization implements Variables{
 		
 	}
 	
+	public int more_less() {
+		if ((int) (Math.random() * 100) <= 50) {
+        	return 1;
+        } else {
+        	return -1;
+		}
+	}
+	
 	public void generateEnemyArmy(Civilization player) {
 
 	    try {
 	    	
+	    	
 	    	this.setFood(999999);
 	        this.setWood(999999);
 	        this.setIron(999999);
-	        this.setMana(999999);
 	        
-	        int swords =player.getArmy()[0].size();
-	        int spears =player.getArmy()[1].size();
-	        int crossbows =player.getArmy()[2].size();
-	        int cannons =player.getArmy()[3].size();
+	        int swords;
+	        int spears;
+	        int crossbows;
+	        int cannons;
+	        
+	        try {
+	        	swords =player.getArmy()[0].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+			} catch (Exception e) {
+				swords =player.getArmy()[0].size();
+			}
+	        
+	        try {
+	        	spears =player.getArmy()[1].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+			} catch (Exception e) {
+				spears =player.getArmy()[1].size();
+			}
+	        
+	        try {
+	        	crossbows =player.getArmy()[2].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+			} catch (Exception e) {
+				crossbows =player.getArmy()[2].size();
+			}
+	        
+	        try {
+	        	cannons =player.getArmy()[3].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+			} catch (Exception e) {
+				cannons =player.getArmy()[3].size();
+			}
+	        
 
 	        this.newSwordsman(swords);
 	        this.newSpearman(spears);
 	        this.newCrossbow(crossbows);
 	        this.newCannon(cannons);
 	        
-	        
+	        this.setFood(30000);
+	        this.setWood(30000);
+	        this.setIron(30000);
 
 	    } catch (ResourceException e) {
 
 	        System.out.println("Error generating enemy army");
+	        this.setFood(30000);
+	        this.setWood(30000);
+	        this.setIron(30000);
 	    }
 	}
 	

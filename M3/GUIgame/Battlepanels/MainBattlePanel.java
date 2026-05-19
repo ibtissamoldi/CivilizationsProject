@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import M3.Database.DBConnection;
 import M3.GUIgame.GameColors;
 import M3.GUIgame.GameLog;
 import M3.GUIgame.MainFrame;
@@ -19,16 +20,17 @@ import M3.exceptions.ResourceException;
 import M3.game.Battle;
 import M3.game.Civilization;
 import M3.interfaces.MilitaryUnit;
+import M3.interfaces.Variables;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 import java.awt.FlowLayout;
 
 
 
-public class MainBattlePanel extends JPanel {
+public class MainBattlePanel extends JPanel implements Variables {
 	
 	private CenterFightPanel center;
 
@@ -66,6 +68,7 @@ public class MainBattlePanel extends JPanel {
 		enemy.enemy();
 
 		enemy.generateEnemyArmy(civ);
+		
 		
 		battle = new Battle(civ.getArmy(),enemy.getArmy(),civ.getName(),enemy.getName());
 
@@ -164,6 +167,27 @@ public class MainBattlePanel extends JPanel {
 	private void startBattleLoop() {
 		
 
+		Timer enemy_generate = new Timer(20000, null);
+
+	    enemy_generate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				battle.generateEnemyUnits(enemy);
+				frame.setEnemy(enemy);
+				updateLiveArmyCounters();
+			}
+	    	
+	    });
+	    
+	    Timer enemy_generate_resources = new Timer(60000, null);
+
+	    enemy_generate_resources.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				generateResourcesEnemy();
+				
+			}
+	    	
+	    });
+
 	     timer = new Timer(1000, null);
 
 	     timer.addActionListener(new ActionListener() {
@@ -178,8 +202,14 @@ public class MainBattlePanel extends JPanel {
 	            } else {
 
 	                timer.stop();
+	                enemy_generate.stop();
+                    enemy_generate_resources.stop(); 
 	                
+	                frame.getDb().saveCivilization(civ);
 	                saveBattleReport();
+	                
+	                
+	                
 	                
 	                System.out.println("\n\n===== STEP BY STEP =====\n");
 	                System.out.println(battle.getReportStepStep());
@@ -206,6 +236,22 @@ public class MainBattlePanel extends JPanel {
 	    });
 
 	    timer.start();
+	    enemy_generate.start();
+	    enemy_generate_resources.start();
+	    updateLiveArmyCounters();
+
+	    
+	}
+	
+	private void generateResourcesEnemy() {
+    	int food_enemy = FOOD_BASE_ENEMY_ARMY;
+        int wood_enemy = WOOD_BASE_ENEMY_ARMY;
+        int iron_enemy = IRON_BASE_ENEMY_ARMY;
+        
+        enemy.setFood(enemy.getFood() + food_enemy);
+        enemy.setWood(enemy.getWood() + wood_enemy);
+        enemy.setIron(enemy.getIron() + iron_enemy);
+        
 	}
 	
 	private String getImagePath(MilitaryUnit unit, boolean isCivUnit) {
@@ -273,6 +319,26 @@ public class MainBattlePanel extends JPanel {
 	        enemyCards[i].setCount(enemy.getArmy()[i].size()
 	        );
 	    }
+        updateLiveArmyCounters();
+	}
+	
+	private void updateLiveArmyCounters() {
+		int totalCivUnits = 0;
+		for (ArrayList<MilitaryUnit> unitList : civ.getArmy()) {
+			if (unitList != null) {
+			totalCivUnits += unitList.size();
+			}
+			
+		}
+		int totalEnemyUnits = 0;
+		for (ArrayList<MilitaryUnit> unitList : enemy.getArmy()) {
+			if (unitList != null)  {
+				totalEnemyUnits += unitList.size();
+			}
+			
+		}
+		frame.getTopBarPanel().updateLiveCounts(totalCivUnits, totalEnemyUnits);
+		
 	}
 	
 	
@@ -453,6 +519,7 @@ public class MainBattlePanel extends JPanel {
 	        }
 
 	        updateCounts();
+	        frame.RefreshInterface();
 
 	    } catch(ResourceException e) {
 
@@ -463,6 +530,8 @@ public class MainBattlePanel extends JPanel {
                    GameLog.info(created + " " + unitName + " recruited!");
                }
                GameLog.error(notrecruited + " " + unitName + " could not be recruited due to insufficient resources!!");
+               updateCounts();
+               frame.RefreshInterface(); 
 	    }
 	}
 	
