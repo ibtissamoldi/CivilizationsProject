@@ -37,20 +37,38 @@
         </div>
       </div>
     </section>
-
-    <section class="card">
-      <h2>Battle Log</h2>
-
-      {{#if log}}
-        <ol class="battle-log">
-          {{#each log}}
-            <li>{{log_entry}}</li>
-          {{/each}}
-        </ol>
-      {{else}}
-        <p>No log lines were saved for this battle.</p>
-      {{/if}}
     </section>
+
+<section class="card">
+  <h2>Battle Log</h2>
+
+  {{#if log}}
+    <ol class="battle-log" start="{{primerLog}}">
+      {{#each log}}
+        <li>{{log_entry}}</li>
+      {{/each}}
+    </ol>
+
+    <div class="paginacio">
+      {{#if hiHaPrevLog}}
+        <a class="btn" href="/informe?informe={{battle.num_battle}}&paginaLog={{paginaLogAnt}}">
+          Previous
+        </a>
+      {{/if}}
+
+      <span>Page {{paginaLogVisual}}</span>
+
+      {{#if hiHaNextLog}}
+        <a class="btn" href="/informe?informe={{battle.num_battle}}&paginaLog={{paginaLogSeg}}">
+          Next
+        </a>
+      {{/if}}
+    </div>
+
+  {{else}}
+    <p>No log lines were saved for this battle.</p>
+  {{/if}}
+</section>
 
     <section class="card">
       <h2>Civilization Attack Units</h2>

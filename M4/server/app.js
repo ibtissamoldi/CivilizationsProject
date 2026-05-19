@@ -298,13 +298,29 @@ app.get('/informe', async (req, res) => {
       battle_date: 'string'
     })[0]
 
-    const logRows = await db.query(`
-      SELECT num_line, log_entry
-      FROM battle_log
-      WHERE civilization_id = ${civilization.civilization_id}
-        AND num_battle = ${numBattle}
-      ORDER BY num_line ASC
-    `)
+    const LOGS_PER_PAGE = 5
+const paginaLog = parseInt(req.query.paginaLog, 10) || 0
+const offsetLog = paginaLog * LOGS_PER_PAGE
+
+const logRows = await db.query(`
+  SELECT num_line, log_entry
+  FROM battle_log
+  WHERE civilization_id = ${civilization.civilization_id}
+    AND num_battle = ${numBattle}
+  ORDER BY num_line ASC
+  LIMIT ${LOGS_PER_PAGE} OFFSET ${offsetLog}
+`)
+
+const totalLogRows = await db.query(`
+  SELECT COUNT(*) AS total
+  FROM battle_log
+  WHERE civilization_id = ${civilization.civilization_id}
+    AND num_battle = ${numBattle}
+`)
+
+const totalLogs = db.table_to_json(totalLogRows, {
+  total: 'number'
+})[0].total
 
     const unitRows = await db.query(`
       SELECT
@@ -385,11 +401,20 @@ app.get('/informe', async (req, res) => {
     }
 
     res.render('informeBatalla', {
-      civilization,
-      battle,
-      log,
-      report
-    })
+  civilization,
+  battle,
+  log,
+  report,
+
+  paginaLog,
+  paginaLogVisual: paginaLog + 1,
+  hiHaPrevLog: paginaLog > 0,
+  hiHaNextLog: offsetLog + LOGS_PER_PAGE < totalLogs,
+  paginaLogAnt: paginaLog - 1,
+  paginaLogSeg: paginaLog + 1,
+  primerLog: offsetLog + 1
+  
+})
 
   } catch (e) {
     console.error(e)
