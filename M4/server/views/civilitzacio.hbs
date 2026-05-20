@@ -1,0 +1,171 @@
+<main class="container">
+
+  {{#if noData}}
+
+    <div class="card">
+      <h1>There is no civilization in the database</h1>
+    </div>
+
+  {{else}}
+
+    <h1>Civilization Status</h1>
+
+    <section class="card">
+      <h2>Current Resources</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/wood.png" alt="Wood">
+          <strong>{{civilization.wood_amount}}</strong>
+          <span>Wood</span>
+        </div>
+
+        <div>
+          <img src="/img/iron.png" alt="Iron">
+          <strong>{{civilization.iron_amount}}</strong>
+          <span>Iron</span>
+        </div>
+
+        <div>
+          <img src="/img/food.png" alt="Food">
+          <strong>{{civilization.food_amount}}</strong>
+          <span>Food</span>
+        </div>
+
+        <div>
+          <img src="/img/mana.png" alt="Mana">
+          <strong>{{civilization.mana_amount}}</strong>
+          <span>Mana</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Buildings</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/farm.png" alt="Farm">
+          <strong>{{civilization.farm_counter}}</strong>
+          <span>Farm</span>
+        </div>
+
+        <div>
+          <img src="/img/smithy.png" alt="Smithy">
+          <strong>{{civilization.smithy_counter}}</strong>
+          <span>Smithy</span>
+        </div>
+
+        <div>
+          <img src="/img/carpentry.png" alt="Carpentry">
+          <strong>{{civilization.carpentry_counter}}</strong>
+          <span>Carpentry</span>
+        </div>
+
+        <div>
+          <img src="/img/magic_tower.png" alt="Magic Tower">
+          <strong>{{civilization.magicTower_counter}}</strong>
+          <span>Magic Tower</span>
+        </div>
+
+        <div>
+          <img src="/img/church.png" alt="Church">
+          <strong>{{civilization.church_counter}}</strong>
+          <span>Church</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Technologies</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/attack_technology.png" alt="Attack Technology">
+          <strong>{{civilization.technology_attack_level}}</strong>
+          <span>Attack Technology</span>
+        </div>
+
+        <div>
+          <img src="/img/defense_technology.png" alt="Defense Technology">
+          <strong>{{civilization.technology_defense_level}}</strong>
+          <span>Defense Technology</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Attack Units</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/swordsman_civ.png" alt="Swordsman">
+          <strong>{{units.swordsman}}</strong>
+          <span>Swordsman</span>
+        </div>
+
+        <div>
+          <img src="/img/spearman_civ.png" alt="Spearman">
+          <strong>{{units.spearman}}</strong>
+          <span>Spearman</span>
+        </div>
+
+        <div>
+          <img src="/img/crossbow_civ.png" alt="Crossbow">
+          <strong>{{units.crossbow}}</strong>
+          <span>Crossbow</span>
+        </div>
+
+        <div>
+          <img src="/img/cannon_civ.png" alt="Cannon">
+          <strong>{{units.cannon}}</strong>
+          <span>Cannon</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Defense Units</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/arrowTower_civ.png" alt="Arrow Tower">
+          <strong>{{units.arrowTower}}</strong>
+          <span>Arrow Tower</span>
+        </div>
+
+        <div>
+          <img src="/img/catapult_civ.png" alt="Catapult">
+          <strong>{{units.catapult}}</strong>
+          <span>Catapult</span>
+        </div>
+
+        <div>
+          <img src="/img/rocketLauncherTower_civ.png" alt="Rocket Launcher Tower">
+          <strong>{{units.rocketLauncherTower}}</strong>
+          <span>Rocket Launcher</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Special Units</h2>
+
+      <div class="resource-grid compact">
+        <div>
+          <img src="/img/magician_civ.png" alt="Magician">
+          <strong>{{units.magician}}</strong>
+          <span>Magician</span>
+        </div>
+
+        <div>
+          <img src="/img/priest_civ.png" alt="Priest">
+          <strong>{{units.priest}}</strong>
+          <span>Priest</span>
+        </div>
+      </div>
+    </section>
+
+  {{/if}}
+
+</main>
