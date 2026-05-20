@@ -14,7 +14,7 @@ if (!isProxmox) {
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'root',
+    password: '12345',
     database: 'civilizations'
   })
 } else {
@@ -508,6 +508,22 @@ app.get('/civilitzacio', async (req, res) => {
 app.get('/programadors', (req, res) => {
   res.render('programadors')
 })
+
+const { exec } = require('child_process');
+
+app.get('/launch-game', (req, res) => {
+    const command = 'java -cp ".;C:\\Users\\ibtis\\Downloads\\mysql-connector-java-8.0.15(2).jar" M3.GUIgame.MainFrame';
+    const workingDir = 'C:\\Github_\\New folder\\CivilizationsProject';
+    
+    exec(command, { cwd: workingDir }, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error launching game: ${error.message}`);
+            return;
+        }
+    });
+
+    res.redirect('/');
+});
 
 app.listen(port, () => {
   console.log(`Servidor actiu a http://localhost:${port}`)

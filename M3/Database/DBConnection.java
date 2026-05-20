@@ -22,7 +22,6 @@ public class DBConnection {
     public void connect() {
 
     	String[] urls = {"jdbc:mysql://localhost:3306/civilizations?useSSL=false&serverTimezone=UTC","jdbc:mysql://localhost:3307/civilizations?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"};
-
         String user = "civ_user";
         String password = "bichos2.0";
         

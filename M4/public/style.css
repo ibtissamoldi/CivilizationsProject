@@ -748,3 +748,95 @@ footer {
     max-height: 360px;
   }
 }
+
+
+.game-cta-banner {
+    margin-top: 50px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #141414, #3b2712);
+    border: 1px solid #9f7b32;
+    border-radius: 6px;
+    text-align: center;
+    box-shadow: inset 0 4 15px rgba(0,0,0,0.4);
+}
+
+.game-cta-banner h2 {
+    color: #f8f1dd;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.game-cta-banner p {
+    color: #AFA078;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.game-launcher-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-civ-launcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #465A37;
+    color: #F0E6C8;
+    border: 2px solid #344834; 
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-civ-launcher:hover {
+    background-color: #5F7846;
+    color: #EBC95A;
+    border-color: #9f7b32;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.4), 
+                0 0 15px rgba(230, 200, 236, 0.3);
+}
+
+.btn-civ-launcher:active {
+    transform: translateY(1px);
+}
+
+.btn-civ-launcher .btn-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-civ-launcher:hover .btn-icon {
+    transform: scale(1.2) rotate(-10deg);
+}
+
+
+@media (max-width: 600px) {
+    .game-cta-banner {
+        padding: 30px 15px;
+        margin-top: 30px;
+        border-radius: 0;
+    }
+    
+    .game-cta-banner h2 {
+        font-size: 1.3rem;
+    }
+    
+    .btn-civ-launcher {
+        width: 100%;
+        justify-content: center;
+    }
+}
