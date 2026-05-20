@@ -272,6 +272,7 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         return civ.getArmy()[index].size();
     }
 
+    
     private int getFoodGeneration() {
 
         return CIVILIZATION_FOOD_GENERATED+ civ.getFarm() * CIVILIZATION_FOOD_GENERATED_PER_FARM;

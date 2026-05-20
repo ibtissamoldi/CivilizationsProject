@@ -148,6 +148,7 @@ public class TopBarPanel extends JPanel {
 	            }
 	        }
 	    }
+	    
 	    lbl_civ_count.setText("Your Army: " + total_army);
 	    return total_army;
 	}

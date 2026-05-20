@@ -74,6 +74,7 @@ public class MainFrame extends JFrame implements Variables{
             db.saveCivilization(civ);
         }
         
+        
         //setupDebugCivilization();
         
         civId = db.getCivilizationId(civ.getName());
