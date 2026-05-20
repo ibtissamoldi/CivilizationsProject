@@ -1,0 +1,77 @@
+
+{{#if noData}}
+  <div class="card"><h1>No hi ha cap civilització a la base de dades</h1></div>
+{{else}}
+
+<section class="hero">
+  <div class="hero-text">
+    
+    <div class="civi_name"></div>
+   
+    <div class="hero-actions">
+      <a class="btn-primary" href="/batalles">View battles</a>
+      <a class="btn-secondary" href="/civilitzacio">Civilization State</a>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <h2>Current overview</h2>
+    <div class="resource-grid compact">
+      <div><img src="/img/wood.png" alt="Wood"> <strong>{{civilization.wood_amount}}</strong><span>Wood</span></div>
+      <div><img src="/img/iron.png" alt="Iron"> <strong>{{civilization.iron_amount}}</strong><span>Iron</span></div>
+      <div><img src="/img/food.png" alt="Food"> <strong>{{civilization.food_amount}}</strong><span>Food</span></div>
+      <div><img src="/img/mana.png" alt="Mana"> <strong>{{civilization.mana_amount}}</strong><span>Mana</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+<div class="card">
+  <h2>Game screenshots</h2>
+  <div class="screenshots">
+    <figure>
+      <img src="/img/civilization.png" alt="Pantalla de civilització">
+      <figcaption>Civilization Panel</figcaption>
+    </figure>
+    <figure>
+      <img src="/img/battle.png" alt="Pantalla de batalla">
+      <figcaption>Battle Screen</figcaption>
+    </figure>
+    <figure>
+      <img src="/img/army.png" alt="Pantalla d'exèrcit">
+      <figcaption>Army Management</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Latest Battles</h2>
+  {{#if latestBattles}}
+  <table>
+    <thead>
+      <tr>
+        <th>Battle</th>
+        <th>Winner</th>
+        <th>Wood</th>
+        <th>Iron</th>
+        <th>Report</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each latestBattles}}
+      <tr>
+        <td>#{{num_battle}}</td>
+        <td><span class="badge">{{winner}}</span></td>
+        <td><img class="icon" src="/img/wood.png" alt="Wood"> {{wood_acquired}}</td>
+        <td><img class="icon" src="/img/iron.png" alt="Iron"> {{iron_acquired}}</td>
+        <td><a class="btn" href="/informe?informe={{num_battle}}">View Report</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+    <p>Encara no hi ha batalles registrades.</p>
+  {{/if}}
+</div>
+{{/if}}
+</main>

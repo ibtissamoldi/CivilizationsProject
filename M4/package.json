@@ -1,0 +1,27 @@
+{
+  "name": "m4-civilizations",
+  "version": "1.0.0",
+  "description": "Projecte web Civilizations amb Express, MySQL i Handlebars",
+  "main": "server/app.js",
+  "scripts": {
+    "dev": "node --watch ./server/app.js",
+    "start": "node ./server/app.js",
+    "pm2start": "pm2 start ./server/app.js --name civilizations",
+    "pm2stop": "pm2 stop civilizations",
+    "pm2restart": "pm2 restart civilizations",
+    "pm2delete": "pm2 delete civilizations",
+    "pm2list": "pm2 list",
+    "pm2logs": "pm2 logs civilizations"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "hbs": "^4.2.0",
+    "mysql2": "^3.16.3",
+    "pm2": "^6.0.14"
+  },
+  "devDependencies": {},
+  "type": "commonjs"
+}

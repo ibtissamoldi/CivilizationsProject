@@ -1,0 +1,39 @@
+package M3.units.special;
+
+import M3.units.SpecialUnit;
+
+public class Priest extends SpecialUnit {
+
+    public Priest(int technologyDefense) {
+    	super(BASE_DAMAGE_PRIEST + (technologyDefense * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_PRIEST / 100));
+    }
+
+    public Priest(int damage, String nada) {
+    	super(damage);
+	}
+
+    public int getFoodCost() {
+        return FOOD_COST_PRIEST;
+    }
+
+    public int getWoodCost() {
+        return WOOD_COST_PRIEST;
+    }
+
+    public int getIronCost() {
+        return IRON_COST_PRIEST;
+    }
+
+    public int getManaCost() {
+        return MANA_COST_PRIEST;
+    }
+
+    public int getChanceGeneratinWaste() {
+        return CHANCE_GENERATNG_WASTE_PRIEST;
+    }
+    public int getChanceAttackAgain() {
+        return CHANCE_ATTACK_AGAIN_PRIEST;
+    }
+
+    
+}
