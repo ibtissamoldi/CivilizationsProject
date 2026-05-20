@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -34,7 +33,6 @@ public class SideMenuPanel extends JPanel {
     	setBackground(new Color(235,243,231));
         setBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2));
         
-        //btn_civilization = createMenuButton("Civilization");
         
         BufferedImage image = null;
 		
@@ -47,11 +45,6 @@ public class SideMenuPanel extends JPanel {
 		Image scaled = image.getScaledInstance(120, 80, Image.SCALE_SMOOTH);
 		ImageIcon logo = new ImageIcon(scaled);
 		btn_civilization = new JButton(logo);
-		
-        /*btn_civilization.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(GameColors.BORDER, 2),
-                        BorderFactory.createEmptyBorder(5, 15, 5, 15)));*/
         btn_civilization.setFocusPainted(false);
         btn_civilization.setBorderPainted(false);
         btn_civilization.setBackground(GameColors.PANEL);
@@ -75,7 +68,31 @@ public class SideMenuPanel extends JPanel {
     }
     
     
-    
+	private JButton createMenuButton(String text) {
+	
+	    	
+	        JButton btn = new JButton(text);
+	
+	        btn.setBackground(GameColors.BUTTON);
+	        btn.setForeground(GameColors.TEXT);
+	        btn.setFocusPainted(false);
+	        btn.setPreferredSize(new Dimension(140, 40));
+	        btn.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),BorderFactory.createEmptyBorder(12, 20, 12, 20)));
+	        btn.setFont(new Font("Serif", Font.BOLD, 16));
+	        
+	        
+	        btn.addMouseListener(new MouseAdapter() {
+	        	public void mouseEntered(MouseEvent e) {
+	        		btn.setBackground(GameColors.BUTTON_HOVER);
+	        		}
+	        	public void mouseExited(MouseEvent e) {
+	        		btn.setBackground(GameColors.BUTTON);
+	        		}
+	        	});
+	        return btn;
+	    }
+	    
+	    
     
     public JButton getBtn_battle_reports() {
 		return btn_battle_reports;
@@ -122,38 +139,4 @@ public class SideMenuPanel extends JPanel {
 	public JButton getBtn_Battles() {
 		return btn_Battles;
 	}
-
-
-
-
-	private JButton createMenuButton(String text) {
-
-    	
-        JButton btn = new JButton(text);
-
-        btn.setBackground(GameColors.BUTTON);
-        btn.setForeground(GameColors.TEXT);
-        btn.setFocusPainted(false);
-        btn.setPreferredSize(new Dimension(140, 40));
-        btn.setBorder(
-                BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(GameColors.BORDER, 2),
-                    BorderFactory.createEmptyBorder(12, 20, 12, 20)
-                )
-            );
-        btn.setFont(new Font("Serif", Font.BOLD, 16));
-        
-        
-        btn.addMouseListener(new MouseAdapter() {
-        	public void mouseEntered(MouseEvent e) {
-        		btn.setBackground(GameColors.BUTTON_HOVER);
-        		}
-        	public void mouseExited(MouseEvent e) {
-        		btn.setBackground(GameColors.BUTTON);
-        		}
-        	});
-        		
-
-        return btn;
-    }
 }

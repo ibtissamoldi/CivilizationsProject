@@ -2,15 +2,13 @@ package M3.game;
 
 import java.util.ArrayList;
 
+import M3.GUIgame.GameLog;
 import M3.exceptions.ResourceException;
 import M3.interfaces.MilitaryUnit;
 import M3.interfaces.Variables;
 import M3.units.AttackUnit;
 import M3.units.DefenseUnit;
-import M3.units.SpecialUnit;
-import M3.units.attack.*;
-import M3.units.defense.*;
-import M3.units.special.*;
+
 
 public class Battle implements Variables{
 	
@@ -188,9 +186,9 @@ public class Battle implements Variables{
         	
         	if (attacker == 0 && this.armies[0][8] != null && !this.armies[0][8].isEmpty()) {
         		if (unitAttacking instanceof AttackUnit) {
-        			((AttackUnit) unitAttacking).isSanctified();
+        			((AttackUnit) unitAttacking).setSanctified(true);
         		} else if (unitAttacking instanceof DefenseUnit) {
-        			((DefenseUnit) unitAttacking).isSanctified();
+        			((DefenseUnit) unitAttacking).setSanctified(true);
         		}
         	}
         	int damage = unitAttacking.attack();
@@ -353,21 +351,25 @@ public class Battle implements Variables{
 		}
 		
 		int randomNum = (int) (Math.random() * 100);
-		
+		int i =0;
     	if (randomNum <= final_chance[0]) {
+    		
     		try {
 				enemy.newSwordsman(3);
+				i+=3;
 			} catch (ResourceException e) {
 				e.printStackTrace();
 			}
     	} else if (randomNum <= final_chance[0] + final_chance[1]) {
     		try {
 				enemy.newSpearman(3);
+				i+=3;
 			} catch (ResourceException e) {
 				e.printStackTrace();
 				if (e.getMessage().contains("3")) {
 					try {
 						enemy.newSwordsman(3);
+						i+=3;
 					} catch (ResourceException ee) {
 						ee.printStackTrace();
 					}
@@ -381,6 +383,7 @@ public class Battle implements Variables{
 				if (e.getMessage().contains("3")) {
 					try {
 						enemy.newSwordsman(3);
+						i+=3;
 					} catch (ResourceException ee) {
 						ee.printStackTrace();
 					}
@@ -389,6 +392,7 @@ public class Battle implements Variables{
     	} else {
     		try {
 				enemy.newCannon(3);
+				i+=3;
 			} catch (ResourceException e) {
 				e.printStackTrace();
 				if (e.getMessage().contains("3")) {
@@ -400,6 +404,11 @@ public class Battle implements Variables{
 				}
 			}
     	}
+    	if (i >0) {
+    		GameLog.warning("Enemy Army recruited "+i + " units😨!!!");
+    	}
+        
+
 	}
 
 	

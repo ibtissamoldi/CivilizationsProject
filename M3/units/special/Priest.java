@@ -8,8 +8,6 @@ public class Priest extends SpecialUnit {
     	super(BASE_DAMAGE_PRIEST + (technologyDefense * PLUS_ATTACK_MAGICIAN_BY_TECHNOLOGY * BASE_DAMAGE_PRIEST / 100));
     }
 
-   
-
     public Priest(int damage, String nada) {
     	super(damage);
 	}

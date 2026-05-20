@@ -1,7 +1,6 @@
 package M3.GUIgame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -9,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 
 public class DialogPanel extends JPanel {
 
@@ -34,7 +34,6 @@ public class DialogPanel extends JPanel {
     }
 
 	public void AddMessage(String message) {
-		//info_textarea.setForeground(whichColor);
 		info_textarea.append(message + "\n");
 	}
 	

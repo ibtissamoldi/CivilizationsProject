@@ -1,14 +1,12 @@
 package M3.GUIgame.mainPanels;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -111,12 +109,11 @@ public class ReportsPanel extends JPanel {
 	}
 	
 	private void abrirDialogosDetalle(String titulo, String col1Text, String col2Text) {
-		JDialog dialog1 = crearDialogoPersonalizado("Detail A - " + titulo, col1Text);
-		JDialog dialog2 = crearDialogoPersonalizado("Detail B - " + titulo, col2Text);
+		JDialog dialog1 = crearDialogoPersonalizado("Battle Reports - " + titulo, col1Text);
+		JDialog dialog2 = crearDialogoPersonalizado("Battle Log - " + titulo, col2Text);
 		
-		dialog1.setLocationRelativeTo(frame);
-		dialog2.setLocationRelativeTo(frame);
-		dialog2.setLocation(dialog2.getX() + 160, dialog2.getY() + 60); 
+		dialog1.setBounds(frame.getX()+180, frame.getY()+180, 360, 360);
+		dialog2.setBounds(frame.getX() + 580, frame.getY()+180,360,360);
 		
 		dialog1.setVisible(true);
 		dialog2.setVisible(true);
@@ -157,6 +154,7 @@ public class ReportsPanel extends JPanel {
     			dialog.dispose();
     		}
     		});		
+		
 		JPanel southPanel = new JPanel();
 		southPanel.setBackground(GameColors.PANEL);
 		southPanel.add(btnCerrar);

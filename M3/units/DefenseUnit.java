@@ -40,8 +40,8 @@ public abstract class DefenseUnit implements MilitaryUnit, Variables{
     }
 
     public boolean isSanctified() {
-        return sanctified;
-    }
+		return sanctified;
+	}
 
     public void setSanctified(boolean sanctified) {
         this.sanctified = sanctified;

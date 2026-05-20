@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.Timer;
@@ -65,24 +64,23 @@ public class MainFrame extends JFrame implements Variables{
         loadIcon();
         db = new DBConnection();
         db.connect();
-        
         civ = db.loadCivilizationComplete("MyCivilization");
         
 
         if (civ == null) {
-
             civ = new Civilization("MyCivilization");
             civ.player();
+            setupDemostrationCivilization();
             db.saveCivilization(civ);
         }
         
-        setupDebugCivilization();
+        //setupDebugCivilization();
+        
         civId = db.getCivilizationId(civ.getName());
         
         createPanels();
         initializeButtonActions();
        
-  
         
         SwitchPanel("civilization");
         StartResourcesGeneration();
@@ -101,15 +99,9 @@ public class MainFrame extends JFrame implements Variables{
 
         setVisible(true);
     }
-    
-    
-    public void setEnemy(Civilization enemy) {
-		this.enemy = enemy;
-	}
-    
+
     private void setupDebugCivilization() {
 
-    	
         civ.setFood(999999);
         civ.setWood(999999);
         civ.setIron(999999);
@@ -117,13 +109,13 @@ public class MainFrame extends JFrame implements Variables{
 
         try {
 
-            civ.newSwordsman(1);
-            civ.newSpearman(1);
-            civ.newCrossbow(1);
-            civ.newCannon(1);
+            civ.newSwordsman(2);
+            civ.newSpearman(2);
+            civ.newCrossbow(2);
+            civ.newCannon(2);
 
-            civ.newArrowTower(3);
-            civ.newCatapult(2);
+            civ.newArrowTower(1);
+            civ.newCatapult(1);
             civ.newRocketLauncher(1);
 
             civ.newChurch();
@@ -145,16 +137,42 @@ public class MainFrame extends JFrame implements Variables{
     }
     
     
-    public DBConnection getDb() {
-		return db;
-	}
+	private void setupDemostrationCivilization() {
+	
+	    	
+	        civ.setFood(100000);
+	        civ.setWood(150000);
+	        civ.setIron(20000);
+	        civ.setMana(0);
+	
+	            
+			System.out.println("Food: " + civ.getFood());
+			System.out.println("wood: " + civ.getWood());
+			System.out.println("iron: " + civ.getIron());
+			System.out.println("mana: " + civ.getMana());
+
+	    }
+    
+    
     
 
 
-	public int getCivId() {
-		return civId;
-	}
+	
+	 private void loadIcon() {
+	    	BufferedImage icon_image;
 
+	        try {
+
+	            icon_image =
+	                    ImageIO.read(getClass().getResource("/M3/images/swords_icon.png"));
+
+	            setIconImage(icon_image);
+
+	        } catch (IOException e) {
+
+	            System.out.println("Error loading icon.");
+	        }
+	    }
 
 	private void createPanels() {
     	main_panel = new JPanel(new BorderLayout());
@@ -181,7 +199,7 @@ public class MainFrame extends JFrame implements Variables{
    	
     }
     
-    private void SwitchPanel(String panelName) {
+    public void SwitchPanel(String panelName) {
     	center_switch_panel.removeAll();
     	
     	JPanel targetPanel;
@@ -213,66 +231,6 @@ public class MainFrame extends JFrame implements Variables{
         center_switch_panel.add(targetPanel, BorderLayout.CENTER);
         center_switch_panel.revalidate();
         center_switch_panel.repaint();
-    }
-    
-    
-    
-    public void RefreshInterface() {
-        topbar_panel.UpdateResources();
-        center_switch_panel.revalidate();
-        center_switch_panel.repaint();
-    }
-    
-    public TopBarPanel getTopBarPanel() {
-        return topbar_panel;
-    }
-    private void StartResourcesGeneration() {
-
-        resources_timer = new Timer();
-
-        resources_task = new TimerTask() {
-
-            public void run() {
-                GenerateResources();
-            	RefreshInterface();
-            }
-        };
-
-        resources_timer.scheduleAtFixedRate(resources_task, 30000, 30000);
-    }
-    
-    private void GenerateResources() {
-
-        int food = CIVILIZATION_FOOD_GENERATED;
-        int wood = CIVILIZATION_WOOD_GENERATED;
-        int iron = CIVILIZATION_IRON_GENERATED;
-        
-        
-        
-
-        food += civ.getFarm() * CIVILIZATION_FOOD_GENERATED_PER_FARM;
-        wood += civ.getCarpentry() * CIVILIZATION_WOOD_GENERATED_PER_CARPENTRY;
-        iron += civ.getSmithy() * CIVILIZATION_IRON_GENERATED_PER_SMITHY;
-        int mana = civ.getMagicTower() * CIVILIZATION_MANA_GENERATED_PER_MAGIC_TOWER;
-
-        civ.setFood(civ.getFood() + food);
-        civ.setWood(civ.getWood() + wood);
-        civ.setIron(civ.getIron() + iron);
-        civ.setMana(civ.getMana() + mana);
-        
-        
-        GameLog.log.clear();
-
-        GameLog.info(
-            "+" + food + " food | " +
-            "+" + wood + " wood | " +
-            "+" + iron + " iron | " +
-            "+" + mana + " mana"
-        );
-        if (civId != -1) {
-        	db.saveCivilization(civ);
-        }
-
     }
     
     private void initializeButtonActions() {
@@ -320,31 +278,78 @@ public class MainFrame extends JFrame implements Variables{
     		}
     		});
     }
-
     
-    private void loadIcon() {
-    	BufferedImage icon_image;
+    private void GenerateResources() {
 
-        try {
+        int food = CIVILIZATION_FOOD_GENERATED;
+        int wood = CIVILIZATION_WOOD_GENERATED;
+        int iron = CIVILIZATION_IRON_GENERATED;
+        
 
-            icon_image =
-                    ImageIO.read(getClass().getResource("/M3/images/swords_icon.png"));
+        food += civ.getFarm() * CIVILIZATION_FOOD_GENERATED_PER_FARM;
+        wood += civ.getCarpentry() * CIVILIZATION_WOOD_GENERATED_PER_CARPENTRY;
+        iron += civ.getSmithy() * CIVILIZATION_IRON_GENERATED_PER_SMITHY;
+        int mana = civ.getMagicTower() * CIVILIZATION_MANA_GENERATED_PER_MAGIC_TOWER;
 
-            setIconImage(icon_image);
+        civ.setFood(civ.getFood() + food);
+        civ.setWood(civ.getWood() + wood);
+        civ.setIron(civ.getIron() + iron);
+        civ.setMana(civ.getMana() + mana);
+        
+        
+        GameLog.log.clear();
 
-        } catch (IOException e) {
-
-            System.out.println("Error loading icon.");
+        GameLog.info("+" + food + " food | " +"+" + wood + " wood | " +"+" + iron + " iron | " +"+" + mana + " mana");
+            
+        if (civId != -1) {
+        	db.saveCivilization(civ);
         }
+
     }
+    
+    private void StartResourcesGeneration() {
+
+        resources_timer = new Timer();
+        resources_task = new TimerTask() {
+
+            public void run() {
+                GenerateResources();
+            	RefreshInterface();
+            }
+        };
+
+        resources_timer.scheduleAtFixedRate(resources_task, 5000, 5000);
+    }
+    
+    public void RefreshInterface() {
+        topbar_panel.UpdateResources();
+        center_switch_panel.revalidate();
+        center_switch_panel.repaint();
+    }
+    
+    
+    public void saveGame() {
+        db.saveCivilization(civ);
+    }
+    
     
     public Civilization getCivilization() {
         return civ;
     }
+   
+    public int getCivId() {
+		return civId;
+	}
     
-    public void saveGame() {
-
-        db.saveCivilization(civ);
+    public DBConnection getDb() {
+		return db;
+	}
+    
+    public void setEnemy(Civilization enemy) {
+		this.enemy = enemy;
+	}
+    public TopBarPanel getTopBarPanel() {
+        return topbar_panel;
     }
       
 }

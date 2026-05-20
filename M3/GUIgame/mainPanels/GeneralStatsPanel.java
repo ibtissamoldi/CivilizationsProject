@@ -80,28 +80,13 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         JPanel content_panel = new JPanel();
         content_panel.setLayout(new GridLayout(0, 1, 0, 25));
         content_panel.setBackground(GameColors.BACKGROUND);
-
-
-
         content_panel.add(createSectionTitle("TECHNOLOGY"));
 
+        
         lbl_attackTechnology = new JLabel();
         lbl_defenseTechnology = new JLabel();
-
-        content_panel.add(createStatCard("Attack Technology",lbl_attackTechnology,
-                "./M3/images/attack_technology.png",
-                80,
-                80
-        ));
-
-        content_panel.add(createStatCard("Defense Technology",lbl_defenseTechnology,
-                "./M3/images/defense_technology.png",
-                80,
-                80
-        ));
-
-      
-
+        content_panel.add(createStatCard("Attack Technology",lbl_attackTechnology,"./M3/images/attack_technology.png",80,80));
+        content_panel.add(createStatCard("Defense Technology",lbl_defenseTechnology,"./M3/images/defense_technology.png",80,80));
         content_panel.add(createSectionTitle("BUILDINGS"));
 
         lbl_farm = new JLabel();
@@ -183,13 +168,10 @@ public class GeneralStatsPanel extends JPanel implements Variables {
         JScrollPane scrollPane = new JScrollPane(content_panel);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Cargamos los datos iniciales
         loadStatsData();
         frame.RefreshInterface();
 
-        // Actualiza automáticamente cada medio segundo
         Timer timer = new Timer(500, new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
                 loadStatsData();
             }
@@ -222,11 +204,7 @@ public class GeneralStatsPanel extends JPanel implements Variables {
             File image_file = new File(imagePath);
             BufferedImage original_image = ImageIO.read(image_file);
 
-            Image scaled_image = original_image.getScaledInstance(
-                    xDimension,
-                    yDimension,
-                    Image.SCALE_SMOOTH
-            );
+            Image scaled_image = original_image.getScaledInstance(xDimension,yDimension,Image.SCALE_SMOOTH);
 
             ImageIcon image = new ImageIcon(scaled_image);
             lbl_image = new JLabel(image);
@@ -253,39 +231,32 @@ public class GeneralStatsPanel extends JPanel implements Variables {
 
     public void loadStatsData() {
 
-        // TECHNOLOGY
         lbl_attackTechnology.setText(String.valueOf(civ.getTechnologyAttack()));
         lbl_defenseTechnology.setText(String.valueOf(civ.getTechnologyDefense()));
 
-        // BUILDINGS
         lbl_farm.setText(String.valueOf(civ.getFarm()));
         lbl_smithy.setText(String.valueOf(civ.getSmithy()));
         lbl_carpentry.setText(String.valueOf(civ.getCarpentry()));
         lbl_magicTower.setText(String.valueOf(civ.getMagicTower()));
         lbl_church.setText(String.valueOf(civ.getChurch()));
 
-        // DEFENSES
         lbl_arrowTower.setText(String.valueOf(getArmySize(4)));
         lbl_catapult.setText(String.valueOf(getArmySize(5)));
         lbl_rocketLauncher.setText(String.valueOf(getArmySize(6)));
 
-        // ATTACK UNITS
         lbl_swordsman.setText(String.valueOf(getArmySize(0)));
         lbl_spearman.setText(String.valueOf(getArmySize(1)));
         lbl_crossbow.setText(String.valueOf(getArmySize(2)));
         lbl_cannon.setText(String.valueOf(getArmySize(3)));
 
-        // SPECIAL UNITS
         lbl_magician.setText(String.valueOf(getArmySize(7)));
         lbl_priest.setText(String.valueOf(getArmySize(8)));
 
-        // RESOURCES
         lbl_food.setText(String.valueOf(civ.getFood()));
         lbl_wood.setText(String.valueOf(civ.getWood()));
         lbl_iron.setText(String.valueOf(civ.getIron()));
         lbl_mana.setText(String.valueOf(civ.getMana()));
 
-        // GENERATION RESOURCES
         lbl_foodGeneration.setText(String.valueOf(getFoodGeneration()));
         lbl_woodGeneration.setText(String.valueOf(getWoodGeneration()));
         lbl_ironGeneration.setText(String.valueOf(getIronGeneration()));

@@ -1,7 +1,6 @@
 package M3.GUIgame.Battlepanels;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -10,9 +9,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
-import M3.Database.DBConnection;
 import M3.GUIgame.GameColors;
 import M3.GUIgame.GameLog;
 import M3.GUIgame.MainFrame;
@@ -26,7 +23,8 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.awt.FlowLayout;
+
+
 
 
 
@@ -45,12 +43,16 @@ public class MainBattlePanel extends JPanel implements Variables {
 	private BattlePanel battlePanel;
 	
 	private Timer timer;
+	private Timer enemy_generate;
+	private Timer enemy_generate_resources;
 	
 	private JButton btnExit;
 	
 	private MainFrame frame;
 	
 	private int battleNumber;
+	
+	private int t;
 	
 
 
@@ -60,32 +62,27 @@ public class MainBattlePanel extends JPanel implements Variables {
 		this.frame = frame;
 		this.battleNumber = civ.getBattles() + 1;
 		
-		System.out.println(
-			    civ.getArmy()[0].size()
-			);
-		enemy = new Civilization("Enemy");
+		setLayout(new BorderLayout(10,10));
+	    setBackground(GameColors.BACKGROUND);
+	    
 		
+		System.out.println("Our total army when we start the battle: "+civ.getArmy()[0].size());
+			    
+			
+		enemy = new Civilization("Enemy");
 		enemy.enemy();
-
 		enemy.generateEnemyArmy(civ);
 		
 		
 		battle = new Battle(civ.getArmy(),enemy.getArmy(),civ.getName(),enemy.getName());
 
-		
-		
-	    setLayout(new BorderLayout(10,10));
-	    setBackground(GameColors.BACKGROUND);
- 
-	    
 	    JPanel left = new JPanel(new GridLayout(3,3,10,10));
-	    JScrollPane scroll = new JScrollPane(left);
-	    scroll.setBorder(null);
-	    scroll.getViewport().setBackground(GameColors.PANEL);
 	    left.setPreferredSize(new Dimension(330, 0));
+	    left.setBackground(GameColors.PANEL);
+
+	    
 	    JPanel right = new JPanel(new GridLayout(0,1,15,15));
 	    right.setPreferredSize(new Dimension(90, 0));
-	    left.setBackground(GameColors.PANEL);
 	    right.setBackground(GameColors.PANEL);
 
 	    center = new CenterFightPanel();
@@ -106,16 +103,14 @@ public class MainBattlePanel extends JPanel implements Variables {
 
 	        public void actionPerformed(ActionEvent e) {
 
-	            int option = JOptionPane.showConfirmDialog(
-	                    null,
-	                    "Exit current battle?",
-	                    "Exit Battle",
-	                    JOptionPane.YES_NO_OPTION
-	            );
+	            int option = JOptionPane.showConfirmDialog(null,"Exit current battle?","Exit Battle",
+	            		JOptionPane.YES_NO_OPTION);
 
 	            if(option == JOptionPane.YES_OPTION){
-
 	                exitBattle();
+	                t = frame.getTopBarPanel().getTotalArmy();
+	                frame.getTopBarPanel().updateLiveCounts(t,0);
+	                frame.getTopBarPanel().stopTimer();
 	            }
 	        }
 	    });
@@ -125,6 +120,7 @@ public class MainBattlePanel extends JPanel implements Variables {
 	    
 	    String[] civUnits = {"Swordsman","Spearman","Crossbow","Cannon","ArrowTower","Catapult","RocketLauncherTower","Magician", "Priest" };
 	    civCards = new UnitCardPanel[civUnits.length];
+	    
 	    for(int i = 0; i < civUnits.length; i++) {
 
 	    	String unitName = civUnits[i];
@@ -132,14 +128,10 @@ public class MainBattlePanel extends JPanel implements Variables {
 	        civCards[i] =new UnitCardPanel(civUnits[i],true,true);
 	        
 	        civCards[i].getRecruit_btn().addActionListener(new ActionListener() {
-
 	            public void actionPerformed(ActionEvent e) {
-
 	                recruitUnit(unitName,civCards[getUnitIndex(unitName)].getQuantity().getText());
 	            }
 	        });
-	        
-	        
 	        left.add(civCards[i]);
 	    }
 	    
@@ -154,63 +146,76 @@ public class MainBattlePanel extends JPanel implements Variables {
 	    }
 	
 
-	    startBattleLoop();
 	    
-	    
-	    
-	    add(scroll, BorderLayout.WEST);
-	    add(center, BorderLayout.CENTER);
-	    add(right, BorderLayout.EAST);
+	    if (!battle.battleIsOver()) {
+	    	startBattleLoop();
+	    	
+	    	add(left, BorderLayout.WEST);
+		    add(center, BorderLayout.CENTER);
+		    add(right, BorderLayout.EAST);
+	    }else {
+	    	JOptionPane.showMessageDialog(null, "Your army or the enemy army is too depleted to fight!\nPlease recruit more units before entering battle.", 
+	                "Invalid Battle Strength", JOptionPane.WARNING_MESSAGE);
+	                
+	    	 frame.SwitchPanel("army");
+	    	 GameLog.warning("Please recruit more units before entering battle!!!");
+	        }
 
 	}
 	
 	private void startBattleLoop() {
 		
-
-		Timer enemy_generate = new Timer(20000, null);
-
+		
+		frame.getTopBarPanel().StartTimer();
+		
+		enemy_generate = new Timer(20000, null);
 	    enemy_generate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				battle.generateEnemyUnits(enemy);
 				frame.setEnemy(enemy);
 				updateLiveArmyCounters();
 			}
-	    	
 	    });
 	    
-	    Timer enemy_generate_resources = new Timer(60000, null);
-
+	    enemy_generate_resources = new Timer(5000, null);
 	    enemy_generate_resources.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				generateResourcesEnemy();
-				
 			}
 	    	
 	    });
 
 	     timer = new Timer(1000, null);
-
 	     timer.addActionListener(new ActionListener() {
 
 	        public void actionPerformed(ActionEvent e) {
 
 	            if (!battle.battleIsOver()) {
-
 	                battle.combat();
 	                updateBattleUI();
 
 	            } else {
-
-	                timer.stop();
+	            	frame.getTopBarPanel().stopTimer();
+	            	t = frame.getTopBarPanel().getTotalArmy();
+		            frame.getTopBarPanel().updateLiveCounts(t,0);
+	            	timer.stop();
 	                enemy_generate.stop();
                     enemy_generate_resources.stop(); 
 	                
-	                frame.getDb().saveCivilization(civ);
 	                saveBattleReport();
 	                
+	                for (int i = 0; i < civ.getArmy().length; i++) {
+	                	for (MilitaryUnit u : civ.getArmy()[i]) {
+	                		
+	                		System.out.println(u.getExperience());
+	                		u.setExperience(u.getExperience() + 1);
+	                		u.resetArmor();
+	                		
+	                		System.out.println(u.getExperience());
+	                	}
+	                }
 	                
-	                
-	                
+
 	                System.out.println("\n\n===== STEP BY STEP =====\n");
 	                System.out.println(battle.getReportStepStep());
 
@@ -218,29 +223,38 @@ public class MainBattlePanel extends JPanel implements Variables {
 	                System.out.println(battle.getBattleDevelopment());
 
 	                System.out.println("\nBattle Finished");
-
+	                
+	                
 	                int option = JOptionPane.showConfirmDialog(null,"Battle terminated!\n\nDo you want to start another battle?","Battle Finished",
 	                        JOptionPane.YES_NO_OPTION
 	                );
 
 	                if(option == JOptionPane.YES_OPTION){
-
-	                    restartBattle();
-
+	                	if(!battle.battleIsOver()) {
+	                		restartBattle();
+	                	}else {
+	                		JOptionPane.showMessageDialog(null, "Your army or the enemy army is too depleted to fight!\nPlease recruit more units before entering battle.", 
+	            	                "Invalid Battle Strength", JOptionPane.WARNING_MESSAGE);
+	                		frame.SwitchPanel("army");
+	                		GameLog.warning("Please recruit more units before entering battle!!!");
+	                	}
+	                	 
 	                }else{
-
 	                    exitBattle();
+	                    t = frame.getTopBarPanel().getTotalArmy();
+		                frame.getTopBarPanel().updateLiveCounts(t,0);
 	                }
+	                
 	            }
+	            
 	        }
-	    });
+	        
+	     });
 
 	    timer.start();
 	    enemy_generate.start();
 	    enemy_generate_resources.start();
-	    updateLiveArmyCounters();
-
-	    
+	    updateLiveArmyCounters();    
 	}
 	
 	private void generateResourcesEnemy() {
@@ -254,19 +268,21 @@ public class MainBattlePanel extends JPanel implements Variables {
         
 	}
 	
+	
+	
+	
 	private String getImagePath(MilitaryUnit unit, boolean isCivUnit) {
 
-	    String suffix;
+	    String end;
 
 	    if(isCivUnit) {
-	        suffix = "_civ.png";
+	    	end = "_civ.png";
 	    } else {
-	        suffix = "_enemy.png";
+	    	end = "_enemy.png";
 	    }
 
-	    return "/M3/images/" +
-	            unit.getClass().getSimpleName().toLowerCase() +
-	            suffix;
+	    return "/M3/images/" +unit.getClass().getSimpleName().toLowerCase() +end;
+        
 	}
 	
 	
@@ -282,6 +298,7 @@ public class MainBattlePanel extends JPanel implements Variables {
 	    	
 	        center.getAttackerCard().updateCard(attacker.getClass().getSimpleName(),getImagePath(attacker, attackerIsCiv),
 	        		attacker.attack(),attacker.getActualArmor());
+	        		
 	    }
 
 	    if(defender != null) {
@@ -292,35 +309,33 @@ public class MainBattlePanel extends JPanel implements Variables {
 	        		,defender.attack(),defender.getActualArmor());
 	    }
 
-	    moveCards();
-
-	    updateCounts();
-	}
-	
-	private void moveCards() {
-
 	    if(battle.isCivilizationTurn()) {
 	        center.showAttackerOnTop();
 	    } else {
 	        center.showDefenderOnTop();
 	    }
+	    updateCounts();
 	}
+	
+	
 	
 	private void updateCounts() {
 
 	    for(int i = 0; i < civCards.length; i++) {
 
-	        civCards[i].setCount(civ.getArmy()[i].size()
-	        );
+	        civCards[i].setCount(civ.getArmy()[i].size());
+	        
 	    }
 
 	    for(int i = 0; i < enemyCards.length; i++) {
 
-	        enemyCards[i].setCount(enemy.getArmy()[i].size()
-	        );
+	        enemyCards[i].setCount(enemy.getArmy()[i].size());
+	        
 	    }
         updateLiveArmyCounters();
 	}
+	
+	
 	
 	private void updateLiveArmyCounters() {
 		int totalCivUnits = 0;
@@ -328,6 +343,7 @@ public class MainBattlePanel extends JPanel implements Variables {
 			if (unitList != null) {
 			totalCivUnits += unitList.size();
 			}
+			
 			
 		}
 		int totalEnemyUnits = 0;
@@ -345,57 +361,29 @@ public class MainBattlePanel extends JPanel implements Variables {
 	private void restartBattle(){
 		
 		timer.stop();
-
+    	t = frame.getTopBarPanel().getTotalArmy();
+		battleNumber = civ.getBattles() + 1;
 	    removeAll();
 
 	    enemy = new Civilization("Enemy");
-
 	    enemy.enemy();
-
 	    enemy.generateEnemyArmy(civ);
 
-	    battle = new Battle(
-	            civ.getArmy(),
-	            enemy.getArmy(),
-	            civ.getName(),
-	            enemy.getName()
-	    );
+	    battle = new Battle(civ.getArmy(),enemy.getArmy(),civ.getName(),enemy.getName());
 
 	    JPanel left = new JPanel(new GridLayout(3,3,10,10));
-
-	    JScrollPane scroll = new JScrollPane(left);
-
-	    scroll.setBorder(null);
-
-	    scroll.getViewport().setBackground(GameColors.PANEL);
-
+	    left.setBackground(GameColors.PANEL);
 	    left.setPreferredSize(new Dimension(330, 0));
 
 	    JPanel right = new JPanel(new GridLayout(0,1,15,15));
-
 	    right.setPreferredSize(new Dimension(90, 0));
-
-	    left.setBackground(GameColors.PANEL);
-
 	    right.setBackground(GameColors.PANEL);
 
 	    center = new CenterFightPanel();
-
 	    center.setMinimumSize(new Dimension(400,0));
-
 	    center.add(btnExit);
 	    
-	    String[] civUnits = {
-	            "Swordsman",
-	            "Spearman",
-	            "Crossbow",
-	            "Cannon",
-	            "ArrowTower",
-	            "Catapult",
-	            "RocketLauncherTower",
-	            "Magician",
-	            "Priest"
-	    };
+	    String[] civUnits = {"Swordsman","Spearman","Crossbow","Cannon","ArrowTower","Catapult","RocketLauncherTower","Magician","Priest"};
 
 	    civCards = new UnitCardPanel[civUnits.length];
 
@@ -405,25 +393,15 @@ public class MainBattlePanel extends JPanel implements Variables {
 	        civCards[i] =new UnitCardPanel(civUnits[i],true,true);
 
 	        civCards[i].getRecruit_btn().addActionListener(new ActionListener() {
-
 	            public void actionPerformed(ActionEvent e) {
-
-	                recruitUnit(unitName,civCards[getUnitIndex(unitName)].getQuantity().getText()
-	                );
+	                recruitUnit(unitName,civCards[getUnitIndex(unitName)].getQuantity().getText());
 	            }
 	        });
-
-	        
 	        left.add(civCards[i]);
 	    }
 
-	    String[] enemyUnits = {
-	            "Swordsman",
-	            "Spearman",
-	            "Crossbow",
-	            "Cannon"
-	    };
-
+	    String[] enemyUnits = { "Swordsman","Spearman","Crossbow","Cannon"};
+	           
 	    enemyCards = new UnitCardPanel[enemyUnits.length];
 
 	    for(int i = 0; i < enemyUnits.length; i++) {
@@ -434,14 +412,11 @@ public class MainBattlePanel extends JPanel implements Variables {
 	        right.add(enemyCards[i]);
 	    }
 
-	    add(scroll, BorderLayout.WEST);
-
+	    add(left, BorderLayout.WEST);
 	    add(center, BorderLayout.CENTER);
-
 	    add(right, BorderLayout.EAST);
 
 	    revalidate();
-
 	    repaint();
 
 	    startBattleLoop();
@@ -452,7 +427,10 @@ public class MainBattlePanel extends JPanel implements Variables {
 	private void exitBattle(){
 
 		timer.stop();
-
+		enemy_generate.stop();
+	    enemy_generate_resources.stop();
+	    updateLiveArmyCounters();
+		
 	    battlePanel.returnToStartPanel();
 	}
 	
@@ -517,7 +495,7 @@ public class MainBattlePanel extends JPanel implements Variables {
 	                civ.newPriest(quantity);
 	                break;
 	        }
-
+	        GameLog.info("We recruited "+quantity + " " + unitName + " during the battle!");
 	        updateCounts();
 	        frame.RefreshInterface();
 
@@ -527,49 +505,97 @@ public class MainBattlePanel extends JPanel implements Variables {
             int created = quantity - notrecruited;
 
             if(created > 0) {
-                   GameLog.info(created + " " + unitName + " recruited!");
+                   GameLog.info("You recruited "+created + " " + unitName + " during the battle!");
                }
                GameLog.error(notrecruited + " " + unitName + " could not be recruited due to insufficient resources!!");
                updateCounts();
                frame.RefreshInterface(); 
 	    }
 	}
-	
-	private int getUnitIndex(String unitName) {
 
-	    switch(unitName) {
+	 private void saveBattleReport() {
 
-	        case "Swordsman":
-	            return 0;
+		    String winner;
 
-	        case "Spearman":
-	            return 1;
+		    if (battle.getResourcesLooses()[0][3]
+		            < battle.getResourcesLooses()[1][3]) {
 
-	        case "Crossbow":
-	            return 2;
+		        winner = civ.getName();
 
-	        case "Cannon":
-	            return 3;
+		    } else {
 
-	        case "ArrowTower":
-	            return 4;
+		        winner = enemy.getName();
+		    }
 
-	        case "Catapult":
-	            return 5;
+		    frame.getDb().saveBattleStats(frame.getCivId(),battleNumber, 0, 0,winner,
+		    		battle.getResourcesLooses()[0][0], battle.getResourcesLooses()[0][1],battle.getResourcesLooses()[0][2],
+		    		battle.getResourcesLooses()[1][0],battle.getResourcesLooses()[1][1],battle.getResourcesLooses()[1][2],
+		            battle.getResourcesLooses()[0][0],battle.getResourcesLooses()[0][1],battle.getResourcesLooses()[0][2],
+		            battle.getResourcesLooses()[1][0],battle.getResourcesLooses()[1][1],battle.getResourcesLooses()[1][2],
+		            battle.getWasteWoodIron()[0],battle.getWasteWoodIron()[1]);
+		    
+		    frame.getDb().saveBattleLog(frame.getCivId(),battleNumber,battle.getReportStepStep());
 
-	        case "RocketLauncherTower":
-	            return 6;
 
-	        case "Magician":
-	            return 7;
+		    String[] unitNames = {"Swordsman","Spearman","Crossbow","Cannon","ArrowTower","Catapult","RocketLauncherTower","Magician","Priest"};
+		    String[] categories = {"Attack","Attack","Attack","Attack","Defense","Defense","Defense","Special","Special"};
+		    
+		    
+		    for(int i = 0; i < unitNames.length; i++) {
+		    	int initialUnits = civ.getArmy()[i].size() + battle.getUnitsLooses()[0][i];
+		    	frame.getDb().saveBattleUnitStat(frame.getCivId(),battleNumber,"Player", categories[i],unitNames[i],initialUnits,battle.getUnitsLooses()[0][i]);
+		    }
+		    
+		    for(int i = 0; i < 4; i++) {
+		    	int initialUnits = enemy.getArmy()[i].size() + battle.getUnitsLooses()[1][i];
+		    	
+		    	frame.getDb().saveBattleUnitStat(frame.getCivId(),battleNumber,"Enemy",categories[i],unitNames[i],initialUnits,battle.getUnitsLooses()[1][i]);
+		    }
 
-	        case "Priest":
-	            return 8;
-	    }
+		    civ.setBattles(battleNumber);
 
-	    return 0;
-	}
-	
+		    frame.getDb().saveCivilization(civ);
+		}
+	 
+	 
+	 
+	 
+	 private int getUnitIndex(String unitName) {
+
+		    switch(unitName) {
+
+		        case "Swordsman":
+		            return 0;
+
+		        case "Spearman":
+		            return 1;
+
+		        case "Crossbow":
+		            return 2;
+
+		        case "Cannon":
+		            return 3;
+
+		        case "ArrowTower":
+		            return 4;
+
+		        case "Catapult":
+		            return 5;
+
+		        case "RocketLauncherTower":
+		            return 6;
+
+		        case "Magician":
+		            return 7;
+
+		        case "Priest":
+		            return 8;
+		    }
+
+		    return 0;
+		}
+		
+	 
 	 private int GetNumber(String text) {
 
 	    	String[] words = text.split(" ");
@@ -585,77 +611,5 @@ public class MainBattlePanel extends JPanel implements Variables {
 	        return 0;
 	    }
 	 
-	 
-	 private void saveBattleReport() {
-
-		    String winner;
-
-		    if (battle.getResourcesLooses()[0][3]
-		            < battle.getResourcesLooses()[1][3]) {
-
-		        winner = civ.getName();
-
-		    } else {
-
-		        winner = enemy.getName();
-		    }
-
-		    frame.getDb().saveBattleStats(
-
-		            frame.getCivId(),
-		            battleNumber,
-
-		            0,
-		            0,
-
-		            winner,
-
-		            battle.getResourcesLooses()[0][0],
-		            battle.getResourcesLooses()[0][1],
-		            battle.getResourcesLooses()[0][2],
-
-		            battle.getResourcesLooses()[1][0],
-		            battle.getResourcesLooses()[1][1],
-		            battle.getResourcesLooses()[1][2],
-
-		            battle.getResourcesLooses()[0][0],
-		            battle.getResourcesLooses()[0][1],
-		            battle.getResourcesLooses()[0][2],
-
-		            battle.getResourcesLooses()[1][0],
-		            battle.getResourcesLooses()[1][1],
-		            battle.getResourcesLooses()[1][2],
-
-		            battle.getWasteWoodIron()[0],
-		            battle.getWasteWoodIron()[1]
-		    );
-		    
-		    frame.getDb().saveBattleLog(
-
-		            frame.getCivId(),
-
-		            battleNumber,
-
-		            battle.getReportStepStep());
-		    
-		    String[] unitNames = {"Swordsman","Spearman","Crossbow","Cannon","ArrowTower","Catapult","RocketLauncherTower","Magician","Priest"};
-		    String[] categories = {"Attack","Attack","Attack","Attack","Defense","Defense","Defense","Special","Special"};
-		    
-		    for(int i = 0; i < unitNames.length; i++) {
-		    	int initialUnits = civ.getArmy()[i].size() + battle.getUnitsLooses()[0][i];
-		    	
-		    	frame.getDb().saveBattleUnitStat(frame.getCivId(),battleNumber,"Player", categories[i],unitNames[i],initialUnits,battle.getUnitsLooses()[0][i]);
-		    }
-		    
-		    for(int i = 0; i < 4; i++) {
-		    	int initialUnits = enemy.getArmy()[i].size() + battle.getUnitsLooses()[1][i];
-		    	
-		    	frame.getDb().saveBattleUnitStat(frame.getCivId(),battleNumber,"Enemy",categories[i],unitNames[i],initialUnits,battle.getUnitsLooses()[1][i]);
-		    }
-
-		    civ.setBattles(battleNumber);
-
-		    frame.getDb().saveCivilization(civ);
-		}
 	
 }

@@ -9,7 +9,6 @@ public class Swordsman extends AttackUnit {
         );
 	}
 
-    /*2nd constructor..*/
     public Swordsman() {
 		super(ARMOR_SWORDSMAN, BASE_DAMAGE_SWORDSMAN);
     } 

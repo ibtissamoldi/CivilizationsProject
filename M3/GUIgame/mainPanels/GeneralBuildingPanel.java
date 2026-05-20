@@ -11,7 +11,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -22,7 +21,6 @@ import M3.interfaces.Variables;
 import M3.GUIgame.GameLog;
 import M3.GUIgame.MainFrame;
 
-//GENERAL JUNTAR TODAS LA TARJETAS DE CADA EDIFICIO
 
 public class GeneralBuildingPanel extends JPanel{
 	
@@ -89,22 +87,16 @@ class BuildingPanel extends JPanel implements Variables{
         
     
 
-    // Imagen del edificio
     
     ImageIcon image = new ImageIcon(getImagePath());
-    
     lbl_image = new JLabel(image);
-   
-
     add(lbl_image, BorderLayout.WEST);
 
 
-     // Panel derecho: contiene texto, botón Y textfield
      JPanel right_panel = new JPanel(new BorderLayout());
      right_panel.setBackground(GameColors.PANEL);
 
 
-     // Panel central con textos
      JPanel center_panel = new JPanel(new GridLayout(5, 2, 5, 5));
      center_panel.setBackground(GameColors.PANEL);
 
@@ -158,7 +150,6 @@ class BuildingPanel extends JPanel implements Variables{
      center_panel.add(lbl_ironcost);
 
 
-     // Panel inferior con botón y textfield
      
      JPanel bottom_panel = new JPanel();
      bottom_panel.setBackground(GameColors.PANEL);
@@ -173,14 +164,8 @@ class BuildingPanel extends JPanel implements Variables{
      btn_build = new JButton("Build");
      btn_build.setBackground(GameColors.BUTTON);
      btn_build.setForeground(GameColors.TEXT);
-
      btn_build.setFocusPainted(false); 
-     btn_build.setBorder(
-        	    BorderFactory.createCompoundBorder(
-        	        BorderFactory.createLineBorder(GameColors.BORDER, 2),
-        	        BorderFactory.createEmptyBorder(2, 15, 2, 15)
-        	    )
-        	);
+     btn_build.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),BorderFactory.createEmptyBorder(2, 15, 2, 15)));
      btn_build.setFont(new Font("Serif", Font.BOLD, 12));
 
      bottom_panel.add(field_quantity);
@@ -188,70 +173,66 @@ class BuildingPanel extends JPanel implements Variables{
      
 
 
-     // Añadimos texto y botón al panel derecho
      right_panel.add(center_panel, BorderLayout.CENTER);
      right_panel.add(bottom_panel, BorderLayout.SOUTH);
 
 
-     // Añadimos el panel derecho al centro del BuildingPanel
      add(right_panel, BorderLayout.CENTER);
     
-     // conectamos el boton de construir 
      btn_build.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
     	        buildBuilding();
     	    }
     	});
-    // cargamos informacion de las tarjetas
+
      loadBuildingData();
     }
 
     private void loadBuildingData() {
     	
-	switch (building_type) {
+		switch (building_type) {
+		
+		case "Farm":
+			lbl_count.setText(String.valueOf(civ.getFarm()));
+			lbl_effect.setText("+10% Food");
+			lbl_foodcost.setText(String.valueOf(FOOD_COST_FARM));
+			lbl_woodcost.setText(String.valueOf(WOOD_COST_FARM));
+			lbl_ironcost.setText(String.valueOf(IRON_COST_FARM));
+	        break;
+	        
+		 case "Smithy":
+			 lbl_count.setText(String.valueOf(civ.getSmithy()));
+	         lbl_effect.setText("+10% Iron");
+	         lbl_foodcost.setText(String.valueOf(FOOD_COST_SMITHY));
+	 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_SMITHY));
+	 		 lbl_ironcost.setText(String.valueOf(IRON_COST_SMITHY));
+	         break;
 	
-	case "Farm":
-		lbl_count.setText(String.valueOf(civ.getFarm()));
-		lbl_effect.setText("+10% Food");
-		lbl_foodcost.setText(String.valueOf(FOOD_COST_FARM));
-		lbl_woodcost.setText(String.valueOf(WOOD_COST_FARM));
-		lbl_ironcost.setText(String.valueOf(IRON_COST_FARM));
-        break;
-        
-	 case "Smithy":
-		 lbl_count.setText(String.valueOf(civ.getSmithy()));
-         lbl_effect.setText("+10% Iron");
-         lbl_foodcost.setText(String.valueOf(FOOD_COST_SMITHY));
- 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_SMITHY));
- 		 lbl_ironcost.setText(String.valueOf(IRON_COST_SMITHY));
-         break;
-
-     case "Magic Tower":
-    	 lbl_count.setText(String.valueOf(civ.getMagicTower()));
-         lbl_effect.setText("Unlocks mana");
-         lbl_foodcost.setText(String.valueOf(FOOD_COST_MAGICTOWER));
- 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_MAGICTOWER));
- 		 lbl_ironcost.setText(String.valueOf(IRON_COST_MAGICTOWER));
-         break;
-
-     case "Church":
-    	 lbl_count.setText(String.valueOf(civ.getChurch()));
-         lbl_effect.setText("Unlocks Priests");
-         lbl_foodcost.setText(String.valueOf(FOOD_COST_CHURCH));
- 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_CHURCH));
- 		 lbl_ironcost.setText(String.valueOf(IRON_COST_CHURCH));
-         break;
-         
-     case "Carpentry":
-    	lbl_count.setText(String.valueOf(civ.getCarpentry()));
-    	lbl_effect.setText("+10% Wood");
-    	lbl_foodcost.setText(String.valueOf(FOOD_COST_CARPENTRY));
-		lbl_woodcost.setText(String.valueOf(WOOD_COST_CARPENTRY));
-		lbl_ironcost.setText(String.valueOf(IRON_COST_CARPENTRY));
-         break;
-	}
-    			
-    			
+	     case "Magic Tower":
+	    	 lbl_count.setText(String.valueOf(civ.getMagicTower()));
+	         lbl_effect.setText("Unlocks mana");
+	         lbl_foodcost.setText(String.valueOf(FOOD_COST_MAGICTOWER));
+	 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_MAGICTOWER));
+	 		 lbl_ironcost.setText(String.valueOf(IRON_COST_MAGICTOWER));
+	         break;
+	
+	     case "Church":
+	    	 lbl_count.setText(String.valueOf(civ.getChurch()));
+	         lbl_effect.setText("Unlocks Priests");
+	         lbl_foodcost.setText(String.valueOf(FOOD_COST_CHURCH));
+	 		 lbl_woodcost.setText(String.valueOf(WOOD_COST_CHURCH));
+	 		 lbl_ironcost.setText(String.valueOf(IRON_COST_CHURCH));
+	         break;
+	         
+	     case "Carpentry":
+	    	lbl_count.setText(String.valueOf(civ.getCarpentry()));
+	    	lbl_effect.setText("+10% Wood");
+	    	lbl_foodcost.setText(String.valueOf(FOOD_COST_CARPENTRY));
+			lbl_woodcost.setText(String.valueOf(WOOD_COST_CARPENTRY));
+			lbl_ironcost.setText(String.valueOf(IRON_COST_CARPENTRY));
+	         break;
+		}
+	    			
     }
 		
 	

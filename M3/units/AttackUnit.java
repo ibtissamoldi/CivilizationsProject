@@ -36,10 +36,14 @@ public abstract class AttackUnit implements MilitaryUnit, Variables{
     public void setExperience(int experience) {
 		this.experience = experience;
 	}
+    
+    
 
-    public boolean isSanctified() {
+	public boolean isSanctified() {
 		return sanctified;
 	}
+
+
 	public void setSanctified(boolean sanctified) {
 		this.sanctified = sanctified;
 	}
@@ -47,6 +51,7 @@ public abstract class AttackUnit implements MilitaryUnit, Variables{
 	public int getExperience() {
 			return experience;		
 		}
+	
 	public int attack() {
 		int damage = baseDamage;
 		damage += (damage * experience * PLUS_ATTACK_UNIT_PER_EXPERIENCE_POINT) / 100;
@@ -54,8 +59,6 @@ public abstract class AttackUnit implements MilitaryUnit, Variables{
         	damage += (damage * PLUS_ATTACK_UNIT_SANCTIFIED) / 100;
     	}
 		return damage;
-		
-		
 	}
 
 	public void takeDamage(int receivedDamage) {

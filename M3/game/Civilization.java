@@ -11,6 +11,7 @@ import M3.units.defense.Catapult;
 import M3.units.defense.RocketLauncherTower;
 import M3.units.special.Magician;
 import M3.units.special.Priest;
+import M3.GUIgame.GameLog;
 import M3.exceptions.ResourceException;
 
 import java.util.ArrayList;
@@ -669,8 +670,7 @@ public class Civilization implements Variables{
 	
 	public void generateEnemyArmy(Civilization player) {
 
-	    try {
-	    	
+	    try {	
 	    	
 	    	this.setFood(999999);
 	        this.setWood(999999);
@@ -688,19 +688,19 @@ public class Civilization implements Variables{
 			}
 	        
 	        try {
-	        	spears =player.getArmy()[1].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+	        	spears =player.getArmy()[1].size() + (((int) (Math.random() * ((int) (player.getArmy()[1].size() * 0.2))) * more_less()));
 			} catch (Exception e) {
 				spears =player.getArmy()[1].size();
 			}
 	        
 	        try {
-	        	crossbows =player.getArmy()[2].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+	        	crossbows =player.getArmy()[2].size() + (((int) (Math.random() * ((int) (player.getArmy()[2].size() * 0.2))) * more_less()));
 			} catch (Exception e) {
 				crossbows =player.getArmy()[2].size();
 			}
 	        
 	        try {
-	        	cannons =player.getArmy()[3].size() + (((int) (Math.random() * ((int) (player.getArmy()[0].size() * 0.2))) * more_less()));
+	        	cannons =player.getArmy()[3].size() + (((int) (Math.random() * ((int) (player.getArmy()[3].size() * 0.2))) * more_less()));
 			} catch (Exception e) {
 				cannons =player.getArmy()[3].size();
 			}
@@ -711,16 +711,14 @@ public class Civilization implements Variables{
 	        this.newCrossbow(crossbows);
 	        this.newCannon(cannons);
 	        
+	        GameLog.warning("Enemy Army recruited "+swords + " Swordsman + " + spears +" Spearman + " +crossbows +" Crossbow + "+cannons +" Cannon😨!!!");
+	        
 	        this.setFood(30000);
 	        this.setWood(30000);
 	        this.setIron(30000);
 
 	    } catch (ResourceException e) {
-
 	        System.out.println("Error generating enemy army");
-	        this.setFood(30000);
-	        this.setWood(30000);
-	        this.setIron(30000);
 	    }
 	}
 	

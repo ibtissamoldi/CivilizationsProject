@@ -14,6 +14,7 @@ import M3.GUIgame.MainFrame;
 import M3.game.Civilization;
 
 public class BattlePanel  extends BackgroundPanel   {
+	
 	private JPanel startPanel;
     private MainBattlePanel mainBattlePanel;
     

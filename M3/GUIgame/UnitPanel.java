@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -63,16 +64,8 @@ public class UnitPanel extends JPanel{
         this.frame = frame;
         
         setLayout(new BorderLayout(10,10));
-        setBorder(
-        	    BorderFactory.createTitledBorder(
-        	        BorderFactory.createLineBorder(GameColors.BORDER, 0),
-        	        "•"+unit_type+"•",
-        	        TitledBorder.CENTER,
-        	        TitledBorder.TOP,
-        	        new Font("Serif", Font.BOLD, 18),
-        	        GameColors.GOLD
-        	    )
-        	);
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(GameColors.BORDER, 0),"•"+unit_type+"•",TitledBorder.CENTER,
+        	        TitledBorder.TOP,new Font("Serif", Font.BOLD, 18),GameColors.GOLD));
         setBackground(GameColors.PANEL);
         
         
@@ -107,29 +100,22 @@ public class UnitPanel extends JPanel{
             break;
         }
         
-    
-        
-        // Imagen de las unidades
+ 
         
         ImageIcon image = new ImageIcon(getImagePath());
-
         Image scaled = image.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
 
-        lbl_image = new JLabel(new ImageIcon(scaled));
-        
+        lbl_image = new JLabel(new ImageIcon(scaled));    
         lbl_image.setHorizontalAlignment(JLabel.CENTER);
         lbl_image.setVerticalAlignment(JLabel.CENTER);
-       
         lbl_image.setPreferredSize(new Dimension(150, 150));
 
         add(lbl_image, BorderLayout.EAST);
         
     	
-        // panel central y left panel
         JPanel left_panel = new JPanel(new BorderLayout());
         left_panel.setBackground(GameColors.PANEL);
-
-        
+ 
         
         JPanel center_panel = new JPanel(new GridLayout(11,1,2,2));
         center_panel.setBackground(GameColors.PANEL);
@@ -220,38 +206,30 @@ public class UnitPanel extends JPanel{
         UpdateInfo();
         
         
-        
         JPanel bottom_panel = new JPanel();
         bottom_panel.setBackground(GameColors.PANEL);
         field_quantity = new JTextField("1", 5); 
         field_quantity.setBackground(GameColors.INPUT_BG);
         field_quantity.setForeground(GameColors.TEXT);
-        field_quantity.setBorder(
-        	    BorderFactory.createEmptyBorder(5,8,5,8)
-        	);
+        field_quantity.setBorder(BorderFactory.createEmptyBorder(5,8,5,8));
+        	    
+        	
         
         
         btn_recruit = new JButton("Recruit");
         btn_recruit.setBackground(GameColors.BUTTON);
         btn_recruit.setForeground(GameColors.TEXT);
         btn_recruit.setFocusPainted(false);
-        btn_recruit.setBorder(
-        	    BorderFactory.createCompoundBorder(
-        	        BorderFactory.createLineBorder(GameColors.BORDER, 2),
-        	        BorderFactory.createEmptyBorder(2, 15, 2, 15)
-        	    )
-        	);
+        btn_recruit.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(GameColors.BORDER, 2),BorderFactory.createEmptyBorder(2, 15, 2, 15)));
         btn_recruit.setFont(new Font("Serif", Font.BOLD, 12));
         btn_recruit.setOpaque(true);
         
         bottom_panel.add(field_quantity);
         bottom_panel.add(btn_recruit);
         
-     // Añadimos texto y botón al panel izquierdo
         left_panel.add(center_panel,BorderLayout.CENTER);
         left_panel.add(bottom_panel,BorderLayout.SOUTH);
         
-        // Añadimos el panelDOIZQUIERO al centro DE UNIT PANEL
         add(left_panel, BorderLayout.CENTER);
        
         
@@ -314,7 +292,7 @@ public class UnitPanel extends JPanel{
 
         return 0;
     }
-    
+
     private void RecruitUnit() {
     	GameLog.log.clear();
     	int quantity;
@@ -330,6 +308,7 @@ public class UnitPanel extends JPanel{
     	}
     	try {
     		switch(unit_type) {
+    		
             case "Swordsman":
                     civ.newSwordsman(quantity);
                 break;
@@ -359,6 +338,7 @@ public class UnitPanel extends JPanel{
                 break;
             }
     		GameLog.info(quantity + " " + unit_type + " recruited!");
+
             UpdateInfo();
             frame.RefreshInterface();
             
@@ -431,7 +411,20 @@ public class UnitPanel extends JPanel{
         lbl_woodcost.setText(String.valueOf(unit.getWoodCost()));
         lbl_ironcost.setText(String.valueOf(unit.getIronCost()));
         lbl_manacost.setText(String.valueOf(unit.getManaCost()));		
-		lbl_exp.setText(String.valueOf(unit.getExperience()));
+        
+        int total_exp = 0;
+        String [] total_units = {"Swordsman","Spearman","Crossbow","Cannon","ArrowTower","Catapult","RocketLauncherTower","Magician","Priest"};
+        
+        for (int i = 0; i < total_units.length; i++) {
+        	if(total_units[i].equals(this.unit_type)) {
+        		if (civ.getArmy()[i] != null) {
+            		for (MilitaryUnit survived_unit : civ.getArmy()[i]) {
+                        total_exp += survived_unit.getExperience();
+                    }
+                }
+        	}	
+		}    
+        lbl_exp.setText(String.valueOf(total_exp));
 	}
 
     

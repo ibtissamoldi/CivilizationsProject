@@ -8,7 +8,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +15,7 @@ import javax.swing.JPanel;
 import M3.GUIgame.GameColors;
 
 public class FightCardPanel extends JPanel{
+	
 	private JLabel name;
 	private JLabel image;
 	private JLabel damage;
@@ -48,23 +48,6 @@ public class FightCardPanel extends JPanel{
         add(damage);
         add(armor);
     }
-    
-    
-
-    
-    public JLabel getDamageLabel() {
-		return damage;
-	}
-
-
-
-
-	public JLabel getArmorLabel() {
-		return armor;
-	}
-
-
-
 
 	protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
@@ -91,12 +74,7 @@ public class FightCardPanel extends JPanel{
                 getClass().getResource(imagePath)
             );
 
-            Image scaled = img.getScaledInstance(
-                60,
-                60,
-                Image.SCALE_SMOOTH
-            );
-
+            Image scaled = img.getScaledInstance(60,60,Image.SCALE_SMOOTH);
             image.setIcon(new ImageIcon(scaled));
             image.repaint();
 
@@ -108,6 +86,7 @@ public class FightCardPanel extends JPanel{
 
             e.printStackTrace();
         }
+        
 
         damage.setText("Damage: " + dmg);
         armor.setText("Armor: " + arm);

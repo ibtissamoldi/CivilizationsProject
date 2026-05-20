@@ -130,9 +130,9 @@ class TechnologyPanel extends JPanel implements Variables {
 
         JPanel info_panel = new JPanel(new GridLayout(3, 2, 25, 10));
         info_panel.setBackground(GameColors.PANEL);
-        info_panel.setBorder(
-        	    BorderFactory.createEmptyBorder(10, 25, 10, 25)
-        	);
+        info_panel.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        	    
+        	
 
         Color labelColor = new Color(190,180,160);
         Color valueColor = new Color(245,230,190);

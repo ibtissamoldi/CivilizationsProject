@@ -5,5 +5,3 @@ public class BuildingException extends Exception{
         super(message);
     }
 }
-
-class test{}

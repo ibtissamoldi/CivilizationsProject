@@ -3,6 +3,7 @@ package M3.GUIgame;
 
 
 public class GameLog {
+	
     public static DialogPanel log;
 
     public static void info(String msg) {
